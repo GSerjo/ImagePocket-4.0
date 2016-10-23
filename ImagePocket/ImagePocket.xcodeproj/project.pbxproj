@@ -20,6 +20,8 @@
 		B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662B1DBC2CFA001E579A /* DataAccessError.swift */; };
 		B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662D1DBC2DB0001E579A /* TagRepository.swift */; };
 		B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662F1DBC3339001E579A /* ImageRepository.swift */; };
+		B27D664F1DBD1C6C001E579A /* SideMenuController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27D664C1DBD1BE2001E579A /* SideMenuController.framework */; };
+		B27D66501DBD1C6C001E579A /* SideMenuController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B27D664C1DBD1BE2001E579A /* SideMenuController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,27 @@
 			remoteGlobalIDString = EE247AD21C3F04ED00AE3E12;
 			remoteInfo = "SQLite iOS";
 		};
+		B27D664B1DBD1BE2001E579A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13A757E61D12A2A0004488DA;
+			remoteInfo = SideMenuController;
+		};
+		B27D664D1DBD1BE2001E579A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13A757F01D12A2A0004488DA;
+			remoteInfo = SideMenuControllerTests;
+		};
+		B27D66511DBD1C6C001E579A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 13A757E51D12A2A0004488DA;
+			remoteInfo = SideMenuController;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,6 +111,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B27D66501DBD1C6C001E579A /* SideMenuController.framework in Embed Frameworks */,
 				B27D661F1DBC1C39001E579A /* SQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -110,6 +134,7 @@
 		B27D662B1DBC2CFA001E579A /* DataAccessError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataAccessError.swift; sourceTree = "<group>"; };
 		B27D662D1DBC2DB0001E579A /* TagRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
 		B27D662F1DBC3339001E579A /* ImageRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRepository.swift; sourceTree = "<group>"; };
+		B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SideMenuController.xcodeproj; path = SideMenuController/SideMenuController.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B27D664F1DBD1C6C001E579A /* SideMenuController.framework in Frameworks */,
 				B27D661E1DBC1C39001E579A /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,6 +155,7 @@
 			children = (
 				B27D65DB1DBC17D3001E579A /* ImagePocket */,
 				B27D65DA1DBC17D3001E579A /* Products */,
+				B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */,
 				B27D66061DBC1C04001E579A /* SQLite.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -190,6 +217,15 @@
 			name = Repositories;
 			sourceTree = "<group>";
 		};
+		B27D66471DBD1BE2001E579A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B27D664C1DBD1BE2001E579A /* SideMenuController.framework */,
+				B27D664E1DBD1BE2001E579A /* SideMenuControllerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -206,6 +242,7 @@
 			);
 			dependencies = (
 				B27D66211DBC1C39001E579A /* PBXTargetDependency */,
+				B27D66521DBD1C6C001E579A /* PBXTargetDependency */,
 			);
 			name = ImagePocket;
 			productName = ImagePocket;
@@ -241,6 +278,10 @@
 			productRefGroup = B27D65DA1DBC17D3001E579A /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = B27D66471DBD1BE2001E579A /* Products */;
+					ProjectRef = B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */;
+				},
 				{
 					ProductGroup = B27D66071DBC1C04001E579A /* Products */;
 					ProjectRef = B27D66061DBC1C04001E579A /* SQLite.xcodeproj */;
@@ -303,6 +344,20 @@
 			remoteRef = B27D661C1DBC1C04001E579A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B27D664C1DBD1BE2001E579A /* SideMenuController.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SideMenuController.framework;
+			remoteRef = B27D664B1DBD1BE2001E579A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B27D664E1DBD1BE2001E579A /* SideMenuControllerTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SideMenuControllerTests.xctest;
+			remoteRef = B27D664D1DBD1BE2001E579A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -341,6 +396,11 @@
 			isa = PBXTargetDependency;
 			name = "SQLite iOS";
 			targetProxy = B27D66201DBC1C39001E579A /* PBXContainerItemProxy */;
+		};
+		B27D66521DBD1C6C001E579A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SideMenuController;
+			targetProxy = B27D66511DBD1C6C001E579A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
