@@ -38,5 +38,6 @@ final class DataStore {
     
     func create() throws {
         try TagRepository.createTable()
+        try ImageRepository.createTable()
     }
 }

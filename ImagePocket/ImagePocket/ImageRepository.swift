@@ -1,5 +1,5 @@
 //
-//  TagRepository.swift
+//  ImageRepository.swift
 //  ImagePocket
 //
 //  Created by Serjo on 22/10/16.
@@ -9,19 +9,20 @@
 import Foundation
 import SQLite
 
-final class TagRepository {
+final class ImageRepository {
     
-    private static let tableName = "Tag"
+    private static let tableName = "Image"
     private static let table = Table(tableName)
+    
     
     static func createTable() throws {
         
-        let tableQuery = table.create(ifNotExists: true){ t in
+        let tableQuery = table.create(ifNotExists: true) { t in
             t.column(Columns.id, primaryKey: true)
-            t.column(Columns.name)
+            t.column(Columns.localIdentifier)
         }
         
-        let indexQuery = table.createIndex([Columns.name], ifNotExists: true)
+        let indexQuery = table.createIndex([Columns.localIdentifier], ifNotExists: true)
         
         try DataStore.sharedInstance.executeQuery(tableQuery)
         try DataStore.sharedInstance.executeQuery(indexQuery)
@@ -29,6 +30,7 @@ final class TagRepository {
     
     private struct Columns {
         static let id = Expression<Int64>("id")
-        static let name = Expression<String>("name")
+        static let localIdentifier = Expression<String>("localIdentifier")
     }
+    
 }

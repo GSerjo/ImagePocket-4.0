@@ -19,6 +19,7 @@
 		B27D662A1DBC2732001E579A /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66291DBC2732001E579A /* DataStore.swift */; };
 		B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662B1DBC2CFA001E579A /* DataAccessError.swift */; };
 		B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662D1DBC2DB0001E579A /* TagRepository.swift */; };
+		B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D662F1DBC3339001E579A /* ImageRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +109,7 @@
 		B27D66291DBC2732001E579A /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		B27D662B1DBC2CFA001E579A /* DataAccessError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataAccessError.swift; sourceTree = "<group>"; };
 		B27D662D1DBC2DB0001E579A /* TagRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
+		B27D662F1DBC3339001E579A /* ImageRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 				B27D66291DBC2732001E579A /* DataStore.swift */,
 				B27D662B1DBC2CFA001E579A /* DataAccessError.swift */,
 				B27D662D1DBC2DB0001E579A /* TagRepository.swift */,
+				B27D662F1DBC3339001E579A /* ImageRepository.swift */,
 			);
 			name = Repositories;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				B27D66251DBC1D10001E579A /* StringExtensions.swift in Sources */,
 				B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */,
 				B27D66271DBC1E7E001E579A /* SequenceTypeExtensions.swift in Sources */,
+				B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,
 				B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */,
 				B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */,
