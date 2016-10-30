@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B2086FD61DC5A29900A18E71 /* TagEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2086FD51DC5A29900A18E71 /* TagEntity.swift */; };
+		B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */; };
 		B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DC1DBC17D3001E579A /* AppDelegate.swift */; };
 		B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DE1DBC17D3001E579A /* ViewController.swift */; };
 		B27D65E21DBC17D3001E579A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E01DBC17D3001E579A /* Main.storyboard */; };
@@ -125,6 +126,7 @@
 
 /* Begin PBXFileReference section */
 		B2086FD51DC5A29900A18E71 /* TagEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagEntity.swift; sourceTree = "<group>"; };
+		B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageEntity.swift; sourceTree = "<group>"; };
 		B27D65D91DBC17D3001E579A /* ImagePocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27D65DC1DBC17D3001E579A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B27D65DE1DBC17D3001E579A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				B2086FD51DC5A29900A18E71 /* TagEntity.swift */,
+				B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				B27D66591DBDAC69001E579A /* MenuController.swift in Sources */,
 				B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,
+				B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */,
 				B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */,
 				B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */,
 				B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */,

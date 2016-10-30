@@ -11,18 +11,18 @@ import SQLite
 
 final class ImageRepository {
     
-    private static let tableName = "Image"
-    private static let table = Table(tableName)
+    private static let _tableName = "Image"
+    private static let _table = Table(_tableName)
     
     
     static func createTable() throws {
         
-        let tableQuery = table.create(ifNotExists: true) { t in
+        let tableQuery = _table.create(ifNotExists: true) { t in
             t.column(Columns.id, primaryKey: true)
             t.column(Columns.localIdentifier)
         }
         
-        let indexQuery = table.createIndex([Columns.localIdentifier], ifNotExists: true)
+        let indexQuery = _table.createIndex([Columns.localIdentifier], ifNotExists: true)
         
         try DataStore.sharedInstance.executeQuery(tableQuery)
         try DataStore.sharedInstance.executeQuery(indexQuery)

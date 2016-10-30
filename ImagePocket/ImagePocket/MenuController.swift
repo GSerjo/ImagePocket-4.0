@@ -10,7 +10,7 @@ import UIKit
 
 class MenuController: UITableViewController {
 
-    let items = ["test", "test1"]
+    let _items = ["test", "test1"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +32,13 @@ class MenuController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return items.count
+        return _items.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath)
-        cell.textLabel?.text = items[indexPath.row]
+        cell.textLabel?.text = _items[indexPath.row]
 
         return cell
     }

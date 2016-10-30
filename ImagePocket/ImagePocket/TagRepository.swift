@@ -11,17 +11,17 @@ import SQLite
 
 final class TagRepository {
     
-    private static let tableName = "Tag"
-    private static let table = Table(tableName)
+    private static let _tableName = "Tag"
+    private static let _table = Table(_tableName)
     
     static func createTable() throws {
         
-        let tableQuery = table.create(ifNotExists: true){ t in
+        let tableQuery = _table.create(ifNotExists: true){ t in
             t.column(Columns.id, primaryKey: true)
             t.column(Columns.name)
         }
         
-        let indexQuery = table.createIndex([Columns.name], ifNotExists: true)
+        let indexQuery = _table.createIndex([Columns.name], ifNotExists: true)
         
         try DataStore.sharedInstance.executeQuery(tableQuery)
         try DataStore.sharedInstance.executeQuery(indexQuery)

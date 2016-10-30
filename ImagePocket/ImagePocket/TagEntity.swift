@@ -8,11 +8,13 @@
 
 import Foundation
 
-func ==(left: TagEntity, right: TagEntity) -> Bool{
-    return left.id == right.id
-}
+
 
 struct TagEntity : Equatable {
+    
+    static func ==(left: TagEntity, right: TagEntity) -> Bool{
+        return left.id == right.id
+    }
     
     static let all = TagEntity(id: -1, name: "All")
     static let untagged = TagEntity(id: -2, name: "Untagged")
