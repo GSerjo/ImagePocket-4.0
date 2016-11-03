@@ -12,7 +12,7 @@ import SQLite
 final class DataStore {
     
     static let sharedInstance = DataStore()
-    private let _connection: Connection?
+    public let db: Connection!
     
     private init(){
         let fileName = "TinyNoteImagePocket.sqlite"
@@ -23,17 +23,10 @@ final class DataStore {
         print(path)
         
         do {
-            _connection = try Connection(path)
+            db = try Connection(path)
         } catch _ {
-            _connection = nil
+            db = nil
         }
-    }
-    
-    func executeQuery(_ query: String) throws {
-        guard let connection = _connection else {
-            throw DataAccessError.connectionError
-        }
-       try connection.run(query)
     }
     
     func create() throws {

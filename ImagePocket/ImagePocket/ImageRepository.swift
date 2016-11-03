@@ -24,8 +24,8 @@ final class ImageRepository {
         
         let indexQuery = _table.createIndex([Columns.localIdentifier], ifNotExists: true)
         
-        try DataStore.sharedInstance.executeQuery(tableQuery)
-        try DataStore.sharedInstance.executeQuery(indexQuery)
+        try DataStore.sharedInstance.db.run(tableQuery)
+        try DataStore.sharedInstance.db.run(indexQuery)
     }
     
     private struct Columns {

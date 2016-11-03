@@ -23,8 +23,18 @@ final class TagRepository {
         
         let indexQuery = _table.createIndex([Columns.name], ifNotExists: true)
         
-        try DataStore.sharedInstance.executeQuery(tableQuery)
-        try DataStore.sharedInstance.executeQuery(indexQuery)
+        try DataStore.sharedInstance.db.run(tableQuery)
+        try DataStore.sharedInstance.db.run(indexQuery)
+    }
+    
+    func saveOrUpdate(values: [TagEntity]) -> Void {
+        
+        values.forEach { item in
+            let query = TagRepository._table.insert(Columns.name <- item.name)
+            if let id  = try? DataStore.sharedInstance.db.run(query){
+                item.id = id
+            }
+        }
     }
     
     private struct Columns {
