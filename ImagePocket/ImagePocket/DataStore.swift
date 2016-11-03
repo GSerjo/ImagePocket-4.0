@@ -22,11 +22,8 @@ final class DataStore {
         let path = dirs[0].appendingPathComponent(fileName)
         print(path)
         
-        do {
-            db = try Connection(path)
-        } catch _ {
-            db = nil
-        }
+        db = try! Connection(path)
+
     }
     
     func create() throws {
