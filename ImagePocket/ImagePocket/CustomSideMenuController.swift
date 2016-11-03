@@ -25,6 +25,14 @@ final class CustomSideMenuController : SideMenuController {
         super.viewDidLoad()
         performSegue(withIdentifier: "showCenterController", sender: nil)
         performSegue(withIdentifier: "containSideMenu", sender: nil)
+        
+        try! DataStore.sharedInstance.create()
+        fillTags()
+    }
+    
+    private func fillTags() -> Void{
+        let tags = [TagEntity(name: "Test"), TagEntity(name: "Test1")]
+        TagRepository.sharedInstance.saveOrUpdate(tags)
     }
     
 }

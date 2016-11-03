@@ -30,7 +30,7 @@ final class DataStore {
     }
     
     func create() throws {
-        try TagRepository.createTable()
-        try ImageRepository.createTable()
+        try TagRepository.sharedInstance.createTable()
+        try ImageRepository.shareInstance.createTable()
     }
 }

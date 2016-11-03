@@ -10,7 +10,7 @@ import Foundation
 
 
 
-class TagEntity : Equatable {
+final class TagEntity : Equatable {
     
     static func ==(left: TagEntity, right: TagEntity) -> Bool{
         return left.id == right.id
@@ -19,7 +19,7 @@ class TagEntity : Equatable {
     static let all = TagEntity(id: -1, name: "All")
     static let untagged = TagEntity(id: -2, name: "Untagged")
     
-    init(id: Int64, name: String) {
+    init(id: Int64 = 0, name: String) {
         self.id = id
         self.name = name
     }

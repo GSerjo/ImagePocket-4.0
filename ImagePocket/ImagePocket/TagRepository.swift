@@ -11,10 +11,10 @@ import SQLite
 
 final class TagRepository {
     
-    private static let _tableName = "Tag"
-    private static let _table = Table(_tableName)
+    private let _table = Table("Tag")
+    static let sharedInstance = TagRepository()
     
-    static func createTable() throws {
+    func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true){ t in
             t.column(Columns.id, primaryKey: true)
@@ -27,10 +27,10 @@ final class TagRepository {
         try DataStore.sharedInstance.db.run(indexQuery)
     }
     
-    func saveOrUpdate(values: [TagEntity]) -> Void {
+    func saveOrUpdate(_ values: [TagEntity]) -> Void {
         
         values.forEach { item in
-            let query = TagRepository._table.insert(Columns.name <- item.name)
+            let query = _table.insert(Columns.name <- item.name)
             if let id  = try? DataStore.sharedInstance.db.run(query){
                 item.id = id
             }

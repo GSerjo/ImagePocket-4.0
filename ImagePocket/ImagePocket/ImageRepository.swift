@@ -11,11 +11,10 @@ import SQLite
 
 final class ImageRepository {
     
-    private static let _tableName = "Image"
-    private static let _table = Table(_tableName)
+    private let _table = Table("Image")
+    public static let shareInstance = ImageRepository()
     
-    
-    static func createTable() throws {
+    func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true) { t in
             t.column(Columns.id, primaryKey: true)
