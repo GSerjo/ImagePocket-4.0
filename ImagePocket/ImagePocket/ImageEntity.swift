@@ -8,15 +8,23 @@
 
 import Foundation
 
-struct ImageEntity {
+final class ImageEntity: Entity {
     
     private var _tags = [TagEntity]()
     
     var id: Int64
-    var localIdentifier: String
+    private(set) var localIdentifier: String
     
+    init(id: Int64 = 0, localIdentifier: String) {
+        self.id = id
+        self.localIdentifier = localIdentifier
+    }
     
-    mutating func addTag(_ tag: TagEntity) {
+    var tags: [TagEntity] {
+        return _tags
+    }
+    
+    func addTag(_ tag: TagEntity) {
         _tags.append(tag)
     }
     

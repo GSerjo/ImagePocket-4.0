@@ -37,6 +37,23 @@ final class TagRepository {
         }
     }
     
+    func getAll() -> [TagEntity] {
+        
+        var result = [TagEntity]()
+        
+        if let rows = try? DataStore.sharedInstance.db.prepare(_table){
+            rows.forEach{ row in
+                let item = TagEntity(id: row[Columns.id], name: row[Columns.name])
+                result.append(item)
+            }
+        }
+        return result
+    }
+    
+    func remove(_ tags: [TagEntity]) -> Void{
+        _ = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
+    }
+    
     private struct Columns {
         static let id = Expression<Int64>("id")
         static let name = Expression<String>("name")

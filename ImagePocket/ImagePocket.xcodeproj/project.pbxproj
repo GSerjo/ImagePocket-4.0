@@ -27,6 +27,7 @@
 		B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */; };
 		B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66561DBDAAB0001E579A /* ContentViewController.swift */; };
 		B27D66591DBDAC69001E579A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66581DBDAC69001E579A /* MenuController.swift */; };
+		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,6 +146,7 @@
 		B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		B27D66561DBDAAB0001E579A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		B27D66581DBDAC69001E579A /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 			children = (
 				B2086FD51DC5A29900A18E71 /* TagEntity.swift */,
 				B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */,
+				B2DDD4BF1DCC3C5400749A82 /* Entity.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 			files = (
 				B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */,
 				B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */,
+				B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */,
 				B27D66251DBC1D10001E579A /* StringExtensions.swift in Sources */,
 				B2086FD61DC5A29900A18E71 /* TagEntity.swift in Sources */,
 				B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */,
