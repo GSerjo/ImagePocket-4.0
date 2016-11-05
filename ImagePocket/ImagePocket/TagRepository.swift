@@ -12,7 +12,7 @@ import SQLite
 final class TagRepository {
     
     private let _table = Table("Tag")
-    static let sharedInstance = TagRepository()
+    static let instance = TagRepository()
     
     func createTable() throws {
         
@@ -23,15 +23,15 @@ final class TagRepository {
         
         let indexQuery = _table.createIndex([Columns.name], ifNotExists: true)
         
-        try DataStore.sharedInstance.db.run(tableQuery)
-        try DataStore.sharedInstance.db.run(indexQuery)
+        try DataStore.instance.db.run(tableQuery)
+        try DataStore.instance.db.run(indexQuery)
     }
     
     func saveOrUpdate(_ values: [TagEntity]) -> Void {
         
         values.forEach { item in
             let query = _table.insert(Columns.name <- item.name)
-            if let id  = try? DataStore.sharedInstance.db.run(query){
+            if let id  = try? DataStore.instance.db.run(query){
                 item.id = id
             }
         }
@@ -41,7 +41,7 @@ final class TagRepository {
         
         var result = [TagEntity]()
         
-        if let rows = try? DataStore.sharedInstance.db.prepare(_table){
+        if let rows = try? DataStore.instance.db.prepare(_table){
             rows.forEach{ row in
                 let item = TagEntity(id: row[Columns.id], name: row[Columns.name])
                 result.append(item)
@@ -50,7 +50,7 @@ final class TagRepository {
         return result
     }
     
-    func remove(_ tags: [TagEntity]) -> Void{
+    func remove(_ tags: [TagEntity]) -> Void {
         _ = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
     }
     

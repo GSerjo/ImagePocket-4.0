@@ -11,7 +11,7 @@ import SQLite
 
 final class DataStore {
     
-    static let sharedInstance = DataStore()
+    static let instance = DataStore()
     public let db: Connection!
     
     private init(){
@@ -27,7 +27,7 @@ final class DataStore {
     }
     
     func create() throws {
-        try TagRepository.sharedInstance.createTable()
-        try ImageRepository.shareInstance.createTable()
+        try TagRepository.instance.createTable()
+        try ImageRepository.instance.createTable()
     }
 }

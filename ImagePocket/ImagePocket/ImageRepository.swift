@@ -12,7 +12,7 @@ import SQLite
 final class ImageRepository {
     
     private let _table = Table("Image")
-    public static let shareInstance = ImageRepository()
+    public static let instance = ImageRepository()
     
     func createTable() throws {
         
@@ -23,14 +23,14 @@ final class ImageRepository {
         
         let indexQuery = _table.createIndex([Columns.localIdentifier], ifNotExists: true)
         
-        try DataStore.sharedInstance.db.run(tableQuery)
-        try DataStore.sharedInstance.db.run(indexQuery)
+        try DataStore.instance.db.run(tableQuery)
+        try DataStore.instance.db.run(indexQuery)
     }
     
     func getAll() -> [ImageEntity] {
         var result = [ImageEntity]()
         
-        if let rows = try? DataStore.sharedInstance.db.prepare(_table){
+        if let rows = try? DataStore.instance.db.prepare(_table){
             rows.forEach{ row in
                 let item = ImageEntity(id: row[Columns.id], localIdentifier: row[Columns.localIdentifier])
                 result.append(item)
@@ -43,7 +43,8 @@ final class ImageRepository {
         _ = _table.filter(entities.map {$0.id}.contains(Columns.id)).delete()
     }
     
-    func saveOrUpdate(_ entities: [ImageEntity]) -> Void {
+    func saveOrUpdate(_
+        entities: [ImageEntity]) -> Void {
         if entities.isEmpty {
             return
         }
@@ -62,7 +63,7 @@ final class ImageRepository {
         entities.forEach{ entity in
             if entity.isNew {
                 let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier)
-                if let id  = try? DataStore.sharedInstance.db.run(query){
+                if let id  = try? DataStore.instance.db.run(query){
                     entity.id = id
                 }
             }

@@ -33,7 +33,9 @@ final class TagEntity : Equatable, Entity {
         return self == TagEntity.untagged
     }
     
-    
+    var isUser: Bool {
+        return !self.isAll && !self.isUntagged
+    }
     
     var id: Int64
     var name: String = String.empty
