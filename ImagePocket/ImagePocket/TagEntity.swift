@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 final class TagEntity : Equatable, Entity {
     
     static func ==(left: TagEntity, right: TagEntity) -> Bool{
