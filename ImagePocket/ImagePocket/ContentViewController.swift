@@ -7,24 +7,30 @@
 //
 
 import UIKit
+import Photos
 import SideMenuController
 
 class ContentViewController: UIViewController, SideMenuControllerDelegate {
 
+    private let _selectImagesTitle = "Select Images"
+    private let _rootTitle = "Image Pocket"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = randomColor
         sideMenuController?.delegate = self
+        
+        self.title = _rootTitle
+        
+        startApp()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("\(#function) -- \(self)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("\(#function) -- \(self)")
     }
     
     @IBAction func presentAction() {
@@ -42,11 +48,49 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
     }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
-        print(#function)
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
-        print(#function)
+    }
+    
+    private func configureToolBar(){
+        
+    }
+    
+    private func startApp(){
+        if(PHPhotoLibrary.authorizationStatus() == .authorized){
+            startAppCore()
+        }
+        else{
+            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+        }
+    }
+    
+    private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
+        DispatchQueue.main.sync {
+            if(status == .authorized){
+                startAppCore()
+            }
+            else {
+                
+                let alertController = UIAlertController(title: "Warning", message: "The Photo permission was not authorized. Please enable it in Settings to continue", preferredStyle: .alert)
+                let settingsAction = UIAlertAction(title: "Open Settings", style: .default, handler: {_ in
+                    if let appSettings = URL(string: UIApplicationOpenSettingsURLString){
+                        UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                    }
+                })
+                
+                alertController.addAction(settingsAction)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func startAppCore(){
+        
     }
 
 }

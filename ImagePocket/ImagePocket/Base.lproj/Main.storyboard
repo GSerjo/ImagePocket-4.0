@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1104" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -40,13 +43,28 @@
                     <view key="view" contentMode="scaleToFill" id="Fh7-QR-0g6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UHZ-iz-EgV">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="action" id="o2A-5K-Z3n"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="wxb-7V-wDA"/>
+                                    <barButtonItem systemItem="trash" id="uiX-HU-LIp"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="leading" secondItem="Fh7-QR-0g6" secondAttribute="leading" id="KtR-WG-ZAG"/>
+                            <constraint firstAttribute="trailing" secondItem="UHZ-iz-EgV" secondAttribute="trailing" id="bvU-sI-eEw"/>
+                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="bottom" secondItem="fSM-RA-dKO" secondAttribute="top" id="vBO-Gh-qYX"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="V6R-qn-sYE"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2911" y="794"/>
+            <point key="canvasLocation" x="2909.5999999999999" y="793.8530734632684"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="i1H-KX-TEP">
@@ -61,7 +79,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
