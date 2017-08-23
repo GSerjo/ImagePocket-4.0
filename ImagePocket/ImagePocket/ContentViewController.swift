@@ -14,6 +14,14 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
 
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
+    private let _tagButtonName = "Tag"
+    private let _cancelButtonName = "Cancel"
+    
+    @IBOutlet weak var _btTrash: UIBarButtonItem!
+    @IBOutlet weak var _btShare: UIBarButtonItem!
+    private var _btTag: UIBarButtonItem!
+    private var _btCancel: UIBarButtonItem!
+    private var _btOpenMenu: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +29,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         sideMenuController?.delegate = self
         
         self.title = _rootTitle
+        configureToolbar()
         
         startApp()
     }
@@ -64,6 +73,22 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         else{
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
+    }
+    
+    private func configureToolbar(){
+        _btTag = UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))
+        _btCancel = UIBarButtonItem(title: _cancelButtonName, style: .plain, target: self, action: #selector(onCancelClicked))
+        _btOpenMenu = navigationItem.leftBarButtonItem
+        
+        _btTrash.isEnabled = false
+        _btShare.isEnabled = false
+    }
+    
+    func onTagClicked(){
+        
+    }
+    
+    func onCancelClicked(){
     }
     
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){

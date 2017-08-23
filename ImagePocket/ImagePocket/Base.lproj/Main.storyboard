@@ -61,6 +61,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="V6R-qn-sYE"/>
+                    <connections>
+                        <outlet property="_btShare" destination="o2A-5K-Z3n" id="VDK-0c-9rA"/>
+                        <outlet property="_btTrash" destination="uiX-HU-LIp" id="NIH-lY-phn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
