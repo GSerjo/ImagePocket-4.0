@@ -52,18 +52,54 @@
                                     <barButtonItem systemItem="trash" id="uiX-HU-LIp"/>
                                 </items>
                             </toolbar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qyi-S2-uPB">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jgb-r9-sXo">
+                                    <size key="itemSize" width="80" height="80"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImagePreviewCell" id="T8f-sv-VhT">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JtJ-50-alB">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="JtJ-50-alB" secondAttribute="trailing" id="bhC-hV-6ZT"/>
+                                            <constraint firstAttribute="bottom" secondItem="JtJ-50-alB" secondAttribute="bottom" id="kIa-ez-K3b"/>
+                                            <constraint firstItem="JtJ-50-alB" firstAttribute="leading" secondItem="T8f-sv-VhT" secondAttribute="leading" id="ris-C7-VBs"/>
+                                            <constraint firstItem="JtJ-50-alB" firstAttribute="top" secondItem="T8f-sv-VhT" secondAttribute="top" id="y0T-50-TyM"/>
+                                        </constraints>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="leading" secondItem="Fh7-QR-0g6" secondAttribute="leading" id="KtR-WG-ZAG"/>
-                            <constraint firstAttribute="trailing" secondItem="UHZ-iz-EgV" secondAttribute="trailing" id="bvU-sI-eEw"/>
-                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="bottom" secondItem="fSM-RA-dKO" secondAttribute="top" id="vBO-Gh-qYX"/>
+                            <constraint firstItem="qyi-S2-uPB" firstAttribute="top" secondItem="MrH-VS-y3D" secondAttribute="bottom" id="Lgj-7f-1oQ"/>
+                            <constraint firstItem="qyi-S2-uPB" firstAttribute="trailing" secondItem="UHZ-iz-EgV" secondAttribute="trailing" id="ObR-m3-VYM"/>
+                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="bottom" secondItem="fSM-RA-dKO" secondAttribute="top" id="Pmm-Sx-S5m"/>
+                            <constraint firstItem="qyi-S2-uPB" firstAttribute="leading" secondItem="UHZ-iz-EgV" secondAttribute="leading" id="T6L-51-dqc"/>
+                            <constraint firstItem="qyi-S2-uPB" firstAttribute="leading" secondItem="Fh7-QR-0g6" secondAttribute="leading" id="VfT-Qz-blO"/>
+                            <constraint firstAttribute="trailing" secondItem="qyi-S2-uPB" secondAttribute="trailing" id="ksM-La-xwM"/>
+                            <constraint firstItem="UHZ-iz-EgV" firstAttribute="top" secondItem="qyi-S2-uPB" secondAttribute="bottom" id="sGZ-Uh-ZMs"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="V6R-qn-sYE"/>
                     <connections>
                         <outlet property="_btShare" destination="o2A-5K-Z3n" id="VDK-0c-9rA"/>
                         <outlet property="_btTrash" destination="uiX-HU-LIp" id="NIH-lY-phn"/>
+                        <outlet property="_collectionView" destination="qyi-S2-uPB" id="Buu-lb-nd2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>

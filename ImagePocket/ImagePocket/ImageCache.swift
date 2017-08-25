@@ -13,7 +13,6 @@ final class ImageCache{
     
     static let inctace = ImageCache()
     
-    private var _fetchResult: PHFetchResult<PHAsset>
     private var _assets = [String: PHAsset]()
     private let _imageRepository = ImageRepository.instance
     private var _taggedImages = [String: ImageEntity]()
@@ -24,8 +23,8 @@ final class ImageCache{
         
         _taggedImages = _imageRepository.getAll().toDictionary{$0.localIdentifier}
         
-        _fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
-        _assets = getAssets(_fetchResult).toDictionary{$0.localIdentifier}
+        let fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
+        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
         _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
     }
     

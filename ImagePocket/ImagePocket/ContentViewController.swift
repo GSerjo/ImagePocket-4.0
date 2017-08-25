@@ -10,18 +10,32 @@ import UIKit
 import Photos
 import SideMenuController
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate {
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource {
 
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
     private let _tagButtonName = "Tag"
     private let _cancelButtonName = "Cancel"
+    private let _selectButtonName = "Select"
     
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
     private var _btTag: UIBarButtonItem!
     private var _btCancel: UIBarButtonItem!
     private var _btOpenMenu: UIBarButtonItem!
+    private var _btSelect: UIBarButtonItem!
+    
+    private var _imageCache: ImageCache!
+    private let _imageManager = PHCachingImageManager()
+    private var _filteredImages = [ImageEntity]()
+    private var _selectedImages = [String: ImageEntity]()
+    private var _viewMode = ViewMode.read
+    @IBOutlet weak var _collectionView: UICollectionView!
+    
+    private enum ViewMode {
+        case read
+        case select
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +44,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         
         self.title = _rootTitle
         configureToolbar()
+        setReadMode()
         
         startApp()
     }
@@ -78,17 +93,21 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
     private func configureToolbar(){
         _btTag = UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))
         _btCancel = UIBarButtonItem(title: _cancelButtonName, style: .plain, target: self, action: #selector(onCancelClicked))
+        _btSelect = UIBarButtonItem(title: _selectButtonName, style: .plain, target: self, action: #selector(onSelectClicked))
+        navigationItem.rightBarButtonItems = [_btSelect]
         _btOpenMenu = navigationItem.leftBarButtonItem
-        
-        _btTrash.isEnabled = false
-        _btShare.isEnabled = false
     }
     
-    func onTagClicked(){
+    func onTagClicked() {
         
     }
     
-    func onCancelClicked(){
+    func onCancelClicked() {
+        setReadMode()
+    }
+    
+    func onSelectClicked() {
+        setSelectMode()
     }
     
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
@@ -114,8 +133,39 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return _filteredImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: "ImagePreviewCell", for: indexPath) as! ImagePreviewCell
+        return cell
+    }
+    
     private func startAppCore(){
+        _imageCache = ImageCache.inctace
+    }
+    
+    private func setReadMode() {
+        _viewMode = .read
         
+        self.title = _rootTitle
+        _selectedImages = [String: ImageEntity]()
+        
+        _btShare.isEnabled = false
+        _btTrash.isEnabled = false
+        
+        //navigationItem.leftBarButtonItems = [_btOpenMenu]
+        navigationItem.rightBarButtonItem = _btSelect
     }
 
+    
+    private func setSelectMode() {
+        _viewMode = .select
+        self.title = _selectImagesTitle
+        
+        navigationItem.rightBarButtonItem = _btCancel
+        navigationItem.leftBarButtonItem = _btTag
+        navigationItem.leftBarButtonItem?.isEnabled = false
+    }
 }
