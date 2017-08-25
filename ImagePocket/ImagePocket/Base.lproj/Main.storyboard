@@ -62,7 +62,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImagePreviewCell" id="T8f-sv-VhT">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImagePreviewCell" id="T8f-sv-VhT" customClass="ImagePreviewCell" customModule="ImagePocket" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -80,8 +80,15 @@
                                             <constraint firstItem="JtJ-50-alB" firstAttribute="leading" secondItem="T8f-sv-VhT" secondAttribute="leading" id="ris-C7-VBs"/>
                                             <constraint firstItem="JtJ-50-alB" firstAttribute="top" secondItem="T8f-sv-VhT" secondAttribute="top" id="y0T-50-TyM"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="_image" destination="JtJ-50-alB" id="Kta-MQ-NWc"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="qjw-zE-DJY" id="0IG-L1-cv6"/>
+                                    <outlet property="delegate" destination="qjw-zE-DJY" id="67Z-6a-WUm"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>

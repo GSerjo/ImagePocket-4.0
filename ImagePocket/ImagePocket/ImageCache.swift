@@ -33,6 +33,11 @@ final class ImageCache{
     }
     
     func getImages(tag: TagEntity) -> [ImageEntity]{
+        
+        if(tag.isAll){
+            return Array(_actualImages.values)
+        }
+        
         return Array(_actualImages.values)
     }
     

@@ -10,4 +10,17 @@ import UIKit
 
 class ImagePreviewCell: UICollectionViewCell {
     
+    @IBOutlet weak var _image: UIImageView!
+    var representedAssetIdentifier: String!
+    
+    var thumbnailImage: UIImage! {
+        didSet {
+            _image.image = thumbnailImage
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbnailImage = nil
+    }
 }
