@@ -14,10 +14,12 @@ final class ImageEntity: Entity {
     
     var id: Int64
     private(set) var localIdentifier: String
+    private(set) var creationDate: Date?
     
-    init(id: Int64 = 0, localIdentifier: String) {
+    init(id: Int64 = 0, localIdentifier: String, creationDate: Date?) {
         self.id = id
         self.localIdentifier = localIdentifier
+        self.creationDate = creationDate
     }
     
     var tags: [TagEntity] {

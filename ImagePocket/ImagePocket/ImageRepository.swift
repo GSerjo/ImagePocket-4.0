@@ -32,7 +32,7 @@ final class ImageRepository {
         
         if let rows = try? DataStore.instance.db.prepare(_table){
             rows.forEach{ row in
-                let item = ImageEntity(id: row[Columns.id], localIdentifier: row[Columns.localIdentifier])
+                let item = ImageEntity(id: row[Columns.id], localIdentifier: row[Columns.localIdentifier], creationDate: row[Columns.creationDate])
                 result.append(item)
             }
         }
@@ -73,6 +73,7 @@ final class ImageRepository {
     private struct Columns {
         static let id = Expression<Int64>("id")
         static let localIdentifier = Expression<String>("localIdentifier")
+        static let creationDate = Expression<Date?>("creationDate")
     }
     
 }
