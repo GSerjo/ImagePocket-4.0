@@ -94,6 +94,14 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
+        
+        guard let menuController = sideMenuController.sideViewController as? MenuController,
+              let tagEntity = menuController.selectedTag else {
+                return
+        }
+        
+        _filteredImages = _imageCache.getImages(tag: tagEntity)
+        reloadData()
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
@@ -110,6 +118,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         else{
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
+    }
+    
+    private func reloadData() {
+        _collectionView.reloadData()
     }
     
     private func configureToolbar(){

@@ -37,8 +37,17 @@ final class ImageCache{
         if(tag.isAll){
             return Array(_actualImages.values)
         }
+        if(tag.isUntagged){
+            return Array(_actualImages.values)
+        }
         
-        return Array(_actualImages.values)
+        if(_taggedImages.isEmpty){
+            return [ImageEntity]()
+        }
+
+        let result = _taggedImages.values.filter{$0.id == tag.id}
+        
+        return Array(result)
     }
     
     private func getAssets(_ fetchResult: PHFetchResult<PHAsset>) -> [PHAsset]{

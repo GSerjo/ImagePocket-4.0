@@ -35,7 +35,7 @@
         <!--Content View Controller-->
         <scene sceneID="EZZ-Jy-kcD">
             <objects>
-                <viewController id="qjw-zE-DJY" customClass="ContentViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContentViewControllerId" id="qjw-zE-DJY" customClass="ContentViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MrH-VS-y3D"/>
                         <viewControllerLayoutGuide type="bottom" id="fSM-RA-dKO"/>

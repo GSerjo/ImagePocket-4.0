@@ -15,6 +15,21 @@ final class TagCache {
     private var _tags = [Int64: TagEntity]()
     static let instance = TagCache()
     
+    private init(){
+        let tags = _tagRepository.getAll()
+        
+        if tags.count == 0 {
+            fillTags()
+        }
+        
+        _tags = _tagRepository.getAll().toDictionary{$0.id}
+    }
+    
+    private func fillTags() -> Void{
+        let tags = [TagEntity(name: "Test"), TagEntity(name: "Test1")]
+        _tagRepository.saveOrUpdate(tags)
+    }
+    
     var tagCount: Int {
         return _tags.count
     }
