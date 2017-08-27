@@ -128,12 +128,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _btTag = UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))
         _btCancel = UIBarButtonItem(title: _cancelButtonName, style: .plain, target: self, action: #selector(onCancelClicked))
         _btSelect = UIBarButtonItem(title: _selectButtonName, style: .plain, target: self, action: #selector(onSelectClicked))
-        navigationItem.rightBarButtonItems = [_btSelect]
-        _btOpenMenu = navigationItem.leftBarButtonItem
+        navigationItem.rightBarButtonItem = _btSelect
     }
     
     func onTagClicked() {
-        
+        performSegue(withIdentifier: "showTagSelector", sender: nil)
     }
     
     func onCancelClicked() {
@@ -172,9 +171,6 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: "ImagePreviewCell", for: indexPath) as! ImagePreviewCell
-        
-        
         guard let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImagePreviewCell.self), for: indexPath) as? ImagePreviewCell
             else {
                 fatalError("unexpected cell in collection view")
@@ -231,7 +227,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _btShare.isEnabled = false
         _btTrash.isEnabled = false
         
-        //navigationItem.leftBarButtonItems = [_btOpenMenu]
+        navigationItem.leftBarButtonItem = _btOpenMenu
         navigationItem.rightBarButtonItem = _btSelect
     }
 
@@ -242,10 +238,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         navigationItem.rightBarButtonItem = _btCancel
         navigationItem.leftBarButtonItem = _btTag
-        navigationItem.leftBarButtonItem?.isEnabled = false
+        navigationItem.leftBarButtonItem?.isEnabled = true //TODO should be false
     }
     
-    fileprivate func updateCachedAssets() {
+    private func updateCachedAssets() {
         // Update only if the view is visible.
         guard isViewLoaded && view.window != nil else { return }
 
@@ -279,7 +275,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _previousPreheatRect = preheatRect
     }
     
-    fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
+    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
         if old.intersects(new) {
             var added = [CGRect]()
             if new.maxY > old.maxY {

@@ -28,6 +28,7 @@
 		B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */; };
 		B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66561DBDAAB0001E579A /* ContentViewController.swift */; };
 		B27D66591DBDAC69001E579A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66581DBDAC69001E579A /* MenuController.swift */; };
+		B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */; };
 		B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BEC701F4A862500696D47 /* ImageCache.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
@@ -151,6 +152,7 @@
 		B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		B27D66561DBDAAB0001E579A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		B27D66581DBDAC69001E579A /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSelectorViewController.swift; sourceTree = "<group>"; };
 		B29BEC701F4A862500696D47 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				B27D66561DBDAAB0001E579A /* ContentViewController.swift */,
 				B27D66581DBDAC69001E579A /* MenuController.swift */,
 				B23095171F4E6219002166A9 /* ImagePreviewCell.swift */,
+				B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */,
 				B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */,
 				B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */,
+				B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */,
 				B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */,
 				B27D66251DBC1D10001E579A /* StringExtensions.swift in Sources */,
 				B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */,
