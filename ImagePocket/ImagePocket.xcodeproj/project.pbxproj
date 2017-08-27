@@ -29,6 +29,8 @@
 		B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66561DBDAAB0001E579A /* ContentViewController.swift */; };
 		B27D66591DBDAC69001E579A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66581DBDAC69001E579A /* MenuController.swift */; };
 		B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */; };
+		B29181421F5340B100DBBC86 /* NWSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29181401F5340B100DBBC86 /* NWSToken.swift */; };
+		B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29181411F5340B100DBBC86 /* NWSTokenView.swift */; };
 		B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BEC701F4A862500696D47 /* ImageCache.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
@@ -153,6 +155,8 @@
 		B27D66561DBDAAB0001E579A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		B27D66581DBDAC69001E579A /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSelectorViewController.swift; sourceTree = "<group>"; };
+		B29181401F5340B100DBBC86 /* NWSToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NWSToken.swift; sourceTree = "<group>"; };
+		B29181411F5340B100DBBC86 /* NWSTokenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NWSTokenView.swift; sourceTree = "<group>"; };
 		B29BEC701F4A862500696D47 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 		B27D65DB1DBC17D3001E579A /* ImagePocket */ = {
 			isa = PBXGroup;
 			children = (
+				B291813E1F5340B100DBBC86 /* NWSTokenViews */,
 				B2DDD4C11DCD704400749A82 /* Caches */,
 				B2086FCD1DC5A26B00A18E71 /* Entities */,
 				B27D66531DBD9E13001E579A /* ViewControllers */,
@@ -272,6 +277,23 @@
 				B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B291813E1F5340B100DBBC86 /* NWSTokenViews */ = {
+			isa = PBXGroup;
+			children = (
+				B291813F1F5340B100DBBC86 /* NWSToken */,
+				B29181411F5340B100DBBC86 /* NWSTokenView.swift */,
+			);
+			path = NWSTokenViews;
+			sourceTree = SOURCE_ROOT;
+		};
+		B291813F1F5340B100DBBC86 /* NWSToken */ = {
+			isa = PBXGroup;
+			children = (
+				B29181401F5340B100DBBC86 /* NWSToken.swift */,
+			);
+			path = NWSToken;
 			sourceTree = "<group>";
 		};
 		B2DDD4C11DCD704400749A82 /* Caches */ = {
@@ -450,9 +472,11 @@
 				B23095181F4E6219002166A9 /* ImagePreviewCell.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,
 				B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */,
+				B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */,
 				B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */,
 				B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */,
 				B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */,
+				B29181421F5340B100DBBC86 /* NWSToken.swift in Sources */,
 				B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

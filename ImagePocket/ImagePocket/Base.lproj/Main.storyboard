@@ -107,7 +107,7 @@
                         <outlet property="_btShare" destination="o2A-5K-Z3n" id="VDK-0c-9rA"/>
                         <outlet property="_btTrash" destination="uiX-HU-LIp" id="NIH-lY-phn"/>
                         <outlet property="_collectionView" destination="qyi-S2-uPB" id="Buu-lb-nd2"/>
-                        <segue destination="q8U-A0-hqK" kind="presentation" identifier="showTagSelector" id="XjO-MC-vUp"/>
+                        <segue destination="q8U-A0-hqK" kind="presentation" identifier="showTagSelector" modalPresentationStyle="formSheet" modalTransitionStyle="crossDissolve" id="XjO-MC-vUp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -143,6 +143,11 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="peD-Wu-ZNb">
+                                <rect key="frame" x="0.0" y="92" width="375" height="337"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
