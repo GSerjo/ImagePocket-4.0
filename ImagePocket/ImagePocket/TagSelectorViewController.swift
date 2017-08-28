@@ -10,7 +10,7 @@ import UIKit
 
 class TagSelectorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NWSTokenDataSource, NWSTokenDelegate {
 
-    @IBOutlet weak var tokenViewHeightConstraint: NSLayoutConstraint!    
+    @IBOutlet weak var tokenViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tokenView: NWSTokenView!
     let tokenViewMinHeight: CGFloat = 40.0

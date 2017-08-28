@@ -157,6 +157,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="q8U-A0-hqK" id="JWh-7m-omu"/>
+                                    <outlet property="delegate" destination="q8U-A0-hqK" id="Ogq-jo-prj"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8lp-M5-0XE">
                                 <rect key="frame" x="0.0" y="44" width="375" height="50"/>
