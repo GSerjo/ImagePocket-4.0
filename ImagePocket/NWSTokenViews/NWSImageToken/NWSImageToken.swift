@@ -1,5 +1,5 @@
 //
-//  NWSToken.swift
+//  NWSImageToken.swift
 //  NWSTokenView
 //
 //  Created by James Hickman on 8/11/15.
@@ -15,17 +15,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import UIKit
 
-open class NWSToken: UIView {
-    
-    open var hiddenTextView = UITextView()
-    open var isSelected: Bool = false
 
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        // Hide text view (for using keyboard to delete token)
-        hiddenTextView.isHidden = true
-        hiddenTextView.text = "NWSTokenDeleteKey" // Set default text for detection in delegate
-        hiddenTextView.autocorrectionType = UITextAutocorrectionType.no // Hide suggestions to prevent key from being displayed
-        addSubview(hiddenTextView)
+open class NWSImageToken: NWSToken {
+
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    open class func initWithTitle(_ title: String) -> NWSImageToken? {
+        if let token = UINib(nibName: "NWSImageToken", bundle:nil).instantiate(withOwner: nil, options: nil)[0] as? NWSImageToken{
+            token.backgroundColor = UIColor(red: 98.0/255.0, green: 203.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+            let oldTextWidth = token.titleLabel.bounds.width
+            token.titleLabel.text = title
+            token.titleLabel.sizeToFit()
+            token.titleLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
+            let newTextWidth = token.titleLabel.bounds.width
+            
+            token.layer.cornerRadius = 5.0
+            token.clipsToBounds = true
+            
+            // Resize to fit text
+            token.frame.size = CGSize(width: token.frame.size.width+(newTextWidth-oldTextWidth), height: token.frame.height)
+            token.setNeedsLayout()
+            token.frame = token.frame
+            
+            return token
+        }
+        return nil
     }
 }
