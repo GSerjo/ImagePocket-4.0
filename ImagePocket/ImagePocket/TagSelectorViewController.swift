@@ -13,14 +13,17 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var tokenViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tokenView: NWSTokenView!
-    let tokenViewMinHeight: CGFloat = 40.0
-    let tokenViewMaxHeight: CGFloat = 150.0
-    let tokenBackgroundColor = UIColor(red: 98.0/255.0, green: 203.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     
-    var isSearching = false
-    var contacts = [TagItem]()
-    var selectedContacts = [TagItem(name: "sdfsdf")]
-    var filteredContacts = [TagItem]()
+    private let tokenViewMinHeight: CGFloat = 40.0
+    private let tokenViewMaxHeight: CGFloat = 150.0
+    private let tokenBackgroundColor = UIColor(red: 98.0/255.0, green: 203.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    
+    private var _isSearching = false
+    private var _tags = [TagItem]()
+    private var _selectedTags = [TagItem(name: "sdfsdf")]
+    private var _filteredTags = [TagItem]()
+    
+    private let _tagCache = TagCache.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +35,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         // TableView
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.separatorStyle = .singleLine
+        
+        _tags = _tagCache.userTags.map{TagItem(name: $0.name)}
         
         // TokenView
         tokenView.layoutIfNeeded()
@@ -61,7 +66,6 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
             let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
             tableView.contentInset = contentInsets
             tableView.scrollIndicatorInsets = contentInsets
-            
         }
     }
     
@@ -77,16 +81,16 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: Search Contacts
     func searchContacts(_ text: String) {
-        filteredContacts = []
+        _filteredTags = []
         
-        if contacts.count > 0 {
-            filteredContacts = contacts.filter({ (contact: TagItem) -> Bool in
-                return contact.name.range(of: text, options: .caseInsensitive) != nil
-            })
-            
-            self.isSearching = true
-            self.tableView.reloadData()
+        if(_tags.isEmpty){
+            return
         }
+        
+        _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
+            
+        _isSearching = true
+        self.tableView.reloadData()
     }
     
     // MARK: UITableViewDataSource
@@ -96,29 +100,22 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching {
-            return filteredContacts.count
-        }
-        return contacts.count
+        return _tags.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TagCellId", for: indexPath) as! NWSTokenViewExampleCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TagCellId", for: indexPath) as! NWSTokenViewCell
         
-        let currentContacts: [TagItem]!
-        
-        // Check if searching
-        if isSearching {
-            currentContacts = filteredContacts
+        let selectedTag: TagItem
+
+        if _isSearching {
+            selectedTag = _filteredTags[indexPath.row]
         }
         else {
-            currentContacts = contacts
+            selectedTag = _tags[indexPath.row]
         }
-        
-        // Load contact data
-        let contact = currentContacts[(indexPath as NSIndexPath).row]
-        cell.loadWithContact(contact)
-        
+
+        cell.updateTag(selectedTag)
         return cell
     }
     
@@ -140,7 +137,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: NWSTokenDataSource
     func numberOfTokensForTokenView(_ tokenView: NWSTokenView) -> Int {
-        return selectedContacts.count
+        return _selectedTags.count
     }
     
     func insetsForTokenView(_ tokenView: NWSTokenView) -> UIEdgeInsets? {
@@ -156,8 +153,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tokenView(_ tokenView: NWSTokenView, viewForTokenAtIndex index: Int) -> UIView? {
-        let contact = selectedContacts[index]
-        if let token = NWSImageToken.initWithTitle(contact.name){
+        let tag = _selectedTags[index]
+        if let token = NWSImageToken.initWithTitle(tag.name){
             return token
         }
         
@@ -167,7 +164,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: NWSTokenDelegate
     func tokenView(_ tokenView: NWSTokenView, didSelectTokenAtIndex index: Int) {
         let token = tokenView.tokenForIndex(index) as! NWSImageToken
-        token.backgroundColor = UIColor.blue
+        token.backgroundColor = UIColor.darkGray
     }
     
     func tokenView(_ tokenView: NWSTokenView, didDeselectTokenAtIndex index: Int) {
@@ -177,11 +174,11 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tokenView(_ tokenView: NWSTokenView, didDeleteTokenAtIndex index: Int) {
         
-        if(index >= self.selectedContacts.count) {
+        if(index >= self._selectedTags.count) {
             return
         }
         
-        self.selectedContacts.remove(at: index)
+        self._selectedTags.remove(at: index)
             
         tokenView.reloadData()
         tableView.reloadData()
@@ -224,17 +221,14 @@ final class TagItem {
     }
 }
 
-final class NWSTokenViewExampleCell: UITableViewCell {
-    @IBOutlet weak var userTitleLabel: UILabel!
-    
-    var contact: TagItem!
+final class NWSTokenViewCell: UITableViewCell {
+    @IBOutlet weak var _tagName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    func loadWithContact(_ contact: TagItem) {
-        self.contact = contact
-        userTitleLabel.text = contact.name
+    func updateTag(_ tag: TagItem) {
+        _tagName.text = tag.name
     }
 }

@@ -22,7 +22,6 @@ open class NWSImageToken: NWSToken {
     
     open class func initWithTitle(_ title: String) -> NWSImageToken? {
         if let token = UINib(nibName: "NWSImageToken", bundle:nil).instantiate(withOwner: nil, options: nil)[0] as? NWSImageToken{
-            token.backgroundColor = UIColor(red: 98.0/255.0, green: 203.0/255.0, blue: 255.0/255.0, alpha: 1.0)
             let oldTextWidth = token.titleLabel.bounds.width
             token.titleLabel.text = title
             token.titleLabel.sizeToFit()

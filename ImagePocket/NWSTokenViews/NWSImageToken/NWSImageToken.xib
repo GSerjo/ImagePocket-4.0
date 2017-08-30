@@ -25,7 +25,8 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.38407152570000003" green="0.79699749180000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.64698672294616699" green="0.64710038900375366" blue="0.64697962999343872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" red="0.64698672294616699" green="0.64710038900375366" blue="0.64697962999343872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Azr-Et-tMF" secondAttribute="trailing" constant="8" id="32u-Fw-R64"/>
                 <constraint firstItem="Azr-Et-tMF" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="895-to-AJX"/>
