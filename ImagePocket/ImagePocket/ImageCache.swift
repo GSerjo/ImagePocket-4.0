@@ -18,6 +18,7 @@ final class ImageCache{
     private var _taggedImages = [String: ImageEntity]()
     private var _actualImages = [String:ImageEntity]()
     
+    private let _tagCache = TagCache.instance
     
     private init(){
         
@@ -56,6 +57,12 @@ final class ImageCache{
         result.sort{$0.creationDate! > $1.creationDate!}
         
         return result
+    }
+    
+    func saveOrUpdate(entity: ImageEntity){
+        _tagCache.saveOrUpdate(tags: entity.tags)
+        
+        // TODO implement add and remove
     }
     
     private func getAssets(_ fetchResult: PHFetchResult<PHAsset>) -> [PHAsset]{

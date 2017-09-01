@@ -34,6 +34,16 @@ final class TagCache {
         return _tags.count
     }
     
+    func saveOrUpdate(tags: [TagEntity]) {
+        let saveTags = tags.filter{$0.isNew}
+        if saveTags.count > 0 {
+            _tagRepository.saveOrUpdate(saveTags)
+            saveTags.forEach{item in
+                _tags[item.id] = item
+            }
+        }
+    }
+    
     func contains(tagId: Int64) -> Bool {
         return _tags.keys.contains(tagId)
     }
