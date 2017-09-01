@@ -19,6 +19,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private let _tokenBackgroundColor = UIColor(red: 165/255, green: 165/255, blue: 165/255, alpha: 1)
     
     private var _isSearching = false
+    private var _isAddNewTag = false
     private var _tags = [TagItem]()
     private var _selectedTags = [TagItem(name: "sdfsdf", id: 1000)]
     private var _filteredTags = [TagItem]()
@@ -78,6 +79,9 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if _isSearching {
+            if _isAddNewTag {
+                return _filteredTags.count + 1;
+            }
             return _filteredTags.count
         }
         return _tags.count
@@ -86,21 +90,25 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TagCellId", for: indexPath) as! NWSTokenViewCell
         
-        let selectedTag: TagItem
-
         if _isSearching {
-            selectedTag = _filteredTags[indexPath.row]
+            
+            if _isAddNewTag && indexPath.row == 0 {
+                let newTag = TagItem(name: tokenView.textView.text!, id: 0)
+                cell.updateAttributedText(newTag)
+            }
+            else{
+                cell.updateTag(_filteredTags[indexPath.row])
+            }
         }
         else {
-            selectedTag = _tags[indexPath.row]
+            cell.updateTag(_tags[indexPath.row])
         }
-
-        cell.updateTag(selectedTag)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         _isSearching = false
+        _isAddNewTag = false
         
         let cell = tableView.cellForRow(at: indexPath) as! NWSTokenViewCell
         _selectedTags.append(cell.tagItem)
@@ -125,7 +133,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func titleForTokenViewPlaceholder(_ tokenView: NWSTokenView) -> String? {
-        return "Enter a tag name"
+        return "Selet or Enter Tag"
     }
     
     func tokenView(_ tokenView: NWSTokenView, viewForTokenAtIndex index: Int) -> UIView? {
@@ -182,16 +190,13 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         searchTags(text)
-        
-        print(text)
     }
     
     func tokenView(_ tokenView: NWSTokenView, didEnterText text: String) {
         print(text)
     }
     
-    func tokenView(_ tokenView: NWSTokenView, contentSizeChanged size: CGSize)
-    {
+    func tokenView(_ tokenView: NWSTokenView, contentSizeChanged size: CGSize){
         self.tokenViewHeightConstraint.constant = max(tokenViewMinHeight,min(size.height, self.tokenViewMaxHeight))
         self.view.layoutIfNeeded()
     }
@@ -206,6 +211,12 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func searchTags(_ text: String) {
+        
+        if(text.isEmpty()){
+            return
+        }
+        
+        _isAddNewTag = true
         _filteredTags = []
         
         if(_tags.isEmpty){
@@ -215,6 +226,11 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
         
         _isSearching = true
+        
+        if let _ = _filteredTags.first(where: {$0.name == text}){
+            _isAddNewTag = false
+        }
+        
         tableView.reloadData()
     }
     
@@ -246,4 +262,15 @@ final class NWSTokenViewCell: UITableViewCell {
         tagItem = tag
         _tagName.text = tag.name
     }
+    
+    func updateAttributedText(_ tag: TagItem) {
+        tagItem = tag
+        
+        let attributes = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 18.0)]
+        let prettyString = NSMutableAttributedString(string: "Add new tag \(tag.name)")
+        prettyString.setAttributes(attributes, range: NSRange(location: 12, length: tag.name.characters.count))
+        
+        _tagName.attributedText = prettyString
+    }
+    
 }
