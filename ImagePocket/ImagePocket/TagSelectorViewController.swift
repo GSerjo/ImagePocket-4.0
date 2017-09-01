@@ -16,11 +16,11 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private let tokenViewMinHeight: CGFloat = 40.0
     private let tokenViewMaxHeight: CGFloat = 150.0
-    private let tokenBackgroundColor = UIColor(red: 98.0/255.0, green: 203.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let tokenBackgroundColor = UIColor(red: 165/255, green: 165/255, blue: 165/255, alpha: 1)
     
     private var _isSearching = false
     private var _tags = [TagItem]()
-    private var _selectedTags = [TagItem(name: "sdfsdf")]
+    private var _selectedTags = [TagItem(name: "sdfsdf", id: 1000)]
     private var _filteredTags = [TagItem]()
     
     private let _tagCache = TagCache.instance
@@ -28,17 +28,15 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Adjust tableView offset for keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        // TableView
+
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.separatorStyle = .singleLine
         
-        _tags = _tagCache.userTags.map{TagItem(name: $0.name)}
+        _tags = _tagCache.userTags.map{TagItem(name: $0.name, id: $0.id)}
+        sortTagSource()
         
-        // TokenView
         tokenView.layoutIfNeeded()
         tokenView.dataSource = self
         tokenView.delegate = self
@@ -58,6 +56,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func onDoneClicked(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: Keyboard
@@ -90,7 +89,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
             
         _isSearching = true
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     // MARK: UITableViewDataSource
@@ -120,19 +119,16 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath) as! NWSTokenViewExampleCell
-//        cell.isSelected = false
-//        
-//        // Check if already selected
-//        if !selectedContacts.contains(cell.contact)
-//        {
-//            cell.contact.isSelected = true
-//            selectedContacts.append(cell.contact)
-//            isSearching = false
-//            tokenView.textView.text = ""
-//            tokenView.reloadData()
-//            tableView.reloadData()
-//        }
+        
+        _isSearching = false
+        
+        let cell = tableView.cellForRow(at: indexPath) as! NWSTokenViewCell
+        _selectedTags.append(cell.tagItem)
+        tokenView.textView.text = String.empty
+        tokenView.reloadData()
+        
+        _tags = _tags.filter{$0.id != cell.tagItem.id}
+        reloadAndSortTagSource()
     }
     
     // MARK: NWSTokenDataSource
@@ -178,10 +174,14 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         
-        self._selectedTags.remove(at: index)
-            
+        let tag = _selectedTags[index]
+        
+        _selectedTags.remove(at: index)
         tokenView.reloadData()
-        tableView.reloadData()
+        
+        _tags.append(tag)
+        reloadAndSortTagSource()
+        
         tokenView.layoutIfNeeded()
         tokenView.textView.becomeFirstResponder()
     }
@@ -210,25 +210,38 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     func tokenView(_ tokenView: NWSTokenView, didFinishLoadingTokens tokenCount: Int){
         
     }
+    
+    private func reloadAndSortTagSource(){
+        sortTagSource()
+        tableView.reloadData()
+    }
+    
+    private func sortTagSource(){
+        _tags.sort{$0.name > $1.name}
+    }
 }
 
 final class TagItem {
     
-    private(set) var name: String!
+    private(set) var name: String
+    private(set) var id: Int64
     
-    init(name: String) {
+    init(name: String, id: Int64) {
         self.name = name
+        self.id = id
     }
 }
 
 final class NWSTokenViewCell: UITableViewCell {
     @IBOutlet weak var _tagName: UILabel!
+    private(set) var tagItem: TagItem!
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
     func updateTag(_ tag: TagItem) {
+        tagItem = tag
         _tagName.text = tag.name
     }
 }
