@@ -96,6 +96,9 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
                 let newTag = TagItem(name: tokenView.textView.text!, id: 0)
                 cell.updateAttributedText(newTag)
             }
+            else if _isAddNewTag {
+                cell.updateTag(_filteredTags[indexPath.row - 1])
+            }
             else{
                 cell.updateTag(_filteredTags[indexPath.row])
             }
