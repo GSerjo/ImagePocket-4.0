@@ -13,4 +13,8 @@ public extension String {
     static var empty: String {
         return ""
     }
+    
+    func isEmpty() -> Bool {
+        return self == ""
+    }
 }

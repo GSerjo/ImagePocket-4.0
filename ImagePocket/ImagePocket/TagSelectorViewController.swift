@@ -16,7 +16,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private let tokenViewMinHeight: CGFloat = 40.0
     private let tokenViewMaxHeight: CGFloat = 150.0
-    private let tokenBackgroundColor = UIColor(red: 165/255, green: 165/255, blue: 165/255, alpha: 1)
+    private let _tokenBackgroundColor = UIColor(red: 165/255, green: 165/255, blue: 165/255, alpha: 1)
     
     private var _isSearching = false
     private var _tags = [TagItem]()
@@ -41,14 +41,6 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.dataSource = self
         tokenView.delegate = self
         tokenView.reloadData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool){
-        super.viewWillAppear(animated)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     @IBAction func onCancelClicked(_ sender: Any) {
@@ -78,20 +70,6 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.endEditing(true)
     }
     
-    // MARK: Search Contacts
-    func searchContacts(_ text: String) {
-        _filteredTags = []
-        
-        if(_tags.isEmpty){
-            return
-        }
-        
-        _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
-            
-        _isSearching = true
-        tableView.reloadData()
-    }
-    
     // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -99,6 +77,9 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if _isSearching {
+            return _filteredTags.count
+        }
         return _tags.count
     }
     
@@ -119,7 +100,6 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         _isSearching = false
         
         let cell = tableView.cellForRow(at: indexPath) as! NWSTokenViewCell
@@ -165,7 +145,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tokenView(_ tokenView: NWSTokenView, didDeselectTokenAtIndex index: Int) {
         let token = tokenView.tokenForIndex(index) as! NWSImageToken
-        token.backgroundColor = tokenBackgroundColor
+        token.backgroundColor = _tokenBackgroundColor
     }
     
     func tokenView(_ tokenView: NWSTokenView, didDeleteTokenAtIndex index: Int) {
@@ -194,6 +174,15 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tokenView(_ tokenView: NWSTokenView, didChangeText text: String){
+        
+        if(text.isEmpty()){
+            _isSearching = false
+            tableView.reloadData()
+            return
+        }
+        
+        searchTags(text)
+        
         print(text)
     }
     
@@ -213,6 +202,19 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func reloadAndSortTagSource(){
         sortTagSource()
+        tableView.reloadData()
+    }
+    
+    private func searchTags(_ text: String) {
+        _filteredTags = []
+        
+        if(_tags.isEmpty){
+            return
+        }
+        
+        _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
+        
+        _isSearching = true
         tableView.reloadData()
     }
     
