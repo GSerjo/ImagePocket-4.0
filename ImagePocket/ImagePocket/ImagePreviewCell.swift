@@ -23,4 +23,12 @@ class ImagePreviewCell: UICollectionViewCell {
         super.prepareForReuse()
         thumbnailImage = nil
     }
+    
+    func selectCell() {
+        _image.alpha = 0.6
+    }
+    
+    func deselectCell(){
+        _image.alpha = 1
+    }
 }

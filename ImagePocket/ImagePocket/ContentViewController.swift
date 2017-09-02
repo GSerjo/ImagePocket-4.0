@@ -17,8 +17,8 @@ private extension UICollectionView {
     }
 }
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource {
-
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+    
     private let _showTagSelectorSegue = "showTagSelector"
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
@@ -97,7 +97,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
         
         guard let menuController = sideMenuController.sideViewController as? MenuController,
-              let tagEntity = menuController.selectedTag else {
+            let tagEntity = menuController.selectedTag else {
                 return
         }
         
@@ -149,7 +149,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             let tagSelector = segue.destination as! TagSelectorViewController
             tagSelector.setup(entities: _selectedImages.values.toArray())
         }
-
+        
     }
     
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
@@ -179,6 +179,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         return _filteredImages.count
     }
     
+    // CollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImagePreviewCell.self), for: indexPath) as? ImagePreviewCell
             else {
@@ -201,6 +202,23 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ImagePreviewCell
+        let image = _filteredImages[indexPath.item]
+        
+        
+        if _selectedImages.keys.contains(image.localIdentifier) {
+            
+            _selectedImages.removeValue(forKey: image.localIdentifier)
+            cell.deselectCell()
+        }
+        else {
+            _selectedImages[image.localIdentifier] = image
+            cell.selectCell()
+        }
+    }
+    
     
     private func updateItemSize() {
         
@@ -239,7 +257,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         navigationItem.leftBarButtonItem = _btOpenMenu
         navigationItem.rightBarButtonItem = _btSelect
     }
-
+    
     
     private func setSelectMode() {
         _viewMode = .select
@@ -253,7 +271,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private func updateCachedAssets() {
         // Update only if the view is visible.
         guard isViewLoaded && view.window != nil else { return }
-
+        
         // The preheat window is twice the height of the visible rect.
         let visibleRect = CGRect(origin: _collectionView.contentOffset, size: _collectionView.bounds.size)
         let preheatRect = visibleRect.insetBy(dx: 0, dy: -0.5 * visibleRect.height)
@@ -276,9 +294,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         // Update the assets the PHCachingImageManager is caching.
         _imageManager.startCachingImages(for: addedAssets,
-                                        targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil)
+                                         targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil)
         _imageManager.stopCachingImages(for: removedAssets,
-                                       targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil)
+                                        targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil)
         
         // Store the preheat rect to compare against in the future.
         _previousPreheatRect = preheatRect
