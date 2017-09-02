@@ -42,10 +42,10 @@ final class ImageCache{
         var result = [ImageEntity]()
         
         if(tag.isAll){
-            result = Array(_actualImages.values)
+            result = _actualImages.values.toArray()
         }
         else if(tag.isUntagged){
-            result = Array(_actualImages.values)
+            result = _actualImages.values.toArray()
         }
         
         else if(_taggedImages.isEmpty){

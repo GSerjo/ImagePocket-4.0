@@ -43,8 +43,7 @@ final class ImageRepository {
         _ = _table.filter(entities.map {$0.id}.contains(Columns.id)).delete()
     }
     
-    func saveOrUpdate(_
-        entities: [ImageEntity]) -> Void {
+    func saveOrUpdate(_ entities: [ImageEntity]) -> Void {
         if entities.isEmpty {
             return
         }

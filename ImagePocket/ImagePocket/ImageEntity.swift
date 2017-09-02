@@ -30,4 +30,8 @@ final class ImageEntity: Entity {
         _tags.append(tag)
     }
     
+    func replaceTags(tags: [TagEntity]) {
+        _tags = tags
+    }
+    
 }

@@ -25,6 +25,24 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private var _filteredTags = [TagItem]()
     
     private let _tagCache = TagCache.instance
+    private var _initialCommonTags = Set<TagEntity>()
+    private var _selectedImages = [ImageEntity]()
+    
+    func setup(entities: [ImageEntity]) {
+        
+        if entities.isEmpty {
+            return
+        }
+        _selectedImages = entities
+        
+        _initialCommonTags = Set(entities[0].tags)
+        
+        for entity in entities {
+            _initialCommonTags = _initialCommonTags.intersection(entity.tags)
+        }
+        
+        _selectedTags = _initialCommonTags.map{TagItem(name: $0.name, id: $0.id)}
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +67,20 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func onDoneClicked(_ sender: Any) {
+        
+        let resultTags = _selectedTags.map{$0.toTagEntity()}
+        
+        for entity in _selectedImages {
+            
+            var currentTags = Set(entity.tags)
+            currentTags.subtract(_initialCommonTags)
+            
+            var result = Array(currentTags)
+            result.append(contentsOf: resultTags)
+            
+            entity.replaceTags(tags: result)
+        }
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -250,6 +282,10 @@ final class TagItem {
     init(name: String, id: Int64) {
         self.name = name
         self.id = id
+    }
+    
+    func toTagEntity() -> TagEntity {
+        return TagEntity(id: id, name: name)
     }
 }
 

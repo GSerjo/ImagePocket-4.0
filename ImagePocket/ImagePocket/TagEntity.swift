@@ -9,12 +9,18 @@
 import Foundation
 
 
-
-final class TagEntity : Equatable, Entity {
-    
+extension TagEntity: Hashable {
     static func ==(left: TagEntity, right: TagEntity) -> Bool{
         return left.id == right.id
     }
+    
+    var hashValue: Int {
+        return id.hashValue
+    }
+}
+
+
+final class TagEntity : Entity {
     
     static let all = TagEntity(id: -1, name: "All")
     static let untagged = TagEntity(id: -2, name: "Untagged")

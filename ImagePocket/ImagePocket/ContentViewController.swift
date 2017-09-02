@@ -19,6 +19,7 @@ private extension UICollectionView {
 
 class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource {
 
+    private let _showTagSelectorSegue = "showTagSelector"
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
     private let _tagButtonName = "Tag"
@@ -132,7 +133,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func onTagClicked() {
-        performSegue(withIdentifier: "showTagSelector", sender: nil)
+        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
     }
     
     func onCancelClicked() {
@@ -141,6 +142,14 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     func onSelectClicked() {
         setSelectMode()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == _showTagSelectorSegue {
+            let tagSelector = segue.destination as! TagSelectorViewController
+            tagSelector.setup(entities: _selectedImages.values.toArray())
+        }
+
     }
     
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
