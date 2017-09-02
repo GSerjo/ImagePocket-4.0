@@ -194,12 +194,15 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         cell.representedAssetIdentifier = asset.localIdentifier
         
+        if _selectedImages.keys.contains(cell.representedAssetIdentifier) {
+            cell.selectCell()
+        }else {
+            cell.deselectCell()
+        }
+        
         _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
             if cell.representedAssetIdentifier == asset.localIdentifier && image != nil {
                 cell.thumbnailImage = image
-                if self._selectedImages.keys.contains(cell.representedAssetIdentifier) {
-                    cell.selectCell()
-                }
             }
         })
         

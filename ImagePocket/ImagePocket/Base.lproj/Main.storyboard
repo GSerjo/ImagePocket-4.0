@@ -73,16 +73,24 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JtJ-50-alB">
                                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="59O-KV-GA9" userLabel="Overlay">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="59O-KV-GA9" firstAttribute="top" secondItem="JtJ-50-alB" secondAttribute="top" id="CVt-lI-4ea"/>
+                                            <constraint firstItem="59O-KV-GA9" firstAttribute="trailing" secondItem="JtJ-50-alB" secondAttribute="trailing" id="Rnx-XX-oUB"/>
                                             <constraint firstAttribute="trailing" secondItem="JtJ-50-alB" secondAttribute="trailing" id="bhC-hV-6ZT"/>
+                                            <constraint firstItem="59O-KV-GA9" firstAttribute="leading" secondItem="JtJ-50-alB" secondAttribute="leading" id="ear-K8-62B"/>
                                             <constraint firstAttribute="bottom" secondItem="JtJ-50-alB" secondAttribute="bottom" id="kIa-ez-K3b"/>
+                                            <constraint firstItem="59O-KV-GA9" firstAttribute="bottom" secondItem="JtJ-50-alB" secondAttribute="bottom" id="p8F-Eq-IDZ"/>
                                             <constraint firstItem="JtJ-50-alB" firstAttribute="leading" secondItem="T8f-sv-VhT" secondAttribute="leading" id="ris-C7-VBs"/>
                                             <constraint firstItem="JtJ-50-alB" firstAttribute="top" secondItem="T8f-sv-VhT" secondAttribute="top" id="y0T-50-TyM"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="_image" destination="JtJ-50-alB" id="Kta-MQ-NWc"/>
+                                            <outlet property="_overlay" destination="59O-KV-GA9" id="qMJ-Od-jKY"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -205,8 +213,8 @@
                                     <mask key="constraints">
                                         <exclude reference="CAZ-Vy-ICn"/>
                                         <exclude reference="HDx-kF-iKo"/>
-                                        <exclude reference="tL0-1q-Xfg"/>
                                         <exclude reference="Vjd-WZ-mCG"/>
+                                        <exclude reference="tL0-1q-Xfg"/>
                                     </mask>
                                 </variation>
                             </view>
