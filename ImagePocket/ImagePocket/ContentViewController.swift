@@ -197,6 +197,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
             if cell.representedAssetIdentifier == asset.localIdentifier && image != nil {
                 cell.thumbnailImage = image
+                if self._selectedImages.keys.contains(cell.representedAssetIdentifier) {
+                    cell.selectCell()
+                }
             }
         })
         
