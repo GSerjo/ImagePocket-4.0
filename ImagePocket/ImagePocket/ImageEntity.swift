@@ -15,6 +15,7 @@ final class ImageEntity: Entity {
     var id: Int64
     private(set) var localIdentifier: String
     private(set) var creationDate: Date?
+    private var _tagIds = [Int64]()
     
     init(id: Int64 = 0, localIdentifier: String, creationDate: Date?) {
         self.id = id
@@ -28,6 +29,10 @@ final class ImageEntity: Entity {
     
     func addTag(_ tag: TagEntity) {
         _tags.append(tag)
+    }
+    
+    func appendTagId(id: Int64) {
+        _tagIds.append(id)
     }
     
     func replaceTags(tags: [TagEntity]) {

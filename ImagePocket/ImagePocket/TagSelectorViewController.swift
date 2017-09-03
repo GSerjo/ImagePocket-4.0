@@ -25,6 +25,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private var _filteredTags = [TagItem]()
     
     private let _tagCache = TagCache.instance
+    private let _imageCache = ImageCache.inctace
+    
     private var _initialCommonTags = Set<TagEntity>()
     private var _selectedImages = [ImageEntity]()
     
@@ -75,10 +77,10 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
             var currentTags = Set(entity.tags)
             currentTags.subtract(_initialCommonTags)
             
-            var result = Array(currentTags)
-            result.append(contentsOf: resultTags)
-            
-            entity.replaceTags(tags: result)
+            var newTags = Array(currentTags)
+            newTags.append(contentsOf: resultTags)
+           
+           _imageCache.saveOrUpdate(image: entity, newTags: newTags)
         }
         
         dismiss(animated: true, completion: nil)

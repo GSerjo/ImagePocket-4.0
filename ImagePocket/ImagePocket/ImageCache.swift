@@ -65,6 +65,14 @@ final class ImageCache{
         // TODO implement add and remove
     }
     
+    func saveOrUpdate(image: ImageEntity, newTags: [TagEntity]){
+        image.replaceTags(tags: newTags)
+        
+        _tagCache.saveOrUpdate(tags: image.tags)
+        
+        _imageRepository.saveOrUpdate([image])
+    }
+    
     private func getAssets(_ fetchResult: PHFetchResult<PHAsset>) -> [PHAsset]{
         var assets: [PHAsset] = []
         
