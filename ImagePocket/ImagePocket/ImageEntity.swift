@@ -10,33 +10,54 @@ import Foundation
 
 final class ImageEntity: Entity {
     
-    private var _tags = [TagEntity]()
+    private let _tagCache = TagCache.instance
     
     var id: Int64
     private(set) var localIdentifier: String
     private(set) var creationDate: Date?
-    private var _tagIds = [Int64]()
+    private(set) var tagIds: [TagImageEntity]
+    private(set) var newTags = [TagEntity]()
+    private var _tags = [TagEntity]()
     
-    init(id: Int64 = 0, localIdentifier: String, creationDate: Date?) {
+    init(id: Int64 = 0, localIdentifier: String, creationDate: Date?, tagIds: [TagImageEntity] = []) {
         self.id = id
         self.localIdentifier = localIdentifier
         self.creationDate = creationDate
+        self.tagIds = tagIds
     }
     
     var tags: [TagEntity] {
-        return _tags
+        let tags = tagIds.map{_tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
+        return tags
     }
     
-    func addTag(_ tag: TagEntity) {
-        _tags.append(tag)
+    func clone() -> ImageEntity {
+        let tagIds = self.tagIds.map{$0.clone()}
+        return ImageEntity(id: id, localIdentifier: localIdentifier, creationDate: creationDate, tagIds: tagIds)
     }
     
-    func appendTagId(id: Int64) {
-        _tagIds.append(id)
+    func appendTagId(entity: TagImageEntity) {
+        tagIds.append(entity)
     }
     
     func replaceTags(tags: [TagEntity]) {
-        _tags = tags
+        newTags = tags
+    }
+    
+    func tagChanges() -> (removeIds:[TagImageEntity], add: [TagEntity]) {
+        let dummy = tagIds.toDictionary { (item: TagImageEntity) -> Int64 in
+            item.tagId
+        }
+        
+        var add = [TagEntity]()
+        
+        for item in newTags {
+            if !dummy.keys.contains(item.id){
+                add.append(item)
+            }
+        }
+        
+        return ([], add)
     }
     
 }

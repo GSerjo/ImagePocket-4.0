@@ -28,14 +28,14 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private let _imageCache = ImageCache.inctace
     
     private var _initialCommonTags = Set<TagEntity>()
-    private var _selectedImages = [ImageEntity]()
+    private var _images = [ImageEntity]()
     
     func setup(entities: [ImageEntity]) {
         
         if entities.isEmpty {
             return
         }
-        _selectedImages = entities
+        _images = entities.map{$0.clone()}
         
         _initialCommonTags = Set(entities[0].tags)
         
@@ -72,16 +72,17 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         let resultTags = _selectedTags.map{$0.toTagEntity()}
         
-        for entity in _selectedImages {
+        for entity in _images {
             
             var currentTags = Set(entity.tags)
             currentTags.subtract(_initialCommonTags)
             
             var newTags = Array(currentTags)
             newTags.append(contentsOf: resultTags)
-           
-           _imageCache.saveOrUpdate(image: entity, newTags: newTags)
+           entity.replaceTags(tags: newTags)
         }
+        
+        _imageCache.saveOrUpdate(entities: _images)
         
         dismiss(animated: true, completion: nil)
     }

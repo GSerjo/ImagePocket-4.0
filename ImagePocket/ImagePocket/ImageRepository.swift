@@ -49,17 +49,21 @@ final class ImageRepository {
         
         var result = [Int64: ImageEntity]()
         
-        let table =  _table.select(_table[Columns.id], _table[Columns.localIdentifier], _table[Columns.creationDate], _tagImageTable[TagImageColumns.tagId])
+        let table =  _table.select(_table[Columns.localIdentifier], _table[Columns.creationDate],
+                                   _tagImageTable[TagImageColumns.imageId], _tagImageTable[TagImageColumns.tagId], _tagImageTable[TagImageColumns.id])
                             .join(_tagImageTable, on: TagImageColumns.imageId == _table[Columns.id])
         
         if let rows = try? DataStore.instance.db.prepare(table){
             rows.forEach{ row in
+                
+                let tagImage = TagImageEntity(id: row[TagImageColumns.id], tagId: row[TagImageColumns.tagId])
+                
                 if let item = result[row[Columns.id]] {
-                    item.appendTagId(id: row[TagImageColumns.tagId])
+                    item.appendTagId(entity: tagImage)
                 }
                 else {
-                    let item = ImageEntity(id: row[Columns.id], localIdentifier: row[Columns.localIdentifier], creationDate: row[Columns.creationDate])
-                    item.appendTagId(id: row[TagImageColumns.tagId])
+                    let item = ImageEntity(id: row[TagImageColumns.imageId], localIdentifier: row[Columns.localIdentifier], creationDate: row[Columns.creationDate])
+                    item.appendTagId(entity: tagImage)
                     result[item.id] = item
                 }
             }
