@@ -58,7 +58,7 @@ final class ImageRepository {
                 
                 let tagImage = TagImageEntity(id: row[TagImageColumns.id], tagId: row[TagImageColumns.tagId])
                 
-                if let item = result[row[Columns.id]] {
+                if let item = result[row[TagImageColumns.imageId]] {
                     item.appendTagId(entity: tagImage)
                 }
                 else {

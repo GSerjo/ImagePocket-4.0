@@ -44,6 +44,18 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         _selectedTags = _initialCommonTags.map{TagItem(name: $0.name, id: $0.id)}
+        
+        var tags = _tagCache.userTags.toDictionary{ (item: TagEntity) -> Int64 in
+            item.id
+        }
+        
+        for item in _selectedTags {
+            tags.removeValue(forKey: item.id)
+        }
+        
+        _tags = tags.values.map{TagItem(name: $0.name, id: $0.id)}
+        
+        sortTagSource()
     }
     
     override func viewDidLoad() {
@@ -54,9 +66,6 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
 
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.separatorStyle = .singleLine
-        
-        _tags = _tagCache.userTags.map{TagItem(name: $0.name, id: $0.id)}
-        sortTagSource()
         
         tokenView.layoutIfNeeded()
         tokenView.dataSource = self
@@ -255,16 +264,21 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         _isAddNewTag = true
+        _isSearching = true
+        
         _filteredTags = []
         
+        if let _ = _selectedTags.first(where: {$0.name == text}){
+            _isAddNewTag = false
+        }
+        
         if(_tags.isEmpty){
+            tableView.reloadData()
             return
         }
         
         _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
-        
-        _isSearching = true
-        
+
         if let _ = _filteredTags.first(where: {$0.name == text}){
             _isAddNewTag = false
         }

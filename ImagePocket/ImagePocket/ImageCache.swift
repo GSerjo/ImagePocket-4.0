@@ -31,6 +31,8 @@ final class ImageCache{
         
         _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
         _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
+        
+        syncImages()
     }
     
     subscript(localId: String) -> PHAsset?{
@@ -54,7 +56,7 @@ final class ImageCache{
         else{
             result = Array(_taggedImages.values.filter{$0.id == tag.id})
         }
-        result.sort{$0.creationDate! > $1.creationDate!}
+        result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         
         return result
     }
@@ -62,12 +64,21 @@ final class ImageCache{
     func saveOrUpdate(entities: [ImageEntity]){
         
         entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
+        _imageRepository.saveOrUpdate(entities)
         
         for entity in entities {
             let changes = entity.tagChanges()
             _imageRepository.remove(tagImages: changes.removeIds)
             let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: changes.add)
             entity.appendTagId(entities: tagImages)
+        }
+    }
+    
+    private func syncImages(){
+        for image in _taggedImages.values {
+            if _actualImages.keys.contains(image.localIdentifier){
+                _actualImages[image.localIdentifier] = image
+            }
         }
     }
     
