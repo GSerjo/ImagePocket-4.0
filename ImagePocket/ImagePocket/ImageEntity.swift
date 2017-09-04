@@ -15,34 +15,38 @@ final class ImageEntity: Entity {
     var id: Int64
     private(set) var localIdentifier: String
     private(set) var creationDate: Date?
-    private(set) var tagIds: [Int64: TagImageEntity]
+    private var _tagIds: [Int64: TagImageEntity]
     private(set) var newTags = [TagEntity]()
     
     init(id: Int64 = 0, localIdentifier: String, creationDate: Date?, tagIds: [Int64: TagImageEntity] = [Int64: TagImageEntity]()) {
         self.id = id
         self.localIdentifier = localIdentifier
         self.creationDate = creationDate
-        self.tagIds = tagIds
+        _tagIds = tagIds
     }
     
     var tags: [TagEntity] {
-        let tags = tagIds.values.toArray().map{self._tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
+        let tags = _tagIds.values.toArray().map{self._tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
         return tags
     }
     
     var hasTags: Bool {
-        return !newTags.isEmpty || !tagIds.isEmpty
+        return !newTags.isEmpty || !_tagIds.isEmpty
     }
     
     func clone() -> ImageEntity {
-        let tagIds = self.tagIds.values.map{$0.clone()}.toDictionary{ (item: TagImageEntity) -> Int64 in
+        let tagIds = _tagIds.values.map{$0.clone()}.toDictionary{ (item: TagImageEntity) -> Int64 in
             item.tagId
         }
         return ImageEntity(id: id, localIdentifier: localIdentifier, creationDate: creationDate, tagIds: tagIds)
     }
     
+    func containsTag(tagId: Int64) -> Bool {
+        return _tagIds.keys.contains(tagId)
+    }
+    
     func appendTagId(entity: TagImageEntity) {
-        tagIds[entity.tagId] = entity
+        _tagIds[entity.tagId] = entity
     }
     
     func appendTagId(entities: [TagImageEntity]){
@@ -51,7 +55,7 @@ final class ImageEntity: Entity {
         }
 
         for item in entities {
-            tagIds[item.tagId] = item
+            _tagIds[item.tagId] = item
         }
     }
     
@@ -64,7 +68,7 @@ final class ImageEntity: Entity {
         var add = [TagEntity]()
         
         for item in newTags {
-            if !tagIds.keys.contains(item.id){
+            if !_tagIds.keys.contains(item.id){
                 add.append(item)
             }
         }
@@ -75,14 +79,14 @@ final class ImageEntity: Entity {
         
         var remove = [TagImageEntity]()
         
-        for item in tagIds.values {
+        for item in _tagIds.values {
             if !dummy.keys.contains(item.tagId) {
                 remove.append(item)
             }
         }
         
         for item in remove {
-            tagIds.removeValue(forKey: item.tagId)
+            _tagIds.removeValue(forKey: item.tagId)
         }
         
         return (remove, add)

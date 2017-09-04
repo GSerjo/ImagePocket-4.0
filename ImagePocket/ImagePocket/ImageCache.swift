@@ -54,7 +54,7 @@ final class ImageCache{
             result = [ImageEntity]()
         }
         else{
-            result = Array(_taggedImages.values.filter{$0.id == tag.id})
+            result = Array(_taggedImages.values.filter{$0.containsTag(tagId: tag.id)})
         }
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         
