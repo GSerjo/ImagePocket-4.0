@@ -10,7 +10,6 @@ import UIKit
 
 class MenuController: UITableViewController {
 
-    private var _allTags = [TagEntity]()
     private let _tagCache = TagCache.instance
     private(set) var selectedTag: TagEntity?
     
@@ -24,10 +23,6 @@ class MenuController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        _allTags = _tagCache.allTags
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -36,19 +31,19 @@ class MenuController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedTag = _allTags[indexPath.row]
+        selectedTag = _tagCache.allTags[indexPath.row]
         sideMenuController?.performSegue(withIdentifier: "showCenterController", sender: nil)
     }
 
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return _allTags.count
+        return _tagCache.allTags.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath)
-        cell.textLabel?.text = _allTags[indexPath.row].name
+        cell.textLabel?.text = _tagCache.allTags[indexPath.row].name
 
         return cell
     }

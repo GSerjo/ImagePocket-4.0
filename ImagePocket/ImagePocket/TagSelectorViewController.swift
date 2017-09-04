@@ -29,11 +29,11 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private var _initialCommonTags = Set<TagEntity>()
     private var _images = [ImageEntity]()
-    private var _contentViewProtocol: ContentViewProtocol!
+    private var _notifiableOnCloseProtocol: NotifiableOnCloseProtocol!
     
-    func setup(entities: [ImageEntity], contentViewProtocol: ContentViewProtocol) {
+    func setup(entities: [ImageEntity], notifiableOnCloseProtocol: NotifiableOnCloseProtocol) {
         
-        _contentViewProtocol = contentViewProtocol
+        _notifiableOnCloseProtocol = notifiableOnCloseProtocol
         
         if entities.isEmpty {
             return
@@ -79,7 +79,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     @IBAction func onCancelClicked(_ sender: Any) {
-        _contentViewProtocol.unselectImages()
+        _notifiableOnCloseProtocol.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
     
@@ -99,7 +99,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         _imageCache.saveOrUpdate(entities: _images)
         
-        _contentViewProtocol.unselectImages()
+        _notifiableOnCloseProtocol.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
     

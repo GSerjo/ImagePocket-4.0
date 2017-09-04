@@ -17,7 +17,7 @@ private extension UICollectionView {
     }
 }
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ContentViewProtocol {
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
     private let _selectImagesTitle = "Select Images"
@@ -28,9 +28,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
-    private var _btTag: UIBarButtonItem!
+    private var _btTag: [UIBarButtonItem]!
     private var _btCancel: UIBarButtonItem!
-    private var _btOpenMenu: UIBarButtonItem!
+    private var _btOpenMenu: [UIBarButtonItem]!
     private var _btSelect: UIBarButtonItem!
     
     private var _imageCache: ImageCache!
@@ -95,26 +95,30 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
-        
-        guard let menuController = sideMenuController.sideViewController as? MenuController,
-            let tagEntity = menuController.selectedTag else {
+        guard let menuController = sideMenuController.sideViewController as? MenuController else {
                 return
         }
         
-        _filteredImages = _imageCache.getImages(tag: tagEntity)
-        reloadData()
-    }
-    
-    func unselectImages() -> Void {
-        _selectedImages = [String: ImageEntity]()
-        reloadData()
+        if let tagEntity = menuController.selectedTag {
+            _filteredImages = _imageCache.getImages(tag: tagEntity)
+            reloadData()
+        }
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
+        if let menuController = sideMenuController.sideViewController as? MenuController {
+            menuController.tableView.reloadData()
+        }
     }
     
-    private func configureToolBar(){
-        
+    func notifyOnClose() {
+        unselectImages()
+        setReadMode()
+    }
+    
+    private func unselectImages() -> Void {
+        _selectedImages = [String: ImageEntity]()
+        reloadData()
     }
     
     private func startApp(){
@@ -131,14 +135,16 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     private func configureToolbar(){
-        _btTag = UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))
+        _btTag = [UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))]
         _btCancel = UIBarButtonItem(title: _cancelButtonName, style: .plain, target: self, action: #selector(onCancelClicked))
         _btSelect = UIBarButtonItem(title: _selectButtonName, style: .plain, target: self, action: #selector(onSelectClicked))
         navigationItem.rightBarButtonItem = _btSelect
+        
+        _btOpenMenu = navigationItem.leftBarButtonItems
     }
     
     func onTagClicked() {
-        performSegue(withIdentifier: _showTagSelectorSegue, sender: self)
+        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
     }
     
     func onCancelClicked() {
@@ -153,7 +159,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
             let tagSelector = segue.destination as! TagSelectorViewController
-            tagSelector.setup(entities: _selectedImages.values.toArray(), contentViewProtocol: self)
+            tagSelector.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
         }
         
     }
@@ -216,6 +222,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if _viewMode == .read {
+            return
+        }
+        
         let cell = collectionView.cellForItem(at: indexPath) as! ImagePreviewCell
         let image = _filteredImages[indexPath.item]
         
@@ -229,6 +240,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             _selectedImages[image.localIdentifier] = image
             cell.selectCell()
         }
+        
+        navigationItem.leftBarButtonItem?.isEnabled = _selectedImages.count != 0
     }
     
     
@@ -266,7 +279,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _btShare.isEnabled = false
         _btTrash.isEnabled = false
         
-        navigationItem.leftBarButtonItem = _btOpenMenu
+        navigationItem.leftBarButtonItems = _btOpenMenu
         navigationItem.rightBarButtonItem = _btSelect
     }
     
@@ -276,8 +289,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         self.title = _selectImagesTitle
         
         navigationItem.rightBarButtonItem = _btCancel
-        navigationItem.leftBarButtonItem = _btTag
-        navigationItem.leftBarButtonItem?.isEnabled = true //TODO should be false
+        navigationItem.leftBarButtonItems = _btTag
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
     private func updateCachedAssets() {

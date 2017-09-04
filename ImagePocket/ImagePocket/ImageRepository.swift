@@ -100,21 +100,20 @@ final class ImageRepository {
         _ = _table.filter(entities.map {$0.id}.contains(Columns.id)).delete()
     }
     
-    func saveOrUpdate(_ entities: [ImageEntity]) -> Void {
+    func saveOrUpdate(_ entities: [ImageEntity]) -> (remove: [ImageEntity], add: [ImageEntity]) {
         if entities.isEmpty {
-            return
+            return ([], [])
         }
         
-        let forRemove = entities.filter{ x in
-            x.isNew == false && x.hasTags == false
-        }
-        let forAddOrUpdate = entities.filter { $0.hasTags }
+        let forRemove = entities.filter{ $0.isNew == false && $0.hasTags == false }
+        let forAdd = entities.filter { $0.isNew && $0.hasTags }
         
         remove(forRemove)
-        addOrUpdate(forAddOrUpdate)
+        add(forAdd)
+        return (forRemove, forAdd)
     }
     
-    private func addOrUpdate(_ entities: [ImageEntity]) -> Void {
+    private func add(_ entities: [ImageEntity]) -> Void {
         
         if entities.isEmpty {
             return

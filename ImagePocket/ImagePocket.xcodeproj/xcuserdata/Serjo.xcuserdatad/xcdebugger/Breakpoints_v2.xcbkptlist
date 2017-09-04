@@ -9,22 +9,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImagePocket/ContentViewController.swift"
-            timestampString = "526014094.222256"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "sideMenuControllerDidHide(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "ImagePocket/TagSelectorViewController.swift"
             timestampString = "526228665.959767"
             startingColumnNumber = "9223372036854775807"
@@ -239,7 +223,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
             endingLineNumber = "38"
-            landmarkName = "setup(entities:contentViewProtocol:)"
+            landmarkName = "setup(entities:notifiableOnCloseProtocol:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -255,7 +239,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "52"
             endingLineNumber = "52"
-            landmarkName = "setup(entities:contentViewProtocol:)"
+            landmarkName = "setup(entities:notifiableOnCloseProtocol:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -362,13 +346,77 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/ContentViewController.swift"
-            timestampString = "526228749.409962"
+            timestampString = "526251167.108273"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "unselectImages()"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "sideMenuControllerDidReveal(_:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImagePocket/ContentViewController.swift"
+            timestampString = "526251114.057612"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "sideMenuControllerDidHide(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImagePocket/ImageCache.swift"
+            timestampString = "526251137.016447"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "getImages(tag:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ImagePocket.ImageCache.getImages (tag : ImagePocket.TagEntity) -&gt; Swift.Array&lt;ImagePocket.ImageEntity&gt;"
+                  moduleName = "ImagePocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/gserjo/Development/ImagePocket-4.0/ImagePocket/ImagePocket/ImageCache.swift"
+                  timestampString = "526251167.226506"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "688">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ImagePocket.ImageCache.(getImages (tag : ImagePocket.TagEntity) -&gt; Swift.Array&lt;ImagePocket.ImageEntity&gt;).(closure #1)"
+                  moduleName = "ImagePocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/gserjo/Development/ImagePocket-4.0/ImagePocket/ImagePocket/ImageCache.swift"
+                  timestampString = "526251167.228118"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

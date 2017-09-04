@@ -64,12 +64,21 @@ final class ImageCache{
     func saveOrUpdate(entities: [ImageEntity]){
         
         entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
-        _imageRepository.saveOrUpdate(entities)
+        let imageChanges = _imageRepository.saveOrUpdate(entities)
+        
+        imageChanges.add.forEach { item in
+            _taggedImages[item.localIdentifier] = item
+            _actualImages.removeValue(forKey: item.localIdentifier)
+        }
+        
+        imageChanges.remove.forEach{ item in
+            _taggedImages.removeValue(forKey: item.localIdentifier)
+        }
         
         for entity in entities {
-            let changes = entity.tagChanges()
-            _imageRepository.remove(tagImages: changes.removeIds)
-            let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: changes.add)
+            let tagChanges = entity.tagChanges()
+            _imageRepository.remove(tagImages: tagChanges.removeIds)
+            let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: tagChanges.add)
             entity.appendTagId(entities: tagImages)
         }
     }
