@@ -21,7 +21,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private var _isSearching = false
     private var _isAddNewTag = false
     private var _tags = [TagItem]()
-    private var _selectedTags = [TagItem(name: "sdfsdf", id: 1000)]
+    private var _selectedTags = [TagItem]()
     private var _filteredTags = [TagItem]()
     
     private let _tagCache = TagCache.instance
@@ -29,13 +29,17 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private var _initialCommonTags = Set<TagEntity>()
     private var _images = [ImageEntity]()
+    private var _contentViewProtocol: ContentViewProtocol!
     
-    func setup(entities: [ImageEntity]) {
+    func setup(entities: [ImageEntity], contentViewProtocol: ContentViewProtocol) {
+        
+        _contentViewProtocol = contentViewProtocol
         
         if entities.isEmpty {
             return
         }
-        _images = entities.map{$0.clone()}
+        
+        _images = entities
         
         _initialCommonTags = Set(entities[0].tags)
         
@@ -73,7 +77,9 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.reloadData()
     }
     
+    
     @IBAction func onCancelClicked(_ sender: Any) {
+        _contentViewProtocol.unselectImages()
         dismiss(animated: true, completion: nil)
     }
     
@@ -93,6 +99,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         _imageCache.saveOrUpdate(entities: _images)
         
+        _contentViewProtocol.unselectImages()
         dismiss(animated: true, completion: nil)
     }
     
@@ -328,5 +335,4 @@ final class NWSTokenViewCell: UITableViewCell {
         
         _tagName.attributedText = prettyString
     }
-    
 }

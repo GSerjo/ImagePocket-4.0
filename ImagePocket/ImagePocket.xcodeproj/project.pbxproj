@@ -35,6 +35,7 @@
 		B291815F1F538EB600DBBC86 /* NWSImageToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B291815D1F538EB600DBBC86 /* NWSImageToken.swift */; };
 		B29181601F538EB600DBBC86 /* NWSImageToken.xib in Resources */ = {isa = PBXBuildFile; fileRef = B291815E1F538EB600DBBC86 /* NWSImageToken.xib */; };
 		B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BEC701F4A862500696D47 /* ImageCache.swift */; };
+		B2D661F51F5D9B8300AA16AB /* ContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
 		B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */; };
@@ -164,6 +165,7 @@
 		B291815D1F538EB600DBBC86 /* NWSImageToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NWSImageToken.swift; sourceTree = "<group>"; };
 		B291815E1F538EB600DBBC86 /* NWSImageToken.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NWSImageToken.xib; sourceTree = "<group>"; };
 		B29BEC701F4A862500696D47 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewProtocol.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
 		B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyMapCollectionExtensions.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				B27D66581DBDAC69001E579A /* MenuController.swift */,
 				B23095171F4E6219002166A9 /* ImagePreviewCell.swift */,
 				B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */,
+				B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */,
 				B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */,
 				B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */,
+				B2D661F51F5D9B8300AA16AB /* ContentViewProtocol.swift in Sources */,
 				B21E09261F5CA178002C2B41 /* TagImageEntity.swift in Sources */,
 				B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */,
 				B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */,

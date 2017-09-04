@@ -17,7 +17,7 @@ private extension UICollectionView {
     }
 }
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ContentViewProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
     private let _selectImagesTitle = "Select Images"
@@ -105,6 +105,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         reloadData()
     }
     
+    func unselectImages() -> Void {
+        _selectedImages = [String: ImageEntity]()
+        reloadData()
+    }
+    
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
     }
     
@@ -133,11 +138,12 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     func onTagClicked() {
-        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
+        performSegue(withIdentifier: _showTagSelectorSegue, sender: self)
     }
     
     func onCancelClicked() {
         setReadMode()
+        unselectImages()
     }
     
     func onSelectClicked() {
@@ -147,7 +153,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
             let tagSelector = segue.destination as! TagSelectorViewController
-            tagSelector.setup(entities: _selectedImages.values.toArray())
+            tagSelector.setup(entities: _selectedImages.values.toArray(), contentViewProtocol: self)
         }
         
     }

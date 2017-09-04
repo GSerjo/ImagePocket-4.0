@@ -122,7 +122,7 @@ final class ImageRepository {
         
         entities.forEach{ entity in
             if entity.isNew {
-                let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier)
+                let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.creationDate <- entity.creationDate)
                 if let id  = try? DataStore.instance.db.run(query){
                     entity.id = id
                 }
