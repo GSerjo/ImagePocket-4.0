@@ -63,24 +63,13 @@ final class ImageCache{
         
         entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
         
-        
-//        for entity in entities {
-//            
-//            if let previousImage = _taggedImages[entity.localIdentifier] {
-//                
-//            }
-//            
-//        }
-//        
+        for entity in entities {
+            let changes = entity.tagChanges()
+            _imageRepository.remove(tagImages: changes.removeIds)
+            let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: changes.add)
+            entity.appendTagId(entities: tagImages)
+        }
     }
-    
-//    func saveOrUpdate(image: ImageEntity, newTags: [TagEntity]){
-//        image.replaceTags(tags: newTags)
-//        
-//        _tagCache.saveOrUpdate(tags: image.tags)
-//        
-//        _imageRepository.saveOrUpdate([image])
-//    }
     
     private func getAssets(_ fetchResult: PHFetchResult<PHAsset>) -> [PHAsset]{
         var assets: [PHAsset] = []

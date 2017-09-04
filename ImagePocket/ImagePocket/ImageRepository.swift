@@ -72,6 +72,27 @@ final class ImageRepository {
         return result.values.toArray()
     }
     
+    func addTagImage(imageId: Int64, entities: [TagEntity]) -> [TagImageEntity] {
+        if entities.isEmpty {
+            return []
+        }
+        var result = [TagImageEntity]()
+        for item in entities {
+            let query = _tagImageTable.insert(TagImageColumns.imageId <- imageId, TagImageColumns.tagId <- item.id)
+            if let id = try? DataStore.instance.db.run(query){
+                result.append(TagImageEntity(id: id, tagId: item.id))
+            }
+        }
+        return result
+    }
+    
+    func remove(tagImages: [TagImageEntity]) -> Void {
+        if tagImages.isEmpty {
+            return
+        }
+        _ = _tagImageTable.filter(tagImages.map {$0.id}.contains(Columns.id)).delete()
+    }
+    
     func remove(_ entities: [ImageEntity]) -> Void {
         if entities.isEmpty {
             return
@@ -85,20 +106,20 @@ final class ImageRepository {
         }
         
         let forRemove = entities.filter{ x in
-            x.isNew == false && x.tags.isEmpty
+            x.isNew == false && x.hasTags == false
         }
-        let forAddOrUpdate = entities.filter { x in
-            x.tags.isEmpty == false
-        }
+        let forAddOrUpdate = entities.filter { $0.hasTags }
+        
         remove(forRemove)
         addOrUpdate(forAddOrUpdate)
-        
-        entities.forEach{entity in
-            addOrUpdateTagImage(imageId: entity.id, entity.tags)
-        }
     }
     
     private func addOrUpdate(_ entities: [ImageEntity]) -> Void {
+        
+        if entities.isEmpty {
+            return
+        }
+        
         entities.forEach{ entity in
             if entity.isNew {
                 let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier)
@@ -109,12 +130,6 @@ final class ImageRepository {
         }
     }
     
-    private func addOrUpdateTagImage(imageId: Int64, _ entities: [TagEntity]){
-        entities.forEach{entity in
-            let query = _tagImageTable.insert(TagImageColumns.imageId <- imageId, TagImageColumns.tagId <- entity.id)
-            let _ = try? DataStore.instance.db.run(query)
-        }
-    }
     
     private struct Columns {
         static let id = Expression<Int64>("id")
