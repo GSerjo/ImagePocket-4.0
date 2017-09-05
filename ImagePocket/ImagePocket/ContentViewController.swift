@@ -20,6 +20,7 @@ private extension UICollectionView {
 class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
+    private let _showImagePage = "showImagePage"
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
     private let _tagButtonName = "Tag"
@@ -158,8 +159,13 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
-            let tagSelector = segue.destination as! TagSelectorViewController
-            tagSelector.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
+            let controller = segue.destination as! TagSelectorViewController
+            controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
+        }
+        
+        else if segue.identifier == _showImagePage {
+            let controller = segue.destination as! ImagePageViewController
+            controller.setup(entities: _filteredImages)
         }
         
     }
@@ -224,6 +230,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if _viewMode == .read {
+            performSegue(withIdentifier: _showImagePage, sender: nil)
             return
         }
         
@@ -268,6 +275,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private func startAppCore(){
         _imageCache = ImageCache.inctace
         _filteredImages = _imageCache.getImages(tag: TagEntity.all)
+        reloadData()
     }
     
     private func setReadMode() {

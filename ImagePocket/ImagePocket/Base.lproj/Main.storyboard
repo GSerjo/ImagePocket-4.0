@@ -117,6 +117,7 @@
                         <outlet property="_btTrash" destination="uiX-HU-LIp" id="NIH-lY-phn"/>
                         <outlet property="_collectionView" destination="qyi-S2-uPB" id="Buu-lb-nd2"/>
                         <segue destination="q8U-A0-hqK" kind="presentation" identifier="showTagSelector" modalPresentationStyle="formSheet" modalTransitionStyle="crossDissolve" id="XjO-MC-vUp"/>
+                        <segue destination="Lve-MX-2kc" kind="show" identifier="showImagePage" animates="NO" id="C0u-Yi-9qf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -243,6 +244,44 @@
             </objects>
             <point key="canvasLocation" x="3741.5999999999999" y="793.8530734632684"/>
         </scene>
+        <!--Image Page View Controller-->
+        <scene sceneID="RTk-H6-nHx">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Lve-MX-2kc" customClass="ImagePageViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pIL-gU-KQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2910" y="1495"/>
+        </scene>
+        <!--Page Content View Controller-->
+        <scene sceneID="rBR-vn-B2B">
+            <objects>
+                <viewController storyboardIdentifier="PageContentViewController" id="7aD-nc-tcm" customClass="PageContentViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2Ho-EN-R7W"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZlI-zQ-PTx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SEk-tm-1X9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XFg-jj-vQa">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="XFg-jj-vQa" secondAttribute="trailing" id="UVB-g2-x91"/>
+                            <constraint firstItem="XFg-jj-vQa" firstAttribute="bottom" secondItem="ZlI-zQ-PTx" secondAttribute="top" id="WyE-z8-Npr"/>
+                            <constraint firstItem="XFg-jj-vQa" firstAttribute="leading" secondItem="SEk-tm-1X9" secondAttribute="leading" id="aVl-eE-TEf"/>
+                            <constraint firstItem="XFg-jj-vQa" firstAttribute="top" secondItem="SEk-tm-1X9" secondAttribute="top" id="n32-KW-oMb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="5hn-bv-nrO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pz6-FI-Nmt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3742" y="1495"/>
+        </scene>
         <!--Menu Controller-->
         <scene sceneID="i1H-KX-TEP">
             <objects>
@@ -256,7 +295,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

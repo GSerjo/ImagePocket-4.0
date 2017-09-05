@@ -9,7 +9,7 @@
 import UIKit
 
 class TagSelectorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NWSTokenDataSource, NWSTokenDelegate {
-
+    
     @IBOutlet weak var tokenViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tokenView: NWSTokenView!
@@ -31,7 +31,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private var _images = [ImageEntity]()
     private var _notifiableOnCloseProtocol: NotifiableOnCloseProtocol!
     
-    func setup(entities: [ImageEntity], notifiableOnCloseProtocol: NotifiableOnCloseProtocol) {
+    func setup(entities: [ImageEntity], notifiableOnCloseProtocol: NotifiableOnCloseProtocol) -> Void {
         
         _notifiableOnCloseProtocol = notifiableOnCloseProtocol
         
@@ -67,7 +67,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
+        
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.separatorStyle = .singleLine
         
@@ -94,7 +94,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
             
             var newTags = Array(currentTags)
             newTags.append(contentsOf: resultTags)
-           entity.replaceTags(tags: newTags)
+            entity.replaceTags(tags: newTags)
         }
         
         _imageCache.saveOrUpdate(entities: _images)
@@ -104,7 +104,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: Keyboard
-    func keyboardWillShow(_ notification: Notification){
+    func keyboardWillShow(_ notification: Notification) -> Void {
         if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
             tableView.contentInset = contentInsets
@@ -112,12 +112,12 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func keyboardWillHide(_ notification: NotificationCenter){
+    func keyboardWillHide(_ notification: NotificationCenter) -> Void {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
     
-    func dismissKeyboard() {
+    func dismissKeyboard() -> Void {
         tokenView.resignFirstResponder()
         tokenView.endEditing(true)
     }
@@ -160,7 +160,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) -> Void {
         _isSearching = false
         _isAddNewTag = false
         
@@ -200,17 +200,17 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: NWSTokenDelegate
-    func tokenView(_ tokenView: NWSTokenView, didSelectTokenAtIndex index: Int) {
+    func tokenView(_ tokenView: NWSTokenView, didSelectTokenAtIndex index: Int) -> Void {
         let token = tokenView.tokenForIndex(index) as! NWSImageToken
         token.backgroundColor = UIColor.darkGray
     }
     
-    func tokenView(_ tokenView: NWSTokenView, didDeselectTokenAtIndex index: Int) {
+    func tokenView(_ tokenView: NWSTokenView, didDeselectTokenAtIndex index: Int) -> Void {
         let token = tokenView.tokenForIndex(index) as! NWSImageToken
         token.backgroundColor = _tokenBackgroundColor
     }
     
-    func tokenView(_ tokenView: NWSTokenView, didDeleteTokenAtIndex index: Int) {
+    func tokenView(_ tokenView: NWSTokenView, didDeleteTokenAtIndex index: Int) -> Void {
         
         if(index >= self._selectedTags.count) {
             return
@@ -228,14 +228,14 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.textView.becomeFirstResponder()
     }
     
-    func tokenView(_ tokenViewDidBeginEditing: NWSTokenView) {
+    func tokenView(_ tokenViewDidBeginEditing: NWSTokenView) -> Void {
     }
     
-    func tokenViewDidEndEditing(_ tokenView: NWSTokenView) {
+    func tokenViewDidEndEditing(_ tokenView: NWSTokenView) -> Void {
         print(tokenView.textView.text)
     }
     
-    func tokenView(_ tokenView: NWSTokenView, didChangeText text: String){
+    func tokenView(_ tokenView: NWSTokenView, didChangeText text: String) -> Void {
         
         if(text.isEmpty()){
             _isSearching = false
@@ -246,25 +246,25 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         searchTags(text)
     }
     
-    func tokenView(_ tokenView: NWSTokenView, didEnterText text: String) {
+    func tokenView(_ tokenView: NWSTokenView, didEnterText text: String) -> Void {
         print(text)
     }
     
-    func tokenView(_ tokenView: NWSTokenView, contentSizeChanged size: CGSize){
+    func tokenView(_ tokenView: NWSTokenView, contentSizeChanged size: CGSize)  -> Void {
         self.tokenViewHeightConstraint.constant = max(tokenViewMinHeight,min(size.height, self.tokenViewMaxHeight))
         self.view.layoutIfNeeded()
     }
     
-    func tokenView(_ tokenView: NWSTokenView, didFinishLoadingTokens tokenCount: Int){
+    func tokenView(_ tokenView: NWSTokenView, didFinishLoadingTokens tokenCount: Int)  -> Void {
         
     }
     
-    private func reloadAndSortTagSource(){
+    private func reloadAndSortTagSource() -> Void {
         sortTagSource()
         tableView.reloadData()
     }
     
-    private func searchTags(_ text: String) {
+    private func searchTags(_ text: String) -> Void {
         
         if(text.isEmpty()){
             return
@@ -285,7 +285,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         _filteredTags = _tags.filter({ $0.name.range(of: text, options: .caseInsensitive) != nil })
-
+        
         if let _ = _filteredTags.first(where: {$0.name == text}){
             _isAddNewTag = false
         }
@@ -293,7 +293,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.reloadData()
     }
     
-    private func sortTagSource(){
+    private func sortTagSource() -> Void {
         _tags.sort{$0.name > $1.name}
     }
 }
@@ -321,12 +321,12 @@ final class NWSTokenViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func updateTag(_ tag: TagItem) {
+    func updateTag(_ tag: TagItem) -> Void {
         tagItem = tag
         _tagName.text = tag.name
     }
     
-    func updateAttributedText(_ tag: TagItem) {
+    func updateAttributedText(_ tag: TagItem) -> Void {
         tagItem = tag
         
         let attributes = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 18.0)]
