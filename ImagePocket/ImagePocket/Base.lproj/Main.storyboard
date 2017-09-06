@@ -277,6 +277,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5hn-bv-nrO"/>
+                    <connections>
+                        <outlet property="_imageView" destination="XFg-jj-vQa" id="teo-RR-Ob2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pz6-FI-Nmt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -295,7 +298,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

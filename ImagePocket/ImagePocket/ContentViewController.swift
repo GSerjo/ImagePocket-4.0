@@ -42,6 +42,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     @IBOutlet weak var _collectionView: UICollectionView!
     private var _thumbnailSize: CGSize!
     private var _previousPreheatRect = CGRect.zero
+    private var _selectedImageIndex: Int!
     
     private enum ViewMode {
         case read
@@ -165,7 +166,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         else if segue.identifier == _showImagePage {
             let controller = segue.destination as! ImagePageViewController
-            controller.setup(entities: _filteredImages)
+            controller.setup(entities: _filteredImages, selectedImageIndex: _selectedImageIndex)
         }
         
     }
@@ -230,6 +231,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if _viewMode == .read {
+            _selectedImageIndex = indexPath.item
             performSegue(withIdentifier: _showImagePage, sender: nil)
             return
         }
