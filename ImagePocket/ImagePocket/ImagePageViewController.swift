@@ -20,6 +20,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         automaticallyAdjustsScrollViewInsets = false
         
         configureToolBar()
+        updateOnFullScreen()
         
         self.dataSource = self
         setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
@@ -37,9 +38,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let pageContent: PageContentViewController = viewController as! PageContentViewController
         var index = pageContent.pageIndex
-        
-        print(index)
-        
+ 
         if index == 0 || index == NSNotFound {
             return nil
         }
@@ -51,8 +50,6 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         let pageContent: PageContentViewController = viewController as! PageContentViewController
         
         var index = pageContent.pageIndex
-        
-        print(index)
         
         if (index == NSNotFound) {
             return nil;
@@ -67,8 +64,13 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     
     func notifyOnTap() -> Void {
         isFullScreen = !isFullScreen
+        updateOnFullScreen()
     }
-        
+    
+    private func updateOnFullScreen() -> Void{
+        view.backgroundColor = isFullScreen ? UIColor.black : UIColor.white
+    }
+    
     func onTagClicked() -> Void {
         
     }

@@ -247,7 +247,7 @@
         <!--Image Page View Controller-->
         <scene sceneID="Zp3-Un-Dgv">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="fZE-bU-3CK" customClass="ImagePageViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" modalTransitionStyle="crossDissolve" transitionStyle="scroll" pageSpacing="20" navigationOrientation="horizontal" spineLocation="none" id="fZE-bU-3CK" customClass="ImagePageViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhF-1N-ML1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2910" y="1583"/>
