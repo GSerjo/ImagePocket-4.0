@@ -13,6 +13,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var tokenViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tokenView: NWSTokenView!
+    @IBOutlet weak var _btDone: UIBarButtonItem!
     
     private let tokenViewMinHeight: CGFloat = 40.0
     private let tokenViewMaxHeight: CGFloat = 150.0
@@ -29,9 +30,9 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     private var _initialCommonTags = Set<TagEntity>()
     private var _images = [ImageEntity]()
-    private var _notifiableOnCloseProtocol: NotifiableOnCloseProtocol!
+    private var _notifiableOnCloseProtocol: NotifiableOnCloseProtocol?
     
-    func setup(entities: [ImageEntity], notifiableOnCloseProtocol: NotifiableOnCloseProtocol) -> Void {
+    func setup(entities: [ImageEntity], notifiableOnCloseProtocol: NotifiableOnCloseProtocol?) -> Void {
         
         _notifiableOnCloseProtocol = notifiableOnCloseProtocol
         
@@ -71,6 +72,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         tableView.separatorStyle = .singleLine
         
+        onSelectedTagsChanged()
+        
         tokenView.layoutIfNeeded()
         tokenView.dataSource = self
         tokenView.delegate = self
@@ -79,7 +82,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     @IBAction func onCancelClicked(_ sender: Any) {
-        _notifiableOnCloseProtocol.notifyOnClose()
+        _notifiableOnCloseProtocol?.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
     
@@ -99,7 +102,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         _imageCache.saveOrUpdate(entities: _images)
         
-        _notifiableOnCloseProtocol.notifyOnClose()
+        _notifiableOnCloseProtocol?.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
     
@@ -166,6 +169,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         
         let cell = tableView.cellForRow(at: indexPath) as! NWSTokenViewCell
         _selectedTags.append(cell.tagItem)
+        onSelectedTagsChanged()
         tokenView.textView.text = String.empty
         tokenView.reloadData()
         
@@ -219,6 +223,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         let tag = _selectedTags[index]
         
         _selectedTags.remove(at: index)
+        onSelectedTagsChanged()
         tokenView.reloadData()
         
         _tags.append(tag)
@@ -257,6 +262,10 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tokenView(_ tokenView: NWSTokenView, didFinishLoadingTokens tokenCount: Int)  -> Void {
         
+    }
+    
+    private func onSelectedTagsChanged() -> Void {
+        _btDone.isEnabled = !_selectedTags.isEmpty
     }
     
     private func reloadAndSortTagSource() -> Void {

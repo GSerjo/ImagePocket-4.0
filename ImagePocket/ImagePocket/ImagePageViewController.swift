@@ -8,11 +8,12 @@
 
 import UIKit
 
-final class ImagePageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, NotifiableOnTapProtocol {
+final class ImagePageViewController: UIPageViewController, UIPageViewControllerDataSource, NotifiableOnTapProtocol {
 
     private var _images = [ImageEntity]()
     private var _selectedImageIndex = 0
     private(set) var isFullScreen = false
+    private let _showTagSelectorSegue = "showTagSelector"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,8 +72,16 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         view.backgroundColor = isFullScreen ? UIColor.black : UIColor.white
     }
     
-    func onTagClicked() -> Void {
-        
+    func onTagClicked() {
+        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == _showTagSelectorSegue {
+            let controller = segue.destination as! TagSelectorViewController
+            controller.setup(entities: [], notifiableOnCloseProtocol: nil)
+        }
     }
     
     private func configureToolBar() -> Void {

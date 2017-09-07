@@ -235,6 +235,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="_btDone" destination="W10-CQ-0pL" id="9Mz-Z9-XSU"/>
                         <outlet property="tableView" destination="jgc-yg-efI" id="3Wd-AV-u1m"/>
                         <outlet property="tokenView" destination="OcS-rY-tcq" id="u2h-ak-uzi"/>
                         <outlet property="tokenViewHeightConstraint" destination="GkL-Cz-8jK" id="h7T-jU-iR4"/>
@@ -242,12 +243,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uV2-Gn-OVt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3741.5999999999999" y="793.8530734632684"/>
+            <point key="canvasLocation" x="3759" y="794"/>
         </scene>
         <!--Image Page View Controller-->
         <scene sceneID="Zp3-Un-Dgv">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" modalTransitionStyle="crossDissolve" transitionStyle="scroll" pageSpacing="20" navigationOrientation="horizontal" spineLocation="none" id="fZE-bU-3CK" customClass="ImagePageViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" modalTransitionStyle="crossDissolve" transitionStyle="scroll" pageSpacing="20" navigationOrientation="horizontal" spineLocation="none" id="fZE-bU-3CK" customClass="ImagePageViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="q8U-A0-hqK" kind="presentation" identifier="showTagSelector" modalPresentationStyle="formSheet" modalTransitionStyle="crossDissolve" id="hXJ-gV-iRA"/>
+                    </connections>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhF-1N-ML1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2910" y="1583"/>
@@ -283,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pz6-FI-Nmt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3742" y="1594"/>
+            <point key="canvasLocation" x="3657" y="1583"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="i1H-KX-TEP">
@@ -332,4 +337,7 @@
             <point key="canvasLocation" x="2038" y="794"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="hXJ-gV-iRA"/>
+    </inferredMetricsTieBreakers>
 </document>
