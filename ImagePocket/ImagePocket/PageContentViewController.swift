@@ -13,30 +13,48 @@ final class PageContentViewController: UIViewController {
 
     var pageIndex = 0
     var imageEntity: ImageEntity?
+    
+    var notifiableOnTap: NotifiableOnTapProtocol?
+
     @IBOutlet weak var _imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Image"
-
-        // Do any additional setup after loading the view.
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
+        self.view.addGestureRecognizer(tapGesture)
     }
+    
 
+    func onViewTapped() -> Void {
+        notifiableOnTap?.notifyOnTap()
+        updateOnFullScreen()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        updateOnFullScreen()
         updateContent()
+    }
+    
+    private func updateOnFullScreen() -> Void{
+        guard let isFullScreen = notifiableOnTap?.isFullScreen else {
+            return
+        }
+        navigationController?.setNavigationBarHidden(isFullScreen, animated: false)
+        view.backgroundColor = isFullScreen ? UIColor.black : UIColor.white
     }
     
     private var targetSize: CGSize {
         let scale = UIScreen.main.scale
-        return CGSize(width: _imageView.bounds.width * scale, height: _imageView.bounds.height * scale)
+        return CGSize(width: _imageView.bounds.width * scale,
+                      height: _imageView.bounds.height * scale)
     }
     
     private func updateContent() -> Void {

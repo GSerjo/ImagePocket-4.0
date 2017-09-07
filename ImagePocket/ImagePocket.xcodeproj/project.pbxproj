@@ -37,6 +37,7 @@
 		B29BEC711F4A862500696D47 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BEC701F4A862500696D47 /* ImageCache.swift */; };
 		B2A295971F5E570100289F8A /* ImagePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A295961F5E570100289F8A /* ImagePageViewController.swift */; };
 		B2A295A01F5E5EDB00289F8A /* PageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A2959F1F5E5EDB00289F8A /* PageContentViewController.swift */; };
+		B2B7F5D91F60E29F00D5E81A /* NotifiableOnTapProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */; };
 		B2D661F51F5D9B8300AA16AB /* ContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */; };
 		B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
@@ -170,6 +171,7 @@
 		B29BEC701F4A862500696D47 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		B2A295961F5E570100289F8A /* ImagePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePageViewController.swift; sourceTree = "<group>"; };
 		B2A2959F1F5E5EDB00289F8A /* PageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageContentViewController.swift; sourceTree = "<group>"; };
+		B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifiableOnTapProtocol.swift; sourceTree = "<group>"; };
 		B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewProtocol.swift; sourceTree = "<group>"; };
 		B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifiableOnCloseProtocol.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */,
 				B2A295961F5E570100289F8A /* ImagePageViewController.swift */,
 				B2A2959F1F5E5EDB00289F8A /* PageContentViewController.swift */,
+				B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2A295A01F5E5EDB00289F8A /* PageContentViewController.swift in Sources */,
+				B2B7F5D91F60E29F00D5E81A /* NotifiableOnTapProtocol.swift in Sources */,
 				B291815F1F538EB600DBBC86 /* NWSImageToken.swift in Sources */,
 				B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */,
 				B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */,

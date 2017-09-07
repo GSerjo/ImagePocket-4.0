@@ -8,16 +8,21 @@
 
 import UIKit
 
-final class ImagePageViewController: UIPageViewController, UIPageViewControllerDataSource {
+final class ImagePageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, NotifiableOnTapProtocol {
 
     private var _images = [ImageEntity]()
     private var _selectedImageIndex = 0
+    private(set) var isFullScreen = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dataSource = self
         
-        self.setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
+        automaticallyAdjustsScrollViewInsets = false
+        
+        configureToolBar()
+        
+        self.dataSource = self
+        setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,6 +37,9 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let pageContent: PageContentViewController = viewController as! PageContentViewController
         var index = pageContent.pageIndex
+        
+        print(index)
+        
         if index == 0 || index == NSNotFound {
             return nil
         }
@@ -44,6 +52,8 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         
         var index = pageContent.pageIndex
         
+        print(index)
+        
         if (index == NSNotFound) {
             return nil;
         }
@@ -55,11 +65,25 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         return getViewControllerAtIndex(index)
     }
     
+    func notifyOnTap() -> Void {
+        isFullScreen = !isFullScreen
+    }
+        
+    func onTagClicked() -> Void {
+        
+    }
+    
+    private func configureToolBar() -> Void {
+        let btTag = UIBarButtonItem(title: "Tag", style: .plain, target: self, action: #selector(onTagClicked))
+        navigationItem.rightBarButtonItem = btTag
+    }
+    
 
     private func getViewControllerAtIndex(_ index: Int) -> PageContentViewController {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "PageContentViewController") as! PageContentViewController
         controller.pageIndex = index
         controller.imageEntity = _images[index]
+        controller.notifiableOnTap = self
         return controller
     }
     
