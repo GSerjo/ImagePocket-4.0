@@ -15,6 +15,9 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     private(set) var isFullScreen = false
     private let _showTagSelectorSegue = "showTagSelector"
     
+    @IBOutlet var _btAction: UIBarButtonItem!
+    @IBOutlet var _btSpace: UIBarButtonItem!
+    @IBOutlet var _btTrash: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,6 +73,8 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     
     private func updateOnFullScreen() -> Void{
         view.backgroundColor = isFullScreen ? UIColor.black : UIColor.white
+        toolbarItems = [_btAction, _btSpace, _btTrash]
+        navigationController?.isToolbarHidden = false
     }
     
     func onTagClicked() {

@@ -17,6 +17,7 @@ final class PageContentViewController: UIViewController {
     var notifiableOnTap: NotifiableOnTapProtocol?
 
     @IBOutlet weak var _imageView: UIImageView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
