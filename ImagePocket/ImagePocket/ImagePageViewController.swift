@@ -18,16 +18,16 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     @IBOutlet var _btAction: UIBarButtonItem!
     @IBOutlet var _btSpace: UIBarButtonItem!
     @IBOutlet var _btTrash: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        automaticallyAdjustsScrollViewInsets = false
         
         configureToolBar()
         updateOnFullScreen()
         
         self.dataSource = self
         setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
+        automaticallyAdjustsScrollViewInsets = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,6 +92,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     private func configureToolBar() -> Void {
         let btTag = UIBarButtonItem(title: "Tag", style: .plain, target: self, action: #selector(onTagClicked))
         navigationItem.rightBarButtonItem = btTag
+        navigationController?.navigationBar.topItem?.title = String.empty
     }
     
 
