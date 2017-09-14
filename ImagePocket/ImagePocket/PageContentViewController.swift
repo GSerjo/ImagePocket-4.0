@@ -63,8 +63,12 @@ final class PageContentViewController: UIViewController {
         let asset = ImageCache.inctace[image.localIdentifier] else {
             return
         }
-        
-        updateImage(asset)
+        switch asset.playbackStyle {
+        case .image:
+            updateImage(asset)
+        default:
+            updateImage(asset)
+        }
     }
     
     private func updateImage(_ asset: PHAsset) -> Void {

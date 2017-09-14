@@ -14,6 +14,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     private var _selectedImageIndex = 0
     private(set) var isFullScreen = false
     private let _showTagSelectorSegue = "showTagSelector"
+    private var _currentImageIndex = 0
     
     @IBOutlet var _btAction: UIBarButtonItem!
     @IBOutlet var _btSpace: UIBarButtonItem!
@@ -27,7 +28,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         
         self.dataSource = self
         setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
-        automaticallyAdjustsScrollViewInsets = false
+//        automaticallyAdjustsScrollViewInsets = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,7 +86,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
             let controller = segue.destination as! TagSelectorViewController
-            controller.setup(entities: [], notifiableOnCloseProtocol: nil)
+            controller.setup(entities: [_images[_currentImageIndex]], notifiableOnCloseProtocol: nil)
         }
     }
     
@@ -97,9 +98,10 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     
 
     private func getViewControllerAtIndex(_ index: Int) -> PageContentViewController {
+        _currentImageIndex = index
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "PageContentViewController") as! PageContentViewController
-        controller.pageIndex = index
-        controller.imageEntity = _images[index]
+        controller.pageIndex = _currentImageIndex
+        controller.imageEntity = _images[_currentImageIndex]
         controller.notifiableOnTap = self
         return controller
     }
