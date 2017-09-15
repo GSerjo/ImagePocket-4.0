@@ -9,16 +9,17 @@
 import UIKit
 
 class MenuController: UITableViewController {
-
+    
     private let _tagCache = TagCache.instance
     private(set) var selectedTag: TagEntity?
+    private let _sectionName = ["Tags", "Settings"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
@@ -27,24 +28,40 @@ class MenuController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedTag = _tagCache.allTags[indexPath.row]
         sideMenuController?.performSegue(withIdentifier: "showCenterController", sender: nil)
     }
-
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return _tagCache.allTags.count
+        switch section {
+        case 0:
+            return _tagCache.allTags.count
+        default:
+            return 0
+        }
     }
-
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath)
         cell.textLabel?.text = _tagCache.allTags[indexPath.row].name
-
+        
         return cell
     }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return _sectionName[section]
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).backgroundView?.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
+    }
+ 
 }
