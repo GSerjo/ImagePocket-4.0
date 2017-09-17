@@ -19,10 +19,7 @@ private extension UICollectionView {
 
 extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        navigationItem.titleView = nil
-        
-        self._btCancel.isEnabled = false
-        self.setReadMode()
+        setReadMode()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -36,9 +33,6 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private let _showImagePage = "showImagePage"
     private let _selectImagesTitle = "Select Images"
     private let _rootTitle = "Image Pocket"
-    private let _tagButtonName = "Tag"
-    private let _cancelButtonName = "Cancel"
-    private let _selectButtonName = "Select"
     
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
@@ -61,6 +55,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private enum ViewMode {
         case read
         case select
+        case search
     }
     
     override func viewDidLoad() {
@@ -179,22 +174,15 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     @IBAction func onSearchClicked(_ sender: Any) {
-        navigationItem.leftBarButtonItems = nil
-        navigationItem.rightBarButtonItems = nil
-        
-        let searchBar = UISearchBar()
-        searchBar.showsCancelButton = true
-        searchBar.delegate = self
-        navigationItem.titleView = searchBar
-        
-        searchBar.becomeFirstResponder()
+        setSearchMode()
     }
     
 
     
-    fileprivate func setReadMode() {
+    fileprivate func setReadMode() -> Void {
         _viewMode = .read
         
+        navigationItem.titleView = nil
         self.title = _rootTitle
         _selectedImages = [String: ImageEntity]()
         
@@ -206,7 +194,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     
-    private func setSelectMode() {
+    private func setSelectMode() -> Void {
         _viewMode = .select
         self.title = _selectImagesTitle
         
@@ -216,6 +204,19 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         navigationItem.rightBarButtonItems = [_btCancel]
     }
     
+    private func setSearchMode() -> Void {
+        _viewMode = .search
+        
+        navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItems = nil
+        
+        let searchBar = UISearchBar()
+        searchBar.showsCancelButton = true
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        
+        searchBar.becomeFirstResponder()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
@@ -289,7 +290,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if _viewMode == .read {
+        if _viewMode != .select {
+            if _viewMode == .search {
+                setReadMode()
+            }
             _selectedImageIndex = indexPath.item
             performSegue(withIdentifier: _showImagePage, sender: nil)
             return
