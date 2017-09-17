@@ -17,7 +17,20 @@ private extension UICollectionView {
     }
 }
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol, UISearchBarDelegate {
+extension ContentViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        navigationItem.titleView = nil
+        
+        self._btCancel.isEnabled = false
+        self.setReadMode()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterImages(by: searchText)
+    }
+}
+
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
     private let _showImagePage = "showImagePage"
@@ -65,6 +78,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setReadMode()
         updateItemSize()
     }
     
@@ -102,10 +116,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             return
         }
         
-        if let tagEntity = menuController.selectedTag {
-            _filteredImages = _imageCache.getImages(tag: tagEntity)
-            reloadData()
-        }
+        filterImages(by: menuController.selectedTag)
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
@@ -131,6 +142,18 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         else{
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
+    }
+    
+    private func filterImages(by tag: TagEntity?) -> Void {
+        if let tagEntity = tag {
+            _filteredImages = _imageCache.getImages(tag: tagEntity)
+            reloadData()
+        }
+    }
+    
+    fileprivate func filterImages(by searchText: String) -> Void {
+        _filteredImages = _imageCache.getImages(searchText: searchText)
+        reloadData()
     }
     
     private func reloadData() {
@@ -163,9 +186,13 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         searchBar.showsCancelButton = true
         searchBar.delegate = self
         navigationItem.titleView = searchBar
+        
+        searchBar.becomeFirstResponder()
     }
     
-    private func setReadMode() {
+
+    
+    fileprivate func setReadMode() {
         _viewMode = .read
         
         self.title = _rootTitle
@@ -286,7 +313,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     
-    private func updateItemSize() {
+    private func updateItemSize() -> Void {
         
         let viewWidth = view.bounds.size.width
         

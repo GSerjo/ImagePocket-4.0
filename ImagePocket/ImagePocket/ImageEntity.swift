@@ -34,6 +34,18 @@ final class ImageEntity: Entity {
         return !newTags.isEmpty || !_tagIds.isEmpty
     }
     
+    func hasSearchableText(text: String) -> Bool {
+        if !hasTags {
+            return false
+        }
+        for item in tags {
+            if item.name.contains(text) {
+                return true
+            }
+        }
+        return false
+    }
+    
     func clone() -> ImageEntity {
         let tagIds = _tagIds.values.map{$0.clone()}.toDictionary{ (item: TagImageEntity) -> Int64 in
             item.tagId

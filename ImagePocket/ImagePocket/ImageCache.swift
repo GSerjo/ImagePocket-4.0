@@ -39,6 +39,19 @@ final class ImageCache{
         return _assets[localId]
     }
     
+    func getImages(searchText: String) -> [ImageEntity] {
+        if searchText.isEmpty() {
+            return _actualImages.values.toArray()
+        }
+        var result = [ImageEntity]()
+        for item in _taggedImages.values {
+            if item.hasSearchableText(text: searchText){
+                result.append(item)
+            }
+        }
+        return result
+    }
+    
     func getImages(tag: TagEntity) -> [ImageEntity]{
         
         var result = [ImageEntity]()
