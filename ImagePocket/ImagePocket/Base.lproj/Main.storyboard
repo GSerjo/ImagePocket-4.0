@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -161,7 +160,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqw-R5-Q71" id="ZGd-Ld-8Jl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLB-GF-D7b">
@@ -266,7 +265,7 @@
         <!--Page Content View Controller-->
         <scene sceneID="rBR-vn-B2B">
             <objects>
-                <viewController storyboardIdentifier="PageContentViewController" id="7aD-nc-tcm" customClass="PageContentViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PageContentViewController" automaticallyAdjustsScrollViewInsets="NO" id="7aD-nc-tcm" customClass="PageContentViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Ho-EN-R7W"/>
                         <viewControllerLayoutGuide type="bottom" id="ZlI-zQ-PTx"/>
@@ -275,26 +274,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HW1-of-Fc1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="teq-io-blq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="HW1-of-Fc1" secondAttribute="trailing" id="NdC-LK-4SG"/>
-                            <constraint firstItem="HW1-of-Fc1" firstAttribute="top" secondItem="SEk-tm-1X9" secondAttribute="top" id="SfF-fs-ijD"/>
-                            <constraint firstItem="HW1-of-Fc1" firstAttribute="leading" secondItem="SEk-tm-1X9" secondAttribute="leading" id="XD8-ZP-I4h"/>
-                            <constraint firstItem="HW1-of-Fc1" firstAttribute="bottom" secondItem="ZlI-zQ-PTx" secondAttribute="top" id="enq-Xw-Uqf"/>
+                            <constraint firstItem="teq-io-blq" firstAttribute="top" secondItem="SEk-tm-1X9" secondAttribute="top" id="HGk-Ib-UX6"/>
+                            <constraint firstItem="teq-io-blq" firstAttribute="bottom" secondItem="ZlI-zQ-PTx" secondAttribute="top" id="Q7F-YG-RBh"/>
+                            <constraint firstItem="teq-io-blq" firstAttribute="leading" secondItem="SEk-tm-1X9" secondAttribute="leading" id="Z0b-Qq-Exx"/>
+                            <constraint firstAttribute="trailing" secondItem="teq-io-blq" secondAttribute="trailing" id="hiR-fN-f1M"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5hn-bv-nrO"/>
                     <connections>
-                        <outlet property="_imageView" destination="HW1-of-Fc1" id="sMb-A8-6w2"/>
+                        <outlet property="_imageView" destination="teq-io-blq" id="26q-CC-nuJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pz6-FI-Nmt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3657" y="1583"/>
+            <point key="canvasLocation" x="3656.8000000000002" y="1582.7586206896553"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="i1H-KX-TEP">
@@ -309,7 +308,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

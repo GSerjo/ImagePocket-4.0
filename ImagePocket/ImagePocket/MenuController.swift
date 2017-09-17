@@ -47,7 +47,12 @@ class MenuController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath)
-        cell.textLabel?.text = _tagCache.allTags[indexPath.row].name
+        switch indexPath.section {
+        case 0:
+            cell.textLabel?.text = _tagCache.allTags[indexPath.row].name
+        default:
+            cell.textLabel?.text = "Test"
+        }
         
         return cell
     }
