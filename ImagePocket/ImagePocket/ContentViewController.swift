@@ -29,17 +29,18 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
-    private var _btTag: [UIBarButtonItem]!
-    private var _btCancel: UIBarButtonItem!
-    private var _btOpenMenu: [UIBarButtonItem]!
-    private var _btSelect: UIBarButtonItem!
+    @IBOutlet var _btSearch: UIBarButtonItem!
+    @IBOutlet var _btSelect: UIBarButtonItem!
+    @IBOutlet var _btCancel: UIBarButtonItem!
+    @IBOutlet var _btTag: UIBarButtonItem!
+    @IBOutlet weak var _collectionView: UICollectionView!
     
+    private var _btOpenMenu: [UIBarButtonItem]!
     private var _imageCache: ImageCache!
     private let _imageManager = PHCachingImageManager()
     private var _filteredImages = [ImageEntity]()
     private var _selectedImages = [String: ImageEntity]()
     private var _viewMode = ViewMode.read
-    @IBOutlet weak var _collectionView: UICollectionView!
     private var _thumbnailSize: CGSize!
     private var _previousPreheatRect = CGRect.zero
     private var _selectedImageIndex: Int!
@@ -98,7 +99,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
         guard let menuController = sideMenuController.sideViewController as? MenuController else {
-                return
+            return
         }
         
         if let tagEntity = menuController.selectedTag {
@@ -137,24 +138,20 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     private func configureToolbar(){
-        _btTag = [UIBarButtonItem(title: _tagButtonName, style: .plain, target: self, action: #selector(onTagClicked))]
-        _btCancel = UIBarButtonItem(title: _cancelButtonName, style: .plain, target: self, action: #selector(onCancelClicked))
-        _btSelect = UIBarButtonItem(title: _selectButtonName, style: .plain, target: self, action: #selector(onSelectClicked))
-        navigationItem.rightBarButtonItem = _btSelect
-        
+        navigationItem.rightBarButtonItems = [_btSelect, _btSearch]
         _btOpenMenu = navigationItem.leftBarButtonItems
     }
     
-    func onTagClicked() {
+    @IBAction func onTagClicked(_ sender: Any) {
         performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
     }
     
-    func onCancelClicked() {
+    @IBAction func onCancelClicked(_ sender: Any) {
         setReadMode()
         unselectImages()
     }
     
-    func onSelectClicked() {
+    @IBAction func onSelectClicked(_ sender: Any) {
         setSelectMode()
     }
     
@@ -163,7 +160,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             let controller = segue.destination as! TagSelectorViewController
             controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
         }
-        
+            
         else if segue.identifier == _showImagePage {
             let controller = segue.destination as! ImagePageViewController
             controller.setup(entities: _filteredImages, selectedImageIndex: _selectedImageIndex)
@@ -299,7 +296,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         self.title = _selectImagesTitle
         
         navigationItem.rightBarButtonItem = _btCancel
-        navigationItem.leftBarButtonItems = _btTag
+        navigationItem.leftBarButtonItems = [_btTag]
         navigationItem.leftBarButtonItem?.isEnabled = false
     }
     

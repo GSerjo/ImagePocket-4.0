@@ -112,7 +112,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="V6R-qn-sYE"/>
                     <connections>
+                        <outlet property="_btCancel" destination="1ON-Mj-ujB" id="StA-hG-8jc"/>
+                        <outlet property="_btSearch" destination="O8g-5V-1YL" id="xes-Ao-ePZ"/>
+                        <outlet property="_btSelect" destination="qHr-By-t6t" id="qt2-88-50r"/>
                         <outlet property="_btShare" destination="o2A-5K-Z3n" id="VDK-0c-9rA"/>
+                        <outlet property="_btTag" destination="Gne-M4-Ddh" id="bmw-yK-Kp0"/>
                         <outlet property="_btTrash" destination="uiX-HU-LIp" id="NIH-lY-phn"/>
                         <outlet property="_collectionView" destination="qyi-S2-uPB" id="Buu-lb-nd2"/>
                         <segue destination="q8U-A0-hqK" kind="presentation" identifier="showTagSelector" modalPresentationStyle="formSheet" modalTransitionStyle="crossDissolve" id="XjO-MC-vUp"/>
@@ -120,6 +124,22 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem systemItem="search" id="O8g-5V-1YL"/>
+                <barButtonItem title="Select" id="qHr-By-t6t">
+                    <connections>
+                        <action selector="onSelectClicked:" destination="qjw-zE-DJY" id="xsD-B7-bOa"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem title="Cancel" id="1ON-Mj-ujB">
+                    <connections>
+                        <action selector="onCancelClicked:" destination="qjw-zE-DJY" id="lBd-jU-iN9"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem title="Tag" id="Gne-M4-Ddh">
+                    <connections>
+                        <action selector="onTagClicked:" destination="qjw-zE-DJY" id="v9s-S5-UQv"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="2909.5999999999999" y="793.8530734632684"/>
         </scene>
@@ -343,6 +363,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hXJ-gV-iRA"/>
+        <segue reference="XjO-MC-vUp"/>
     </inferredMetricsTieBreakers>
 </document>
