@@ -17,7 +17,7 @@ private extension UICollectionView {
     }
 }
 
-class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
+class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol, UISearchBarDelegate {
     
     private let _showTagSelectorSegue = "showTagSelector"
     private let _showImagePage = "showImagePage"
@@ -155,6 +155,41 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         setSelectMode()
     }
     
+    @IBAction func onSearchClicked(_ sender: Any) {
+        navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItems = nil
+        
+        let searchBar = UISearchBar()
+        searchBar.showsCancelButton = true
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
+    }
+    
+    private func setReadMode() {
+        _viewMode = .read
+        
+        self.title = _rootTitle
+        _selectedImages = [String: ImageEntity]()
+        
+        _btShare.isEnabled = false
+        _btTrash.isEnabled = false
+        
+        navigationItem.leftBarButtonItems = _btOpenMenu
+        navigationItem.rightBarButtonItems = [_btSelect, _btSearch]
+    }
+    
+    
+    private func setSelectMode() {
+        _viewMode = .select
+        self.title = _selectImagesTitle
+        
+        navigationItem.leftBarButtonItems = [_btTag]
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        
+        navigationItem.rightBarButtonItems = [_btCancel]
+    }
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == _showTagSelectorSegue {
             let controller = segue.destination as! TagSelectorViewController
@@ -277,29 +312,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         reloadData()
     }
     
-    private func setReadMode() {
-        _viewMode = .read
-        
-        self.title = _rootTitle
-        _selectedImages = [String: ImageEntity]()
-        
-        _btShare.isEnabled = false
-        _btTrash.isEnabled = false
-        
-        navigationItem.leftBarButtonItems = _btOpenMenu
-        navigationItem.rightBarButtonItem = _btSelect
-    }
-    
-    
-    private func setSelectMode() {
-        _viewMode = .select
-        self.title = _selectImagesTitle
-        
-        navigationItem.rightBarButtonItem = _btCancel
-        navigationItem.leftBarButtonItems = [_btTag]
-        navigationItem.leftBarButtonItem?.isEnabled = false
-    }
-    
+
     private func updateCachedAssets() {
         // Update only if the view is visible.
         guard isViewLoaded && view.window != nil else { return }

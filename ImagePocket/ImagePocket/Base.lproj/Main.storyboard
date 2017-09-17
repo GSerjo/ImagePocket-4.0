@@ -124,7 +124,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rCo-0G-X92" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem systemItem="search" id="O8g-5V-1YL"/>
+                <barButtonItem systemItem="search" id="O8g-5V-1YL">
+                    <connections>
+                        <action selector="onSearchClicked:" destination="qjw-zE-DJY" id="kXE-6u-EDp"/>
+                    </connections>
+                </barButtonItem>
                 <barButtonItem title="Select" id="qHr-By-t6t">
                     <connections>
                         <action selector="onSelectClicked:" destination="qjw-zE-DJY" id="xsD-B7-bOa"/>
