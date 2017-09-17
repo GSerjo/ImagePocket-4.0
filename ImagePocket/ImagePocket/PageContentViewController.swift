@@ -14,9 +14,10 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     var pageIndex = 0
     var imageEntity: ImageEntity?
     var notifiableOnTap: NotifiableOnTapProtocol?
-    var _scrollView: UIScrollView!
+
+    @IBOutlet weak var _scrollView: UIScrollView!
     
-    @IBOutlet weak var _imageView: UIImageView!
+    var _imageView = UIImageView()
     
     
     override func viewDidLoad() {
@@ -24,14 +25,14 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
         
         title = "Image"
         
-        _scrollView = UIScrollView(frame: view.bounds)
-        _scrollView.contentSize = _imageView.bounds.size
-        _scrollView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         _scrollView.delegate = self
+//        _scrollView.contentInsetAdjustmentBehavior = .never
+
+        _imageView.frame = CGRect(x: 0, y: 0, width: _scrollView.frame.size.width, height: _scrollView.frame.size.height)
+       _imageView.isUserInteractionEnabled = true
+       _imageView.contentMode = .scaleAspectFit
         _scrollView.addSubview(_imageView)
-        self.view.addSubview(_scrollView)
-        
-        setZoomScale()
+    
         setupGestureRecognizer()
     }
     
@@ -51,15 +52,24 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupGestureRecognizer() {
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap))
         doubleTap.numberOfTapsRequired = 2
         _scrollView.addGestureRecognizer(doubleTap)
         
 //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
 //        self.view.addGestureRecognizer(tapGesture)
+        
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeDown))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
     }
     
-    func handleDoubleTap(recognizer: UITapGestureRecognizer) {
+    func onSwipeDown() -> Void {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func onDoubleTap(recognizer: UITapGestureRecognizer) -> Void {
         if (_scrollView.zoomScale > _scrollView.minimumZoomScale) {
             _scrollView.setZoomScale(_scrollView.minimumZoomScale, animated: true)
         } else {
@@ -68,13 +78,15 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setZoomScale() {
-        let imageViewSize = _imageView.bounds.size
-        let scrollViewSize = _scrollView.bounds.size
-        let widthScale = scrollViewSize.width / imageViewSize.width
-        let heightScale = scrollViewSize.height / imageViewSize.height
+        let scrollViewFrame = _scrollView.frame
         
-        _scrollView.minimumZoomScale = min(widthScale, heightScale)
-        _scrollView.zoomScale = 1.0
+        let widthScale = scrollViewFrame.size.width / _scrollView.contentSize.width
+        let heightScale = scrollViewFrame.size.height / _scrollView.contentSize.height
+        let minScale = min(widthScale, heightScale)
+        
+        _scrollView.minimumZoomScale = minScale
+        _scrollView.maximumZoomScale = 1
+        _scrollView.zoomScale = minScale
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -95,6 +107,8 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
         
         updateOnFullScreen()
         updateContent()
+        
+        setZoomScale()
     }
     
     private func updateOnFullScreen() -> Void{
@@ -139,6 +153,9 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
                 return
             }
             self._imageView.image = image
+            self._imageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+            self._scrollView.contentSize = image.size
+            self.setZoomScale()
         })
     }
 }

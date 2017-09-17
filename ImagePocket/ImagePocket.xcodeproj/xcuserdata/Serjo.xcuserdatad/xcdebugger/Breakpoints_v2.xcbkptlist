@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/PageContentViewController.swift"
-            timestampString = "527299956.276035"
+            timestampString = "527310331.814833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "scrollViewDidZoom(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,13 +266,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/PageContentViewController.swift"
-            timestampString = "527299956.276336"
+            timestampString = "527310331.815183"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "handleDoubleTap(recognizer:)"
-            landmarkType = "7">
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "PageContentViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/PageContentViewController.swift"
-            timestampString = "527299956.276544"
+            timestampString = "527310331.815422"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "viewForZooming(in:)"
             landmarkType = "7">
          </BreakpointContent>

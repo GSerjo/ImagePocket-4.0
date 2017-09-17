@@ -28,7 +28,6 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
         
         self.dataSource = self
         setViewControllers([getViewControllerAtIndex(_selectedImageIndex)] as [UIViewController], direction: .forward, animated: false, completion: nil)
-//        automaticallyAdjustsScrollViewInsets = false
     }
     
     override func didReceiveMemoryWarning() {

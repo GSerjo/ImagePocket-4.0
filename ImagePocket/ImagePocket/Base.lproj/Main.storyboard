@@ -160,7 +160,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqw-R5-Q71" id="ZGd-Ld-8Jl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLB-GF-D7b">
@@ -274,21 +274,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="teq-io-blq">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kmx-Jk-pyp">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="teq-io-blq" firstAttribute="top" secondItem="SEk-tm-1X9" secondAttribute="top" id="HGk-Ib-UX6"/>
-                            <constraint firstItem="teq-io-blq" firstAttribute="bottom" secondItem="ZlI-zQ-PTx" secondAttribute="top" id="Q7F-YG-RBh"/>
-                            <constraint firstItem="teq-io-blq" firstAttribute="leading" secondItem="SEk-tm-1X9" secondAttribute="leading" id="Z0b-Qq-Exx"/>
-                            <constraint firstAttribute="trailing" secondItem="teq-io-blq" secondAttribute="trailing" id="hiR-fN-f1M"/>
+                            <constraint firstAttribute="trailing" secondItem="Kmx-Jk-pyp" secondAttribute="trailing" id="6Bf-h0-JAd"/>
+                            <constraint firstItem="Kmx-Jk-pyp" firstAttribute="top" secondItem="SEk-tm-1X9" secondAttribute="top" id="J9E-gR-K0e"/>
+                            <constraint firstItem="Kmx-Jk-pyp" firstAttribute="bottom" secondItem="ZlI-zQ-PTx" secondAttribute="top" id="li0-Qb-uCy"/>
+                            <constraint firstItem="Kmx-Jk-pyp" firstAttribute="leading" secondItem="SEk-tm-1X9" secondAttribute="leading" id="yAs-RU-wR9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5hn-bv-nrO"/>
                     <connections>
-                        <outlet property="_imageView" destination="teq-io-blq" id="26q-CC-nuJ"/>
+                        <outlet property="_scrollView" destination="Kmx-Jk-pyp" id="8bc-sK-otH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pz6-FI-Nmt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -308,7 +308,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
