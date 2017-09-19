@@ -62,7 +62,7 @@ final class ImageCache{
         else if(tag.isUntagged){
             result = _actualImages.values.toArray()
         }
-        
+            
         else if(_taggedImages.isEmpty){
             result = [ImageEntity]()
         }
@@ -74,18 +74,20 @@ final class ImageCache{
         return result
     }
     
-    func saveOrUpdate(entities: [ImageEntity]){
+    func saveOrUpdate(entities: [ImageEntity]) -> Void {
         
         entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
         let imageChanges = _imageRepository.saveOrUpdate(entities)
         
         imageChanges.add.forEach { item in
             _taggedImages[item.localIdentifier] = item
-            _actualImages.removeValue(forKey: item.localIdentifier)
+            _actualImages[item.localIdentifier] = item
+//            _actualImages.removeValue(forKey: item.localIdentifier)
         }
         
         imageChanges.remove.forEach{ item in
             _taggedImages.removeValue(forKey: item.localIdentifier)
+            _actualImages[item.localIdentifier] = item
         }
         
         for entity in entities {
@@ -96,7 +98,7 @@ final class ImageCache{
         }
     }
     
-    private func syncImages(){
+    private func syncImages() -> Void {
         for image in _taggedImages.values {
             if _actualImages.keys.contains(image.localIdentifier){
                 _actualImages[image.localIdentifier] = image

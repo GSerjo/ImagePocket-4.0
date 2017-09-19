@@ -13,9 +13,11 @@ class MenuController: UITableViewController {
     private let _tagCache = TagCache.instance
     private(set) var selectedTag: TagEntity?
     private let _sectionName = ["Tags", "Settings"]
+    private var _allTags = [TagEntity]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        _allTags = _tagCache.allTags
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -26,20 +28,19 @@ class MenuController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedTag = _tagCache.allTags[indexPath.row]
+        selectedTag = _allTags[indexPath.row]
         sideMenuController?.performSegue(withIdentifier: "showCenterController", sender: nil)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return _tagCache.allTags.count
+            return _allTags.count
         default:
             return 0
         }
@@ -49,7 +50,7 @@ class MenuController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath)
         switch indexPath.section {
         case 0:
-            cell.textLabel?.text = _tagCache.allTags[indexPath.row].name
+            cell.textLabel?.text = _allTags[indexPath.row].name
         default:
             cell.textLabel?.text = "Test"
         }
@@ -68,5 +69,9 @@ class MenuController: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         (view as! UITableViewHeaderFooterView).backgroundView?.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
     }
- 
+    
+    func didReveal() -> Void {
+        _allTags = _tagCache.allTags
+        tableView.reloadData()
+    }
 }

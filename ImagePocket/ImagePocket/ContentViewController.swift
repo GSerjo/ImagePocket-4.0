@@ -116,7 +116,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         if let menuController = sideMenuController.sideViewController as? MenuController {
-            menuController.tableView.reloadData()
+            menuController.didReveal()
         }
     }
     

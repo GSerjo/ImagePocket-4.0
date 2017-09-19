@@ -30,10 +30,7 @@ final class TagCache {
         _tagRepository.saveOrUpdate(tags)
     }
     
-    var tagCount: Int {
-        return _tags.count
-    }
-    
+   
     func saveOrUpdate(tags: [TagEntity]) {
         let saveTags = tags.filter{$0.isNew}
         if saveTags.count > 0 {
