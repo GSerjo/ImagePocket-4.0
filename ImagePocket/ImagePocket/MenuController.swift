@@ -34,7 +34,7 @@ class MenuController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedTag = _allTags[indexPath.row]
-        sideMenuController?.performSegue(withIdentifier: "showCenterController", sender: nil)
+        sideMenuController?.toggle()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

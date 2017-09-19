@@ -113,8 +113,7 @@ public extension UIViewController {
         return sideMenuControllerForViewController(self)
     }
     
-    fileprivate func sideMenuControllerForViewController(_ controller : UIViewController) -> SideMenuController?
-    {
+    fileprivate func sideMenuControllerForViewController(_ controller : UIViewController) -> SideMenuController? {
         if let sideController = controller as? SideMenuController {
             return sideController
         }
