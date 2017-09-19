@@ -31,7 +31,7 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
         _imageView.frame = CGRect(x: 0, y: 0, width: _scrollView.frame.size.width, height: _scrollView.frame.size.height)
        _imageView.isUserInteractionEnabled = true
        _imageView.contentMode = .scaleAspectFit
-        _scrollView.addSubview(_imageView)
+       _scrollView.addSubview(_imageView)
     
         setupGestureRecognizer()
     }

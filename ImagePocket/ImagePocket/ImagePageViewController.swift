@@ -74,7 +74,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     private func updateOnFullScreen() -> Void{
         view.backgroundColor = isFullScreen ? UIColor.black : UIColor.white
         toolbarItems = [_btAction, _btSpace, _btTrash]
-        navigationController?.isToolbarHidden = false
+//        navigationController?.isToolbarHidden = false
     }
     
     func onTagClicked() {
