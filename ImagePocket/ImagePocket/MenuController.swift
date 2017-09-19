@@ -34,6 +34,7 @@ class MenuController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedTag = _allTags[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: false)
         sideMenuController?.toggle()
     }
     
