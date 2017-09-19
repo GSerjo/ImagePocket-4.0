@@ -23,6 +23,8 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Image"
+        
         configureToolBar()
         updateOnFullScreen()
         
@@ -92,7 +94,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
     private func configureToolBar() -> Void {
         let btTag = UIBarButtonItem(title: "Tag", style: .plain, target: self, action: #selector(onTagClicked))
         navigationItem.rightBarButtonItem = btTag
-        navigationController?.navigationBar.topItem?.title = String.empty
+//        navigationController?.navigationBar.topItem?.title = String.empty
     }
     
 

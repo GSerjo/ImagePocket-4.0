@@ -23,8 +23,6 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Image"
-        
         _scrollView.delegate = self
 //        _scrollView.contentInsetAdjustmentBehavior = .never
 

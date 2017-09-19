@@ -73,7 +73,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setReadMode()
+//        setReadMode()
         updateItemSize()
     }
     
@@ -177,13 +177,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         setSearchMode()
     }
     
-
-    
     fileprivate func setReadMode() -> Void {
         _viewMode = .read
         
         navigationItem.titleView = nil
-        self.title = _rootTitle
+        title = _rootTitle
         _selectedImages = [String: ImageEntity]()
         
         _btShare.isEnabled = false
@@ -213,6 +211,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         let searchBar = UISearchBar()
         searchBar.showsCancelButton = true
         searchBar.delegate = self
+        searchBar.placeholder = "Search Photos"
+        
         navigationItem.titleView = searchBar
         
         searchBar.becomeFirstResponder()
@@ -225,6 +225,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
             
         else if segue.identifier == _showImagePage {
+            let backItem = UIBarButtonItem()
+            navigationItem.backBarButtonItem = backItem
             let controller = segue.destination as! ImagePageViewController
             controller.setup(entities: _filteredImages, selectedImageIndex: _selectedImageIndex)
         }
