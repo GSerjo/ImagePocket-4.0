@@ -30,5 +30,6 @@ final class DataStore {
         try TagRepository.instance.createTable()
         try ImageRepository.instance.createTable()
         try ImageRepository.instance.createTagImageTable()
+        try SearchRepository.instance.createTable()
     }
 }
