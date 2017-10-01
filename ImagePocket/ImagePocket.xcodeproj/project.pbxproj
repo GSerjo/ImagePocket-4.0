@@ -29,6 +29,7 @@
 		B27D66551DBD9E4C001E579A /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */; };
 		B27D66571DBDAAB0001E579A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66561DBDAAB0001E579A /* ContentViewController.swift */; };
 		B27D66591DBDAC69001E579A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D66581DBDAC69001E579A /* MenuController.swift */; };
+		B29007431F816CCA00270793 /* SearchCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29007421F816CCA00270793 /* SearchCache.swift */; };
 		B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */; };
 		B29181421F5340B100DBBC86 /* NWSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29181401F5340B100DBBC86 /* NWSToken.swift */; };
 		B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29181411F5340B100DBBC86 /* NWSTokenView.swift */; };
@@ -166,6 +167,7 @@
 		B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		B27D66561DBDAAB0001E579A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		B27D66581DBDAC69001E579A /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		B29007421F816CCA00270793 /* SearchCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCache.swift; sourceTree = "<group>"; };
 		B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSelectorViewController.swift; sourceTree = "<group>"; };
 		B29181401F5340B100DBBC86 /* NWSToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NWSToken.swift; sourceTree = "<group>"; };
 		B29181411F5340B100DBBC86 /* NWSTokenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NWSTokenView.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 			children = (
 				B2DDD4C21DCD705C00749A82 /* TagCache.swift */,
 				B29BEC701F4A862500696D47 /* ImageCache.swift */,
+				B29007421F816CCA00270793 /* SearchCache.swift */,
 			);
 			name = Caches;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */,
 				B2A295971F5E570100289F8A /* ImagePageViewController.swift in Sources */,
 				B23095181F4E6219002166A9 /* ImagePreviewCell.swift in Sources */,
+				B29007431F816CCA00270793 /* SearchCache.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,
 				B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */,
 				B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */,

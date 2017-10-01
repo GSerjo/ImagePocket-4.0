@@ -26,7 +26,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     private var _filteredTags = [TagItem]()
     
     private let _tagCache = TagCache.instance
-    private let _imageCache = ImageCache.inctace
+    private let _imageCache = ImageCache.instance
     
     private var _initialCommonTags = Set<TagEntity>()
     private var _images = [ImageEntity]()

@@ -11,7 +11,7 @@ import Photos
 
 final class ImageCache{
     
-    static let inctace = ImageCache()
+    static let instance = ImageCache()
     
     private var _assets = [String: PHAsset]()
     private let _imageRepository = ImageRepository.instance

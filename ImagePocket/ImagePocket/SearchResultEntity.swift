@@ -9,10 +9,5 @@
 import Foundation
 
 struct SearchResultEntity {
-    
-    public let localIdentifier: String
-    
-    init(_ localIdentifier: String) {
-        self.localIdentifier = localIdentifier
-    }
+    let localIdentifier: String
 }

@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+struct SearchEntity {
+    public let text: String
+    public let localIdentifier: String
+}

@@ -125,7 +125,7 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     
     private func updateContent() -> Void {
         guard let image = imageEntity,
-        let asset = ImageCache.inctace[image.localIdentifier] else {
+        let asset = ImageCache.instance[image.localIdentifier] else {
             return
         }
         switch asset.playbackStyle {

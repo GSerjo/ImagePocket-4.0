@@ -340,7 +340,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     private func startAppCore(){
-        _imageCache = ImageCache.inctace
+        _imageCache = ImageCache.instance
         _filteredImages = _imageCache.getImages(tag: TagEntity.all)
         reloadData()
     }
