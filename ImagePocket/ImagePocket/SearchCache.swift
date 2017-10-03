@@ -13,14 +13,24 @@ final class SearchCache {
     
     private let SearchCacheInitializedName = "SearchCacheInitialized"
     private var _searchCacheInitialized = false
-    private let _searchRepository = SearchRepository.instance
+    private let _searchRepository: SearchRepository?
+    private let _dispatchQueue: DispatchQueue?
+    private let _dateFormatter: DateFormatter?
     
     static let instance = SearchCache()
-    private let _imageManager = PHImageManager.default()
-    
     
     private init() {
         _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
+        if _searchCacheInitialized {
+            _dispatchQueue = nil
+            _searchRepository = nil
+            _dateFormatter = nil
+        } else {
+            _dateFormatter = DateFormatter()
+            _dateFormatter?.dateFormat = "yyyy LLLL"
+            _searchRepository = SearchRepository.instance
+            _dispatchQueue = DispatchQueue(label: "SearchQueue")
+        }
     }
     
     public func fill(asset: PHAsset) -> Void {
@@ -28,20 +38,20 @@ final class SearchCache {
             return
         }
         
-        let options = PHImageRequestOptions()
-        options.isNetworkAccessAllowed = true
-        options.isSynchronous = false
         
-        _imageManager.requestImageData(for: asset, options: options, resultHandler: {(imageData, _, _, _) in
-            guard let data = imageData,
-                let metadata = self.fetchPhotoMetadata(data: data) else {
-                return
+        _dispatchQueue?.async {
+            var items = [String]()
+            
+            if let date = asset.creationDate,
+                let item =  self._dateFormatter?.string(from: date) {
+                items.append(item)
             }
-            print(metadata)
-        });
-        
-        let entity = SearchEntity(text: "", localIdentifier: asset.localIdentifier)
-        _searchRepository.save(entity: entity)
+            
+//            let t = asset.location
+            
+            let entity = SearchEntity(text: items.joined(separator: " "), localIdentifier: asset.localIdentifier)
+            self._searchRepository?.save(entity: entity)
+        }
     }
     
     private func fetchPhotoMetadata(data: Data) -> [String: Any]? {
@@ -50,6 +60,5 @@ final class SearchCache {
                 return nil
         }
         return imagePropertiesDictionary
-        
     }
 }

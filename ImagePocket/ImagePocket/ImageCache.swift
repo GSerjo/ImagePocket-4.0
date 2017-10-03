@@ -110,7 +110,7 @@ final class ImageCache{
         
         fetchResult.enumerateObjects(using: {(object, id, _) in
             assets.append(object)
-//            SearchCache.instance.fill(asset: object)
+            SearchCache.instance.fill(asset: object)
         })
         
         return assets
