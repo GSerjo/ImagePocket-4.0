@@ -18,10 +18,21 @@ final class ImageEntity: Entity {
     private var _tagIds: [Int64: TagImageEntity]
     private(set) var newTags = [TagEntity]()
     
-    init(id: Int64 = 0, localIdentifier: String, creationDate: Date?, tagIds: [Int64: TagImageEntity] = [Int64: TagImageEntity]()) {
+    init(id: Int64 = 0, localIdentifier: String, creationDate: Date?) {
         self.id = id
         self.localIdentifier = localIdentifier
         self.creationDate = creationDate
+        _tagIds = [Int64: TagImageEntity]()
+    }
+    
+    init(entity: ImageEntity) {
+        self.id = entity.id
+        self.localIdentifier = entity.localIdentifier
+        self.creationDate = entity.creationDate
+        
+        let tagIds = entity._tagIds.values.map{$0.clone()}.toDictionary{ (item: TagImageEntity) -> Int64 in
+            item.tagId
+        }
         _tagIds = tagIds
     }
     
@@ -47,10 +58,7 @@ final class ImageEntity: Entity {
     }
     
     func clone() -> ImageEntity {
-        let tagIds = _tagIds.values.map{$0.clone()}.toDictionary{ (item: TagImageEntity) -> Int64 in
-            item.tagId
-        }
-        return ImageEntity(id: id, localIdentifier: localIdentifier, creationDate: creationDate, tagIds: tagIds)
+        return ImageEntity(entity: self)
     }
     
     func containsTag(tagId: Int64) -> Bool {
@@ -69,6 +77,10 @@ final class ImageEntity: Entity {
         for item in entities {
             _tagIds[item.tagId] = item
         }
+    }
+    
+    func searchText() -> String {
+        return ""
     }
     
     func replaceTags(tags: [TagEntity]) {
@@ -103,5 +115,4 @@ final class ImageEntity: Entity {
         
         return (remove, add)
     }
-    
 }

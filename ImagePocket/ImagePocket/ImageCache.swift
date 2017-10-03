@@ -17,7 +17,6 @@ final class ImageCache{
     private let _imageRepository = ImageRepository.instance
     private var _taggedImages = [String: ImageEntity]()
     private var _actualImages = [String:ImageEntity]()
-    
     private let _tagCache = TagCache.instance
     
     private init(){
@@ -111,6 +110,7 @@ final class ImageCache{
         
         fetchResult.enumerateObjects(using: {(object, id, _) in
             assets.append(object)
+//            SearchCache.instance.fill(asset: object)
         })
         
         return assets

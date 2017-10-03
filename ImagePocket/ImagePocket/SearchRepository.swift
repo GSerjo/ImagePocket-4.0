@@ -24,12 +24,10 @@ final class SearchRepository {
         try DataStore.instance.db.run(tableQuery)
     }
     
-    func save(_ entitis: [SearchEntity]) -> Void {
-        for item in entitis {
-            let query = _table.insert(Columns.localIdentifier <- item.localIdentifier, Columns.text <- item.text)
-            if let t = try? DataStore.instance.db.run(query){
-                print(t)
-            }
+    func save(entity: SearchEntity) -> Void {
+        let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
+        if let t = try? DataStore.instance.db.run(query){
+            print(t)
         }
     }
     
