@@ -18,6 +18,7 @@ final class ImageCache{
     private var _taggedImages = [String: ImageEntity]()
     private var _actualImages = [String:ImageEntity]()
     private let _tagCache = TagCache.instance
+    private let _searchCache = SearchCache.instance
     
     private init(){
         
@@ -38,16 +39,20 @@ final class ImageCache{
         return _assets[localId]
     }
     
-    func getImages(searchText: String) -> [ImageEntity] {
-        if searchText.isEmpty() {
+    func search(text: String) -> [ImageEntity] {
+        if text.isEmpty() {
             return _actualImages.values.toArray()
         }
         var result = [ImageEntity]()
         for item in _taggedImages.values {
-            if item.hasSearchableText(text: searchText){
+            if item.hasSearchableText(text: text){
                 result.append(item)
             }
         }
+        
+        let searchResult = _searchCache.search(text: text)
+        result.append(contentsOf: searchResult.flatMap{_actualImages[$0.localIdentifier]})
+        result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         return result
     }
     

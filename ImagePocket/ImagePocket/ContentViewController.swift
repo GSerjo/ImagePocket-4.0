@@ -147,7 +147,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     fileprivate func filterImages(by searchText: String) -> Void {
-        _filteredImages = _imageCache.getImages(searchText: searchText)
+        _filteredImages = _imageCache.search(text: searchText)
         reloadData()
     }
     

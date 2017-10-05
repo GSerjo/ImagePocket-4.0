@@ -45,7 +45,10 @@ final class SearchRepository {
     func search(text: String) -> [SearchResultEntity] {
         var result = [SearchResultEntity]()
         
-        let table = _table.filter(Columns.text.match(text))
+
+        // let replies = emails.filter(emails.match("subject:\"Re:\"*))
+        
+        let table = _table.filter(_table.match("text:\(text)*"))
         if let rows = try? DataStore.instance.db.prepare(table){
             rows.forEach{row in
                 result.append(SearchResultEntity(localIdentifier: row[Columns.localIdentifier]))

@@ -13,7 +13,7 @@ final class SearchCache {
     
     private let SearchCacheInitializedName = "SearchCacheInitialized"
     private var _searchCacheInitialized = false
-    private let _searchRepository: SearchRepository?
+    private let _searchRepository = SearchRepository.instance
     private let _dispatchQueue: DispatchQueue?
     private let _dateFormatter: DateFormatter?
     
@@ -23,14 +23,16 @@ final class SearchCache {
         _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
         if _searchCacheInitialized {
             _dispatchQueue = nil
-            _searchRepository = nil
             _dateFormatter = nil
         } else {
             _dateFormatter = DateFormatter()
             _dateFormatter?.dateFormat = "yyyy LLLL"
-            _searchRepository = SearchRepository.instance
             _dispatchQueue = DispatchQueue(label: "SearchQueue")
         }
+    }
+    
+    public func search(text: String) -> [SearchResultEntity] {
+        return _searchRepository.search(text: text)
     }
     
     public func fill(asset: PHAsset) -> Void {
@@ -78,6 +80,6 @@ final class SearchCache {
             return
         }
         let entity = SearchEntity(text: items.joined(separator: " "), localIdentifier: localIdentifier)
-        self._searchRepository?.save(entity: entity)
+        self._searchRepository.save(entity: entity)
     }
 }
