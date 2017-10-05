@@ -47,18 +47,37 @@ final class SearchCache {
                 items.append(item)
             }
             
-//            let t = asset.location
-            
-            let entity = SearchEntity(text: items.joined(separator: " "), localIdentifier: asset.localIdentifier)
-            self._searchRepository?.save(entity: entity)
+            if let location = asset.location {
+                CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
+                    if error == nil {
+                        if let place = placemark?[0] {
+                            if let country = place.country {
+                                items.append(country)
+                            }
+                            if let locality = place.locality {
+                                items.append(locality)
+                            }
+                            if let subLocality = place.subLocality {
+                                items.append(subLocality)
+                            }
+                            if let administrativeArea = place.administrativeArea {
+                                items.append(administrativeArea)
+                            }
+                        }
+                    }
+                    self.save(items: items, localIdentifier: asset.localIdentifier)
+                })
+            } else {
+                self.save(items: items, localIdentifier: asset.localIdentifier)
+            }
         }
     }
     
-    private func fetchPhotoMetadata(data: Data) -> [String: Any]? {
-        guard let selectedImageSourceRef = CGImageSourceCreateWithData(data as CFData, nil),
-            let imagePropertiesDictionary = CGImageSourceCopyPropertiesAtIndex(selectedImageSourceRef, 0, nil) as? [String: Any] else {
-                return nil
+    private func save(items: [String], localIdentifier: String) -> Void {
+        if items.isEmpty {
+            return
         }
-        return imagePropertiesDictionary
+        let entity = SearchEntity(text: items.joined(separator: " "), localIdentifier: localIdentifier)
+        self._searchRepository?.save(entity: entity)
     }
 }

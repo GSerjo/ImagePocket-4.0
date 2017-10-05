@@ -25,6 +25,9 @@ final class SearchRepository {
     }
     
     func save(entity: SearchEntity) -> Void {
+        if entity.text.isEmpty() {
+            return
+        }
         let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
         let _ = try? DataStore.instance.db.run(query)
     }
