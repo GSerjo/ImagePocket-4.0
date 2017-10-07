@@ -19,4 +19,8 @@ public extension Sequence {
         
         return result;
     }
+
+    func distinct<E: Hashable>() -> [E] where E == Iterator.Element {
+        return Array(Set(self))
+    }
 }

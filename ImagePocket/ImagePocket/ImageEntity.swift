@@ -8,6 +8,16 @@
 
 import Foundation
 
+extension ImageEntity: Hashable {
+    var hashValue: Int {
+        return localIdentifier.hashValue
+    }
+    
+    static func == (lhs: ImageEntity, rhs: ImageEntity) -> Bool {
+        return lhs.localIdentifier == rhs.localIdentifier
+    }
+}
+
 final class ImageEntity: Entity {
     
     private let _tagCache = TagCache.instance
@@ -35,7 +45,7 @@ final class ImageEntity: Entity {
         }
         _tagIds = tagIds
     }
-    
+
     var tags: [TagEntity] {
         let tags = _tagIds.values.toArray().map{self._tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
         return tags

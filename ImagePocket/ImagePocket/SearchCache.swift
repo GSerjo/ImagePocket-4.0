@@ -30,12 +30,19 @@ final class SearchCache {
             _dispatchQueue = DispatchQueue(label: "SearchQueue")
         }
     }
-    
+        
     public func search(text: String) -> [SearchResultEntity] {
         return _searchRepository.search(text: text)
     }
     
-    public func fill(asset: PHAsset) -> Void {
+    public func fill(assets: [PHAsset]) -> Void {
+        for item in assets {
+            fill(asset: item)
+        }
+        UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
+    }
+    
+    private func fill(asset: PHAsset) -> Void {
         if _searchCacheInitialized {
             return
         }

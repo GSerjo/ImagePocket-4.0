@@ -49,9 +49,11 @@ final class ImageCache{
                 result.append(item)
             }
         }
-        
+
         let searchResult = _searchCache.search(text: text)
         result.append(contentsOf: searchResult.flatMap{_actualImages[$0.localIdentifier]})
+        
+        result = result.distinct()
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         return result
     }
@@ -115,9 +117,9 @@ final class ImageCache{
         
         fetchResult.enumerateObjects(using: {(object, id, _) in
             assets.append(object)
-            SearchCache.instance.fill(asset: object)
+            
         })
-        
+        SearchCache.instance.fill(assets: assets)
         return assets
     }
     

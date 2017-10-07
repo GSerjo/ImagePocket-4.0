@@ -54,7 +54,6 @@ final class SearchRepository {
                 result.append(SearchResultEntity(localIdentifier: row[Columns.localIdentifier]))
             }
         }
-        
         return result
     }
     
