@@ -20,7 +20,7 @@ final class SearchCache {
     static let instance = SearchCache()
     
     private init() {
-        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
+//        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
         if _searchCacheInitialized {
             _dispatchQueue = nil
             _dateFormatter = nil
@@ -43,9 +43,9 @@ final class SearchCache {
     }
     
     private func fill(asset: PHAsset) -> Void {
-        if _searchCacheInitialized {
-            return
-        }
+//        if _searchCacheInitialized {
+//            return
+//        }
         
         
         _dispatchQueue?.async {

@@ -16,11 +16,11 @@ final class SearchRepository {
     public static let instance = SearchRepository()
     
     func createTable() throws -> Void {
-        let config = FTS5Config()
+        let config = FTS4Config()
             .column(Columns.text)
             .column(Columns.localIdentifier)
         
-        let tableQuery = _table.create(.FTS5(config), ifNotExists: true)
+        let tableQuery = _table.create(.FTS4(config), ifNotExists: true)
         try DataStore.instance.db.run(tableQuery)
     }
     
@@ -45,10 +45,7 @@ final class SearchRepository {
     func search(text: String) -> [SearchResultEntity] {
         var result = [SearchResultEntity]()
         
-
-        // let replies = emails.filter(emails.match("subject:\"Re:\"*))
-        
-        let table = _table.filter(_table.match("text:\(text)*"))
+        let table = _table.filter(Columns.text.match("\(text)*"))
         if let rows = try? DataStore.instance.db.prepare(table){
             rows.forEach{row in
                 result.append(SearchResultEntity(localIdentifier: row[Columns.localIdentifier]))
