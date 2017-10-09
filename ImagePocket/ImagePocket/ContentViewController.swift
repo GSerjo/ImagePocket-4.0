@@ -20,6 +20,7 @@ private extension UICollectionView {
 extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         setReadMode()
+        filterImages(by: _selectedTag)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -51,6 +52,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private var _thumbnailSize: CGSize!
     private var _previousPreheatRect = CGRect.zero
     private var _selectedImageIndex: Int!
+    private let _settings = Settings.instance
+    fileprivate var _selectedTag = TagEntity.all
     
     private enum ViewMode {
         case read
@@ -84,6 +87,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        _settings.save(_selectedTag)
     }
     
     override func viewWillLayoutSubviews() {
@@ -139,8 +143,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
-    private func filterImages(by tag: TagEntity?) -> Void {
+    fileprivate func filterImages(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
+            _selectedTag = tagEntity
             _filteredImages = _imageCache.getImages(tag: tagEntity)
             reloadData()
         }
@@ -341,7 +346,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     private func startAppCore(){
         _imageCache = ImageCache.instance
-        filterImages(by: TagEntity.all)
+        _selectedTag = _settings.getTag()
+        filterImages(by: _selectedTag)
     }
     
 
