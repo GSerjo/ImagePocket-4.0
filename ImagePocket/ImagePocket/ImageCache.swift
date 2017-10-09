@@ -41,16 +41,23 @@ final class ImageCache{
     
     func search(text: String) -> [ImageEntity] {
         if text.isEmpty() {
-            return _actualImages.values.toArray()
+            return getImages(tag: TagEntity.all)
         }
+        
+        let terms = text.components(separatedBy: " ").map{$0.trimmingCharacters(in: .whitespacesAndNewlines)}.filter{!$0.isEmpty()}
+        
         var result = [ImageEntity]()
         for item in _taggedImages.values {
-            if item.hasSearchableText(text: text){
-                result.append(item)
+            
+            for searchText in terms {
+                if item.hasSearchableText(text: searchText){
+                    result.append(item)
+                    break
+                }
             }
         }
 
-        let searchResult = _searchCache.search(text: text)
+        let searchResult = _searchCache.search(terms)
         result.append(contentsOf: searchResult.flatMap{_actualImages[$0.localIdentifier]})
         
         result = result.distinct()

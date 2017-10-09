@@ -31,8 +31,8 @@ final class SearchCache {
         }
     }
         
-    public func search(text: String) -> [SearchResultEntity] {
-        return _searchRepository.search(text: text)
+    public func search(_ terms: [String]) -> [SearchResultEntity] {
+        return _searchRepository.search(terms)
     }
     
     public func fill(assets: [PHAsset]) -> Void {

@@ -42,9 +42,9 @@ final class SearchRepository {
         }
     }
     
-    func search(text: String) -> [SearchResultEntity] {
+    func search(_ terms: [String]) -> [SearchResultEntity] {
         var result = [SearchResultEntity]()
-        let searchText = createSearchText(text)
+        let searchText = createSearchText(terms)
         let table = _table.filter(Columns.text.match("\(searchText)"))
         if let rows = try? DataStore.instance.db.prepare(table){
             rows.forEach{row in
@@ -54,23 +54,27 @@ final class SearchRepository {
         return result
     }
     
-    private func createSearchText(_ text: String) -> String {
+    private func createSearchText(_ terms: [String]) -> String {
         var result = String.empty
-        let components = text.components(separatedBy: " ").map{$0.trimmingCharacters(in: .whitespacesAndNewlines)}.filter{!$0.isEmpty()}
-        if components.count > 1 {
-            for (index, item) in components.enumerated() {
+        
+        if terms.isEmpty {
+            return result
+        }
+        
+        if terms.count > 1 {
+            for (index, item) in terms.enumerated() {
                 if index == 0 {
                     result = "\(item)* AND "
                     continue
                 }
-                if index != components.count - 1 {
+                if index != terms.count - 1 {
                     result = "\(result)\(item)* AND "
                 } else {
                     result = "\(result)\(item)*"
                 }
             }
         } else {
-            result = "\(text.trimmingCharacters(in: .whitespacesAndNewlines))*"
+            result = "\(terms[0].trimmingCharacters(in: .whitespacesAndNewlines))*"
         }
         return result
     }

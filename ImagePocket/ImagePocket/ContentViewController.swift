@@ -19,6 +19,7 @@ private extension UICollectionView {
 
 extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        _searchBar.text = nil
         setReadMode()
         filterImages(by: _selectedTag)
     }
@@ -34,6 +35,7 @@ extension ContentViewController: UISearchBarDelegate {
     }
     
     func dismissKeyboard() {
+        _searchBar.text = nil
         _searchBar.endEditing(true)
     }
 }
