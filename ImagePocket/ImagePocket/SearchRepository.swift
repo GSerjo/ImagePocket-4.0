@@ -44,12 +44,33 @@ final class SearchRepository {
     
     func search(text: String) -> [SearchResultEntity] {
         var result = [SearchResultEntity]()
-        
-        let table = _table.filter(Columns.text.match("\(text)*"))
+        let searchText = createSearchText(text)
+        let table = _table.filter(Columns.text.match("\(searchText)"))
         if let rows = try? DataStore.instance.db.prepare(table){
             rows.forEach{row in
                 result.append(SearchResultEntity(localIdentifier: row[Columns.localIdentifier]))
             }
+        }
+        return result
+    }
+    
+    private func createSearchText(_ text: String) -> String {
+        var result = String.empty
+        let components = text.components(separatedBy: " ").map{$0.trimmingCharacters(in: .whitespacesAndNewlines)}.filter{!$0.isEmpty()}
+        if components.count > 1 {
+            for (index, item) in components.enumerated() {
+                if index == 0 {
+                    result = "\(item)* AND "
+                    continue
+                }
+                if index != components.count - 1 {
+                    result = "\(result)\(item)* AND "
+                } else {
+                    result = "\(result)\(item)*"
+                }
+            }
+        } else {
+            result = "\(text.trimmingCharacters(in: .whitespacesAndNewlines))*"
         }
         return result
     }
