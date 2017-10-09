@@ -26,6 +26,16 @@ extension ContentViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterImages(by: searchText)
     }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        _searchBar.endEditing(true)
+    }
 }
 
 class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
@@ -54,6 +64,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private var _selectedImageIndex: Int!
     private let _settings = Settings.instance
     fileprivate var _selectedTag = TagEntity.all
+    fileprivate var _searchBar = UISearchBar()
     
     private enum ViewMode {
         case read
@@ -69,6 +80,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         self.title = _rootTitle
         configureToolbar()
         setReadMode()
+        hideKeyboardWhenTappedAround()
         
         startApp()
     }
@@ -163,6 +175,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private func configureToolbar(){
         navigationItem.rightBarButtonItems = [_btSelect, _btSearch]
         _btOpenMenu = navigationItem.leftBarButtonItems
+        
+        _searchBar.showsCancelButton = true
+        _searchBar.delegate = self
+        _searchBar.placeholder = "Search Photos"
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
@@ -213,14 +229,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         navigationItem.leftBarButtonItems = nil
         navigationItem.rightBarButtonItems = nil
         
-        let searchBar = UISearchBar()
-        searchBar.showsCancelButton = true
-        searchBar.delegate = self
-        searchBar.placeholder = "Search Photos"
-        
-        navigationItem.titleView = searchBar
-        
-        searchBar.becomeFirstResponder()
+        navigationItem.titleView = _searchBar
+        _searchBar.becomeFirstResponder()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -235,7 +245,6 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             let controller = segue.destination as! ImagePageViewController
             controller.setup(entities: _filteredImages, selectedImageIndex: _selectedImageIndex)
         }
-        
     }
     
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
