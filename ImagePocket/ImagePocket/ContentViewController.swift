@@ -25,7 +25,7 @@ extension ContentViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterImages(by: searchText)
+        searchImages(by: searchText)
     }
     
     func hideKeyboardWhenTappedAround() {
@@ -67,6 +67,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private let _settings = Settings.instance
     fileprivate var _selectedTag = TagEntity.all
     fileprivate var _searchBar = UISearchBar()
+    private var _pendingSearchRequest: DispatchWorkItem?
     
     private enum ViewMode {
         case read
@@ -165,9 +166,18 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
-    fileprivate func filterImages(by searchText: String) -> Void {
-        _filteredImages = _imageCache.search(text: searchText)
-        reloadData()
+    fileprivate func searchImages(by searchText: String) -> Void {
+        _pendingSearchRequest?.cancel()
+        let searchRequest = DispatchWorkItem{ [unowned self] in
+            self._filteredImages = self._imageCache.search(text: searchText)
+            DispatchQueue.main.async {
+                self.reloadData()
+            }
+        }
+
+        _pendingSearchRequest = searchRequest
+        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(250), execute: searchRequest)
+//        reloadData()
     }
     
     private func reloadData() {
