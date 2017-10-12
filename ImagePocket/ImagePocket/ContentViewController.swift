@@ -21,7 +21,7 @@ extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         _searchBar.text = nil
         setReadMode()
-        filterImages(by: _selectedTag)
+        filterImagesAndReload(by: _selectedTag)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -37,6 +37,48 @@ extension ContentViewController: UISearchBarDelegate {
     func dismissKeyboard() {
         _searchBar.text = nil
         _searchBar.endEditing(true)
+    }
+}
+
+extension ContentViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        
+        guard let changes = changeInstance.changeDetails(for: _imageCache.fetchResult)
+            else { return }
+        
+        // Change notifications may be made on a background queue. Re-dispatch to the
+        // main queue before acting on the change as we'll be updating the UI.
+        DispatchQueue.main.sync { [unowned self] in
+            // Hang on to the new fetch result.
+            _imageCache.fetchResult = changes.fetchResultAfterChanges
+            _imageCache.reloadImages()
+            filterImages(by: _selectedTag)
+            
+            if changes.hasIncrementalChanges {
+                // If we have incremental diffs, animate them in the collection view.
+                guard let collectionView = self._collectionView else { fatalError() }
+                collectionView.performBatchUpdates({
+                    // For indexes to make sense, updates must be in this order:
+                    // delete, insert, reload, move
+                    if let removed = changes.removedIndexes, !removed.isEmpty {
+                        collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
+                    }
+                    if let inserted = changes.insertedIndexes, !inserted.isEmpty {
+                        collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
+                    }
+                    if let changed = changes.changedIndexes, !changed.isEmpty {
+                        collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
+                    }
+                    changes.enumerateMoves { fromIndex, toIndex in
+                        collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+                                                to: IndexPath(item: toIndex, section: 0))
+                    }
+                })
+            } else {
+                reloadData()
+            }
+            resetCachedAssets()
+        }
     }
 }
 
@@ -56,7 +98,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     @IBOutlet weak var _collectionView: UICollectionView!
     
     private var _btOpenMenu: [UIBarButtonItem]!
-    private var _imageCache: ImageCache!
+    fileprivate var _imageCache: ImageCache!
     private let _imageManager = PHCachingImageManager()
     private var _filteredImages = [ImageEntity]()
     private var _selectedImages = [String: ImageEntity]()
@@ -86,6 +128,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         hideKeyboardWhenTappedAround()
         
         startApp()
+    }
+    
+    deinit {
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,7 +176,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             return
         }
         
-        filterImages(by: menuController.selectedTag)
+        filterImagesAndReload(by: menuController.selectedTag)
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
@@ -158,11 +204,17 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
+    fileprivate func filterImagesAndReload(by tag: TagEntity?) -> Void {
+        if let tagEntity = tag {
+            filterImages(by: tagEntity)
+            reloadData()
+        }
+    }
+    
     fileprivate func filterImages(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
             _filteredImages = _imageCache.getImages(tag: tagEntity)
-            reloadData()
         }
     }
     
@@ -180,7 +232,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
 //        reloadData()
     }
     
-    private func reloadData() {
+    fileprivate func reloadData() {
         _collectionView.reloadData()
     }
     
@@ -368,9 +420,16 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     private func startAppCore(){
         _imageCache = ImageCache.instance
         _selectedTag = _settings.getTag()
-        filterImages(by: _selectedTag)
+        
+        resetCachedAssets()
+        PHPhotoLibrary.shared().register(self)
+        filterImagesAndReload(by: _selectedTag)
     }
     
+    fileprivate func resetCachedAssets() {
+        _imageManager.stopCachingImagesForAllAssets()
+        _previousPreheatRect = .zero
+    }
 
     private func updateCachedAssets() {
         // Update only if the view is visible.

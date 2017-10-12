@@ -19,6 +19,7 @@ final class ImageCache{
     private var _actualImages = [String:ImageEntity]()
     private let _tagCache = TagCache.instance
     private let _searchCache = SearchCache.instance
+    var fetchResult: PHFetchResult<PHAsset>!
     
     private init(){
         
@@ -27,7 +28,7 @@ final class ImageCache{
         let allPhotosOptions = PHFetchOptions()
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
-        let fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
         
         _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
         _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
@@ -37,6 +38,13 @@ final class ImageCache{
     
     subscript(localId: String) -> PHAsset?{
         return _assets[localId]
+    }
+    
+    func reloadImages() -> Void {
+        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
+        _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
+        
+        syncImages()
     }
     
     func search(text: String) -> [ImageEntity] {
