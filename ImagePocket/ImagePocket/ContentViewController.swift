@@ -50,9 +50,9 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
         // main queue before acting on the change as we'll be updating the UI.
         DispatchQueue.main.sync { [unowned self] in
             // Hang on to the new fetch result.
-            _imageCache.fetchResult = changes.fetchResultAfterChanges
-            _imageCache.reloadImages()
-            filterImages(by: _selectedTag)
+            self._imageCache.fetchResult = changes.fetchResultAfterChanges
+            self._imageCache.reloadImages()
+            filterImages(by: self._selectedTag)
             
             if changes.hasIncrementalChanges {
                 // If we have incremental diffs, animate them in the collection view.
