@@ -222,9 +222,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _pendingSearchRequest?.cancel()
         let searchRequest = DispatchWorkItem{ [unowned self] in
             self._filteredImages = self._imageCache.search(text: searchText)
-            DispatchQueue.main.async {
-                self.reloadData()
-            }
+            self.reloadData()
         }
 
         _pendingSearchRequest = searchRequest
@@ -233,7 +231,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     fileprivate func reloadData() {
-        _collectionView.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            self._collectionView.reloadData()
+        }
     }
     
     private func configureToolbar(){

@@ -27,7 +27,7 @@ final class SearchCache {
         } else {
             _dateFormatter = DateFormatter()
             _dateFormatter?.dateFormat = "yyyy LLLL"
-            _dispatchQueue = DispatchQueue(label: "SearchQueue")
+            _dispatchQueue = DispatchQueue(label: "SearchQueue", qos: .default, attributes: .concurrent, autoreleaseFrequency: .never, target: nil)
         }
     }
         
