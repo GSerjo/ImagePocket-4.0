@@ -15,9 +15,6 @@ class ImagePreviewCell: UICollectionViewCell {
     
     private static let _selected = #imageLiteral(resourceName: "selected")
     
-//    private static let _selected = #imageLiteral(resourceName: "selected2")
-
-    
     var representedAssetIdentifier: String!
     
     var thumbnailImage: UIImage! {
