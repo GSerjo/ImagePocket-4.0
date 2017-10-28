@@ -21,23 +21,41 @@ final class ImageCache{
     private let _searchCache = SearchCache.instance
     var fetchResult: PHFetchResult<PHAsset>!
     
-    private init(){
-        
-        _taggedImages = _imageRepository.getAll().toDictionary{$0.localIdentifier}
-        
-        let allPhotosOptions = PHFetchOptions()
-        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-        
-        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
-        
-        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
-        _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
-        
-        syncImages()
-    }
+//    private init(){
+//        
+//        _taggedImages = _imageRepository.getAll().toDictionary{$0.localIdentifier}
+//        
+//        let allPhotosOptions = PHFetchOptions()
+//        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+//        
+//        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+//        
+//        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
+//        _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
+//        
+//        syncImages()
+//    }
     
     subscript(localId: String) -> PHAsset?{
         return _assets[localId]
+    }
+    
+    func start(onComplete: @escaping () -> Void) -> Void {
+        DispatchQueue.global().async {[unowned self] in
+            self._taggedImages = self._imageRepository.getAll().toDictionary{$0.localIdentifier}
+            
+            let allPhotosOptions = PHFetchOptions()
+            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+            
+            self.fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+            
+            self._assets = self.getAssets(self.fetchResult).toDictionary{$0.localIdentifier}
+            self._actualImages  = self._assets.values.map(self.createImage).toDictionary{$0.localIdentifier}
+            
+            self.syncImages()
+            
+            onComplete()
+        }
     }
     
     func reloadImages() -> Void {
@@ -93,6 +111,12 @@ final class ImageCache{
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         
         return result
+    }
+    
+    func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
+        let result = getImages(tag: tag)
+        
+        onComplete(result)
     }
     
     func saveOrUpdate(entities: [ImageEntity]) -> Void {

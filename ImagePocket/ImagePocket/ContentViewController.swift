@@ -75,7 +75,7 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
                     }
                 })
             } else {
-                reloadData()
+                reloadDataAsync()
             }
             resetCachedAssets()
         }
@@ -192,7 +192,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     private func unselectImages() -> Void {
         _selectedImages = [String: ImageEntity]()
-        reloadData()
+        reloadDataAsync()
     }
     
     private func startApp(){
@@ -206,15 +206,17 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     fileprivate func filterImagesAndReload(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
-            filterImages(by: tagEntity)
-            reloadData()
+            filterImages(by: tagEntity, onComplete: reloadDataAsync)
         }
     }
     
-    fileprivate func filterImages(by tag: TagEntity?) -> Void {
+    fileprivate func filterImages(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
-            _filteredImages = _imageCache.getImages(tag: tagEntity)
+            _imageCache.getImagesAsync(tag: tagEntity, onComplete: { images in
+                self._filteredImages = images
+                onComplete()
+            })
         }
     }
     
@@ -222,19 +224,23 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _pendingSearchRequest?.cancel()
         let searchRequest = DispatchWorkItem{ [unowned self] in
             self._filteredImages = self._imageCache.search(text: searchText)
-            self.reloadData()
+            self.reloadDataAsync()
         }
 
         _pendingSearchRequest = searchRequest
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(250), execute: searchRequest)
-//        reloadData()
     }
     
-    fileprivate func reloadData() {
+    fileprivate func reloadDataAsync() {
         DispatchQueue.main.async { [unowned self] in
-            self._collectionView.reloadData()
+            self.reloadData()
         }
     }
+    
+    private func reloadData() {
+        _collectionView.reloadData()
+    }
+
     
     private func configureToolbar(){
         navigationItem.rightBarButtonItems = [_btSelect, _btSearch]
@@ -418,12 +424,15 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     private func startAppCore(){
-        _imageCache = ImageCache.instance
         _selectedTag = _settings.getTag()
         
+        _imageCache = ImageCache.instance
+        _imageCache.start(onComplete: {
+            self.filterImagesAndReload(by: self._selectedTag)
+        })
+
         resetCachedAssets()
         PHPhotoLibrary.shared().register(self)
-        filterImagesAndReload(by: _selectedTag)
     }
     
     fileprivate func resetCachedAssets() {
