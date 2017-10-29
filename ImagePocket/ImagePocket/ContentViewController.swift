@@ -143,7 +143,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateCachedAssets()
+//        updateCachedAssets()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

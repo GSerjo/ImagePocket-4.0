@@ -14,7 +14,6 @@ final class SearchCache {
     private let SearchCacheInitializedName = "SearchCacheInitialized"
     private var _searchCacheInitialized = false
     private let _searchRepository = SearchRepository.instance
-    private let _dispatchQueue: DispatchQueue?
     private let _dateFormatter: DateFormatter?
     
     static let instance = SearchCache()
@@ -22,12 +21,10 @@ final class SearchCache {
     private init() {
 //        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
         if _searchCacheInitialized {
-            _dispatchQueue = nil
             _dateFormatter = nil
         } else {
             _dateFormatter = DateFormatter()
             _dateFormatter?.dateFormat = "yyyy LLLL"
-            _dispatchQueue = DispatchQueue(label: "SearchQueue", qos: .default, attributes: .concurrent, autoreleaseFrequency: .never, target: nil)
         }
     }
         
@@ -36,57 +33,55 @@ final class SearchCache {
     }
     
     public func fill(assets: [PHAsset]) -> Void {
-        for item in assets {
-            fill(asset: item)
+        if _searchCacheInitialized {
+            return
         }
+        
+        let searchEntities = createSearchEntities(assets)
+        _searchRepository.save(entities: searchEntities)
+        
         UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
     }
     
-    private func fill(asset: PHAsset) -> Void {
-//        if _searchCacheInitialized {
-//            return
-//        }
+    private func createSearchEntities(_ assets: [PHAsset]) -> [SearchEntity] {
+        var result = [SearchEntity]()
         
-        
-        _dispatchQueue?.async {
-            var items = [String]()
-            
-            if let date = asset.creationDate,
-                let item =  self._dateFormatter?.string(from: date) {
-                items.append(item)
-            }
-            
-            if let location = asset.location {
-                CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
-                    if error == nil {
-                        if let place = placemark?[0] {
-                            if let country = place.country {
-                                items.append(country)
-                            }
-                            if let locality = place.locality {
-                                items.append(locality)
-                            }
-                            if let subLocality = place.subLocality {
-                                items.append(subLocality)
-                            }
-                            if let administrativeArea = place.administrativeArea {
-                                items.append(administrativeArea)
+        DispatchQueue.global().sync {
+            for asset in assets {
+                var items = [String]()
+                
+                if let date = asset.creationDate,
+                    let item =  self._dateFormatter?.string(from: date) {
+                    items.append(item)
+                }
+                
+                if let location = asset.location {
+                    CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
+                        if error == nil {
+                            if let place = placemark?[0] {
+                                if let country = place.country {
+                                    items.append(country)
+                                }
+                                if let locality = place.locality {
+                                    items.append(locality)
+                                }
+                                if let subLocality = place.subLocality {
+                                    items.append(subLocality)
+                                }
+                                if let administrativeArea = place.administrativeArea {
+                                    items.append(administrativeArea)
+                                }
                             }
                         }
-                    }
-                    self.save(items: items, localIdentifier: asset.localIdentifier)
-                })
-            } else {
-                self.save(items: items, localIdentifier: asset.localIdentifier)
+                    })
+                }
+                if let searchEntity = SearchEntity(items, asset.localIdentifier){
+                    result.append(searchEntity)
+                }
             }
         }
-    }
-    
-    private func save(items: [String], localIdentifier: String) -> Void {
-        if items.isEmpty {
-            return
-        }
-        let entity = SearchEntity(text: items.joined(separator: " "), localIdentifier: localIdentifier)
-        self._searchRepository.save(entity: entity)
+        return result
     }
 }
+
+

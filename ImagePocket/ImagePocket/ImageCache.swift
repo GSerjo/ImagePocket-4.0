@@ -114,9 +114,11 @@ final class ImageCache{
     }
     
     func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
-        let result = getImages(tag: tag)
-        
-        onComplete(result)
+        DispatchQueue.global().async {[unowned self] in
+            let result = self.getImages(tag: tag)
+            
+            onComplete(result)
+        }
     }
     
     func saveOrUpdate(entities: [ImageEntity]) -> Void {

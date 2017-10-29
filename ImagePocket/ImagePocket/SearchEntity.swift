@@ -11,4 +11,12 @@ import Foundation
 struct SearchEntity {
     public let text: String
     public let localIdentifier: String
+    
+    init?(_ items: [String], _ localIdentifier: String){
+        if items.isEmpty {
+            return nil
+        }
+        text = items.joined(separator: " ")
+        self.localIdentifier = localIdentifier
+    }
 }
