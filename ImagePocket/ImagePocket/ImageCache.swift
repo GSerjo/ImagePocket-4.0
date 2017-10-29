@@ -90,8 +90,16 @@ final class ImageCache{
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         return result
     }
+
+    func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
+        DispatchQueue.global().async {[unowned self] in
+            let result = self.getImages(tag: tag)
+            
+            onComplete(result)
+        }
+    }
     
-    func getImages(tag: TagEntity) -> [ImageEntity]{
+    private func getImages(tag: TagEntity) -> [ImageEntity]{
         
         var result = [ImageEntity]()
         
@@ -111,14 +119,6 @@ final class ImageCache{
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         
         return result
-    }
-    
-    func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
-        DispatchQueue.global().async {[unowned self] in
-            let result = self.getImages(tag: tag)
-            
-            onComplete(result)
-        }
     }
     
     func saveOrUpdate(entities: [ImageEntity]) -> Void {
