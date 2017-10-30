@@ -15,6 +15,8 @@ final class SearchCache {
     private var _searchCacheInitialized = false
     private let _searchRepository = SearchRepository.instance
     private let _dateFormatter: DateFormatter?
+    private var _internalProcessedAssets = 0
+    private let _locker = NSLock()
     
     static let instance = SearchCache()
     
@@ -27,7 +29,7 @@ final class SearchCache {
             _dateFormatter?.dateFormat = "yyyy LLLL"
         }
     }
-        
+    
     public func search(_ terms: [String]) -> [SearchResultEntity] {
         return _searchRepository.search(terms)
     }
@@ -37,16 +39,19 @@ final class SearchCache {
             return
         }
         
-        let searchEntities = createSearchEntities(assets)
-        _searchRepository.save(entities: searchEntities)
+        lock(_locker){
+            _internalProcessedAssets = 0
+        }
         
+        createSearchEntities(assets)      
         UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
     }
     
-    private func createSearchEntities(_ assets: [PHAsset]) -> [SearchEntity] {
+    private func createSearchEntities(_ assets: [PHAsset]) -> Void{
         var result = [SearchEntity]()
+        let totalAssets = assets.count
         
-        DispatchQueue.global().sync {
+        DispatchQueue.global().sync { [unowned self] in
             for asset in assets {
                 var items = [String]()
                 
@@ -73,14 +78,29 @@ final class SearchCache {
                                 }
                             }
                         }
+                        if let searchEntity = SearchEntity(items, asset.localIdentifier){
+                            result.append(searchEntity)
+                        }
+                        self.trySaveSearchEntities(totalAssets, result)
                     })
-                }
-                if let searchEntity = SearchEntity(items, asset.localIdentifier){
-                    result.append(searchEntity)
+                } else {
+                    if let searchEntity = SearchEntity(items, asset.localIdentifier){
+                        result.append(searchEntity)
+                    }
+                    trySaveSearchEntities(totalAssets, result)
                 }
             }
         }
-        return result
+    }
+    
+    private func trySaveSearchEntities(_ initialAssets: Int, _ searchEntities: [SearchEntity]) -> Void {
+        lock(_locker){
+            _internalProcessedAssets = _internalProcessedAssets + 1
+            if initialAssets == _internalProcessedAssets {
+                _searchRepository.save(entities: searchEntities)
+            }
+        }
+        
     }
 }
 

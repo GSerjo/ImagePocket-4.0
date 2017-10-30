@@ -22,9 +22,12 @@ final class SearchRepository {
         
         let tableQuery = _table.create(.FTS4(config), ifNotExists: true)
         try DataStore.instance.db.run(tableQuery)
-    }  
+    }
     
     func save(entities: [SearchEntity]) -> Void {
+        if entities.isEmpty {
+            return
+        }
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             for entity in entities {
                 let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
