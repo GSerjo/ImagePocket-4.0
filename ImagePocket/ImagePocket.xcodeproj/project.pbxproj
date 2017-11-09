@@ -50,6 +50,7 @@
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
 		B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */; };
 		B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */; };
+		B2EDC4351FB4D56A007D8B56 /* GeoAssetEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +192,7 @@
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
 		B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyMapCollectionExtensions.swift; sourceTree = "<group>"; };
 		B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geohash.swift; sourceTree = "<group>"; };
+		B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoAssetEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 				B21E09251F5CA178002C2B41 /* TagImageEntity.swift */,
 				B2AE26511F812D7F00CD0E6F /* SearchEntity.swift */,
 				B2AE26531F812D9400CD0E6F /* SearchResultEntity.swift */,
+				B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -534,6 +537,7 @@
 				B27D66591DBDAC69001E579A /* MenuController.swift in Sources */,
 				B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */,
 				B2A295971F5E570100289F8A /* ImagePageViewController.swift in Sources */,
+				B2EDC4351FB4D56A007D8B56 /* GeoAssetEntity.swift in Sources */,
 				B23095181F4E6219002166A9 /* ImagePreviewCell.swift in Sources */,
 				B29007431F816CCA00270793 /* SearchCache.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,

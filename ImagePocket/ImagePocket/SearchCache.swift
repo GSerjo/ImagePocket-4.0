@@ -48,6 +48,14 @@ final class SearchCache {
         UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
     }
     
+    private func saveGeoAsset(_ assets: [PHAsset]) -> Void {
+        
+        DispatchQueue.global().sync { [unowned self] in
+            let geoAssets = assets.map{GeoAssetEntity($0.localIdentifier, $0.location)}.flatMap{$0}
+        }
+    }
+    
+    
     private func createSearchEntities(_ assets: [PHAsset]) -> Void{
         var result = [SearchEntity]()
         let totalAssets = assets.count
@@ -62,6 +70,7 @@ final class SearchCache {
                 }
                 
                 if let location = asset.location {
+                    
                     CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
                         if error == nil {
                             if let place = placemark?[0] {
