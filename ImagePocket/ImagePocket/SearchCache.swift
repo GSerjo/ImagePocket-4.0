@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import CoreLocation
 
 final class SearchCache {
     
@@ -43,7 +44,7 @@ final class SearchCache {
             _internalProcessedAssets = 0
         }
         
-        createSearchEntities(assets)      
+        createSearchEntities(assets)
         UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
     }
     
@@ -65,6 +66,7 @@ final class SearchCache {
                         if error == nil {
                             if let place = placemark?[0] {
                                 if let country = place.country {
+                                    print(country)
                                     items.append(country)
                                 }
                                 if let locality = place.locality {
@@ -76,7 +78,12 @@ final class SearchCache {
                                 if let administrativeArea = place.administrativeArea {
                                     items.append(administrativeArea)
                                 }
+                            } else {
+                                print("Test")
                             }
+                        }
+                        else {
+                            print("Test2")
                         }
                         if let searchEntity = SearchEntity(items, asset.localIdentifier){
                             result.append(searchEntity)

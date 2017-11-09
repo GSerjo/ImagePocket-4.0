@@ -156,9 +156,8 @@ final class ImageCache{
     private func getAssets(_ fetchResult: PHFetchResult<PHAsset>) -> [PHAsset]{
         var assets: [PHAsset] = []
         
-        fetchResult.enumerateObjects(using: {(object, id, _) in
-            assets.append(object)
-            
+        fetchResult.enumerateObjects(using: {(asset, id, _) in
+            assets.append(asset)            
         })
         SearchCache.instance.fill(assets: assets)
         return assets
