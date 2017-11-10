@@ -52,6 +52,7 @@
 		B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */; };
 		B2EDC4351FB4D56A007D8B56 /* GeoAssetEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */; };
 		B2EDC4391FB6103D007D8B56 /* GeoAssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */; };
+		B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geohash.swift; sourceTree = "<group>"; };
 		B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoAssetEntity.swift; sourceTree = "<group>"; };
 		B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoAssetRepository.swift; sourceTree = "<group>"; };
+		B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 				B27D662F1DBC3339001E579A /* ImageRepository.swift */,
 				B2AE26481F81243600CD0E6F /* SearchRepository.swift */,
 				B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */,
+				B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */,
 			);
 			name = Repositories;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */,
 				B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */,
 				B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */,
+				B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */,
 				B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */,
 				B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */,
 				B29181421F5340B100DBBC86 /* NWSToken.swift in Sources */,

@@ -12,7 +12,6 @@ import SQLite
 
 final class GeoAssetRepository {
     private let _table = Table("GeoAsset")
-    
     static let instance = GeoAssetRepository()
 
     private init(){
@@ -30,6 +29,28 @@ final class GeoAssetRepository {
         
         try DataStore.instance.db.run(tableQuery)
         try DataStore.instance.db.run(indexQuery)
+    }
+    
+    func save(entities: [GeoAssetEntity]) -> Void {
+        if entities.isEmpty {
+            return
+        }
+        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+            for entity in entities {
+                let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.geoHash <- entity.geoHash)
+                let _ = try? DataStore.instance.db.run(query)
+            }
+        }
+    }
+    
+    func getUniqueGeoHashes() -> [String] {
+        var result = [String]()
+        if let rows = try? DataStore.instance.db.prepare(_table.group([Columns.geoHash])){
+            rows.forEach{ row in
+                result.append(row[Columns.geoHash])
+            }
+        }
+        return result
     }
     
     private struct Columns {

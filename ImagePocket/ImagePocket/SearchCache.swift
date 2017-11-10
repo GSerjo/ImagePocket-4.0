@@ -15,6 +15,7 @@ final class SearchCache {
     private let SearchCacheInitializedName = "SearchCacheInitialized"
     private var _searchCacheInitialized = false
     private let _searchRepository = SearchRepository.instance
+    private let _geoHashAssetRepository = GeoAssetRepository.instance
     private let _dateFormatter: DateFormatter?
     private var _internalProcessedAssets = 0
     private let _locker = NSLock()
@@ -43,19 +44,18 @@ final class SearchCache {
         lock(_locker){
             _internalProcessedAssets = 0
         }
-        
-        createSearchEntities(assets)
-        UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
+        saveGeoAsset(assets)
+//        createSearchEntities(assets)
+//        UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
     }
     
     private func saveGeoAsset(_ assets: [PHAsset]) -> Void {
         
         DispatchQueue.global().sync { [unowned self] in
             let geoAssets = assets.map{GeoAssetEntity($0.localIdentifier, $0.location)}.flatMap{$0}
-            
+            self._geoHashAssetRepository.save(entities: geoAssets)
         }
     }
-    
     
     private func createSearchEntities(_ assets: [PHAsset]) -> Void{
         var result = [SearchEntity]()
