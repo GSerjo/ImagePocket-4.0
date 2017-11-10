@@ -15,6 +15,9 @@ final class SearchRepository {
     
     public static let instance = SearchRepository()
     
+    private init(){
+    }
+    
     func createTable() throws -> Void {
         let config = FTS4Config()
             .column(Columns.text)

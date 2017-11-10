@@ -52,6 +52,7 @@ final class SearchCache {
         
         DispatchQueue.global().sync { [unowned self] in
             let geoAssets = assets.map{GeoAssetEntity($0.localIdentifier, $0.location)}.flatMap{$0}
+            
         }
     }
     

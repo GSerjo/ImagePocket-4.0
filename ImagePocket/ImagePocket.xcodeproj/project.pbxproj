@@ -51,6 +51,7 @@
 		B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */; };
 		B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */; };
 		B2EDC4351FB4D56A007D8B56 /* GeoAssetEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */; };
+		B2EDC4391FB6103D007D8B56 /* GeoAssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +194,7 @@
 		B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyMapCollectionExtensions.swift; sourceTree = "<group>"; };
 		B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geohash.swift; sourceTree = "<group>"; };
 		B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoAssetEntity.swift; sourceTree = "<group>"; };
+		B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoAssetRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +296,7 @@
 				B27D662D1DBC2DB0001E579A /* TagRepository.swift */,
 				B27D662F1DBC3339001E579A /* ImageRepository.swift */,
 				B2AE26481F81243600CD0E6F /* SearchRepository.swift */,
+				B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */,
 			);
 			name = Repositories;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				B25E4F851F8A816F00AE34C0 /* Settings.swift in Sources */,
 				B2AE26541F812D9400CD0E6F /* SearchResultEntity.swift in Sources */,
 				B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */,
+				B2EDC4391FB6103D007D8B56 /* GeoAssetRepository.swift in Sources */,
 				B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */,
 				B2AE26521F812D7F00CD0E6F /* SearchEntity.swift in Sources */,
 				B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */,

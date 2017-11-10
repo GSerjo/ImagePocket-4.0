@@ -16,6 +16,9 @@ final class ImageRepository {
     
     public static let instance = ImageRepository()
     
+    private init(){
+    }
+    
     func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true) { t in

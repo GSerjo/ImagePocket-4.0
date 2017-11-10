@@ -14,6 +14,9 @@ final class TagRepository {
     private let _table = Table("Tag")
     static let instance = TagRepository()
     
+    private init(){
+    }
+    
     func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true){ t in
