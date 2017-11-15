@@ -20,10 +20,14 @@ final class SearchCache {
     private let _dateFormatter: DateFormatter?
     private var _internalProcessedAssets = 0
     private let _locker = NSLock()
+    private let _minute: TimeInterval = 60.0
+    private let _loadAddressInterval: TimeInterval
+    private var _loadAddressTimer: Timer?
     
     static let instance = SearchCache()
     
     private init() {
+        _loadAddressInterval = 2 * _minute
 //        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
         if _searchCacheInitialized {
             _dateFormatter = nil
@@ -45,7 +49,7 @@ final class SearchCache {
         lock(_locker){
             _internalProcessedAssets = 0
         }
-        saveGeoAsset(assets)
+//        saveGeoAsset(assets)÷
 //        createSearchEntities(assets)
 //        UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
         
@@ -60,6 +64,16 @@ final class SearchCache {
     private func saveGeoAsset(_ assets: [PHAsset]) -> Void {
         let geoAssets = assets.map{GeoAssetEntity($0.localIdentifier, $0.location)}.flatMap{$0}
         _geoHashAssetRepository.save(entities: geoAssets)
+    }
+    
+    private func startLoadAddress() -> Void {
+        if _loadAddressTimer == nil {
+            _loadAddressTimer = Timer.scheduledTimer(timeInterval: _loadAddressInterval, target: self, selector: #selector(loadAddress), userInfo: nil, repeats: true)
+        }
+    }
+    
+    @objc private func loadAddress() -> Void {
+        
     }
     
     private func createSearchEntities(_ assets: [PHAsset]) -> Void{

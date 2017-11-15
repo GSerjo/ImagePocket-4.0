@@ -12,7 +12,7 @@ import SQLite
 final class GeoHashRepository {
     private let _table = Table("GeoHash")
     static let instance = GeoHashRepository()
-
+    private let _chunkSize = 10
     
     private init(){
     }
@@ -42,6 +42,31 @@ final class GeoHashRepository {
                 let _ = try? DataStore.instance.db.run(query)
             }
         }
+    }
+    
+    func updateProcessed(entities: [GeoHashEntity]) -> Void {
+        if entities.isEmpty {
+            return
+        }
+        let processedEntities = entities.filter{$0.processed && $0.address != nil}
+        for entity in processedEntities {
+            let query = _table.filter(Columns.id == entity.id)
+            let _ = try? DataStore.instance.db.run(query.update(Columns.adderess <- entity.address!, Columns.processed <- true))
+        }
+    }
+    
+    func getUnprocessedChunk() -> [GeoHashEntity] {
+        
+        var result = [GeoHashEntity]()
+        
+        let query = _table.filter(Columns.processed == false).limit(_chunkSize)
+        if let rows = try? DataStore.instance.db.prepare(query){
+            rows.forEach{ row in
+                let item = GeoHashEntity(id: row[Columns.id], geoHash: row[Columns.geoHash])
+                result.append(item)
+            }
+        }
+        return result
     }
     
     private struct Columns {
