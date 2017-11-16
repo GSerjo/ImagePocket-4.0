@@ -37,17 +37,18 @@ final class GeoAssetRepository {
         }
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             for entity in entities {
-                let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.geoHash <- entity.geoHash)
+                let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.geoHash <- entity.geoHash, Columns.latitude <- entity.latitude, Columns.longitude <- entity.longitude)
                 let _ = try? DataStore.instance.db.run(query)
             }
         }
     }
     
-    func getUniqueGeoHashes() -> [String] {
-        var result = [String]()
+    func getUniqueGeoHashes() -> [GeoAssetEntity] {
+        var result = [GeoAssetEntity]()
         if let rows = try? DataStore.instance.db.prepare(_table.group([Columns.geoHash])){
             rows.forEach{ row in
-                result.append(row[Columns.geoHash])
+                let entity = GeoAssetEntity(row[Columns.localIdentifier], row[Columns.geoHash], row[Columns.latitude], row[Columns.longitude])
+                result.append(entity)
             }
         }
         return result
@@ -57,5 +58,7 @@ final class GeoAssetRepository {
         static let id = Expression<Int64>("id")
         static let localIdentifier = Expression<String>("localIdentifier")
         static let geoHash = Expression<String>("geoHash")
+        static let latitude = Expression<Double>("latitude")
+        static let longitude = Expression<Double>("longitude")
     }
 }

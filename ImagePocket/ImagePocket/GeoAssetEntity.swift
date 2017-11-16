@@ -13,20 +13,30 @@ import CoreLocation
 final class GeoAssetEntity {
     private(set) var localIdentifier: String
     private (set) var geoHash: String
+    let latitude: Double
+    let longitude: Double
     
     init?(_ localIdentifier: String, _ location: CLLocation?) {
         if let location = location {
             self.localIdentifier = localIdentifier
             let cooridate = location.coordinate
-            self.geoHash = Geohash.encode(latitude: cooridate.latitude, longitude: cooridate.longitude, precision: 5)
+            geoHash = Geohash.encode(latitude: cooridate.latitude, longitude: cooridate.longitude, precision: 5)
+            latitude = cooridate.latitude
+            longitude = cooridate.longitude
         }
         else {
             return nil
         }
     }
     
-    init(_ localIdentifier: String, _ geoHash: String) {
+    init(_ localIdentifier: String, _ geoHash: String, _ latitude: Double, _ longitude: Double) {
         self.localIdentifier = localIdentifier
         self.geoHash = geoHash
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+    func toGeoHash() -> GeoHashEntity {
+        return GeoHashEntity(geoHash: geoHash, latitude: latitude, longitude: longitude)
     }
 }

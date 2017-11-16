@@ -27,7 +27,8 @@ final class SearchCache {
     static let instance = SearchCache()
     
     private init() {
-        _loadAddressInterval = 2 * _minute
+//        _loadAddressInterval = 2 * _minute
+        _loadAddressInterval = 10
 //        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
         if _searchCacheInitialized {
             _dateFormatter = nil
@@ -56,9 +57,9 @@ final class SearchCache {
         DispatchQueue.global().sync { [unowned self] in
             self.saveGeoAsset(assets)
             let geoHashes = self._geoHashAssetRepository.getUniqueGeoHashes()
-            self._geoHashRepository.save(geoHashes: geoHashes)
+            self._geoHashRepository.save(entities: geoHashes.map{$0.toGeoHash()})
+            enqueueLoadAddressWorkItem(delayInSeconds: 5)
         }
-        
     }
     
     private func saveGeoAsset(_ assets: [PHAsset]) -> Void {
@@ -66,14 +67,50 @@ final class SearchCache {
         _geoHashAssetRepository.save(entities: geoAssets)
     }
     
-    private func startLoadAddress() -> Void {
-        if _loadAddressTimer == nil {
-            _loadAddressTimer = Timer.scheduledTimer(timeInterval: _loadAddressInterval, target: self, selector: #selector(loadAddress), userInfo: nil, repeats: true)
+    private func enqueueLoadAddressWorkItem(delayInSeconds: Int) -> Void {
+        let workItem = DispatchWorkItem{ [unowned self] in
+            self.loadAddress()
         }
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(delayInSeconds), execute: workItem)
     }
     
-    @objc private func loadAddress() -> Void {
+    private func loadAddress() -> Void {
+        let items = _geoHashRepository.getUnprocessedChunk()
+        if items.isEmpty {
+            _loadAddressTimer?.invalidate()
+            _loadAddressTimer = nil
+            return
+        }
+
+        enqueueLoadAddressWorkItem(delayInSeconds: 180)
         
+        for item in items {
+            guard let coordinate = Geohash.decode(item.geoHash) else {
+                continue
+            }
+            var addressItems = [String]()
+            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
+                if error == nil {
+                    if let place = placemark?[0] {
+                        if let country = place.country {
+                            addressItems.append(country)
+                        }
+                        if let locality = place.locality {
+                            addressItems.append(locality)
+                        }
+                        if let subLocality = place.subLocality {
+                            addressItems.append(subLocality)
+                        }
+                        if let administrativeArea = place.administrativeArea {
+                            addressItems.append(administrativeArea)
+                        }
+                    }
+                    item.setAddress(addressItems)
+                    self._geoHashRepository.updateProcessed(entity: item)
+                }
+            })
+        }
     }
     
     private func createSearchEntities(_ assets: [PHAsset]) -> Void{
