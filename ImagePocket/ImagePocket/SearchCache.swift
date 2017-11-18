@@ -8,34 +8,17 @@
 
 import Foundation
 import Photos
-import CoreLocation
 
 final class SearchCache {
-    
-    private let SearchCacheInitializedName = "SearchCacheInitialized"
-    private var _searchCacheInitialized = false
     private let _searchRepository = SearchRepository.instance
     private let _geoHashAssetRepository = GeoAssetRepository.instance
     private let _geoHashRepository = GeoHashRepository.instance
-    private let _dateFormatter: DateFormatter?
-    private var _internalProcessedAssets = 0
-    private let _locker = NSLock()
-    private let _minute: TimeInterval = 60.0
-    private let _loadAddressInterval: TimeInterval
-    private var _loadAddressTimer: Timer?
+    private let _dateFormatter = DateFormatter()
     
     static let instance = SearchCache()
     
     private init() {
-//        _loadAddressInterval = 2 * _minute
-        _loadAddressInterval = 10
-//        _searchCacheInitialized = UserDefaults.standard.bool(forKey: SearchCacheInitializedName)
-        if _searchCacheInitialized {
-            _dateFormatter = nil
-        } else {
-            _dateFormatter = DateFormatter()
-            _dateFormatter?.dateFormat = "yyyy LLLL"
-        }
+        _dateFormatter.dateFormat = "yyyy LLLL"
     }
     
     public func search(_ terms: [String]) -> [SearchResultEntity] {
@@ -43,22 +26,11 @@ final class SearchCache {
     }
     
     public func fill(assets: [PHAsset]) -> Void {
-        if _searchCacheInitialized {
-            return
-        }
-        
-        lock(_locker){
-            _internalProcessedAssets = 0
-        }
-//        saveGeoAsset(assets)÷
-//        createSearchEntities(assets)
-//        UserDefaults.standard.set(true, forKey: SearchCacheInitializedName)
-        
         DispatchQueue.global().sync { [unowned self] in
             self.saveGeoAsset(assets)
             let geoHashes = self._geoHashAssetRepository.getUniqueGeoHashes()
             self._geoHashRepository.save(entities: geoHashes.map{$0.toGeoHash()})
-            enqueueLoadAddressWorkItem(delayInSeconds: 5)
+            self.enqueueLoadAddressWorkItem(delayInSeconds: 5)
         }
     }
     
@@ -77,19 +49,14 @@ final class SearchCache {
     private func loadAddress() -> Void {
         let items = _geoHashRepository.getUnprocessedChunk()
         if items.isEmpty {
-            _loadAddressTimer?.invalidate()
-            _loadAddressTimer = nil
             return
         }
 
         enqueueLoadAddressWorkItem(delayInSeconds: 180)
         
         for item in items {
-            guard let coordinate = Geohash.decode(item.geoHash) else {
-                continue
-            }
             var addressItems = [String]()
-            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            let location = CLLocation(latitude: item.latitude, longitude: item.longitude)
             CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
                 if error == nil {
                     if let place = placemark?[0] {
@@ -111,69 +78,6 @@ final class SearchCache {
                 }
             })
         }
-    }
-    
-    private func createSearchEntities(_ assets: [PHAsset]) -> Void{
-        var result = [SearchEntity]()
-        let totalAssets = assets.count
-        
-        DispatchQueue.global().sync { [unowned self] in
-            for asset in assets {
-                var items = [String]()
-                
-                if let date = asset.creationDate,
-                    let item =  self._dateFormatter?.string(from: date) {
-                    items.append(item)
-                }
-                
-                if let location = asset.location {
-                    
-                    CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in
-                        if error == nil {
-                            if let place = placemark?[0] {
-                                if let country = place.country {
-                                    print(country)
-                                    items.append(country)
-                                }
-                                if let locality = place.locality {
-                                    items.append(locality)
-                                }
-                                if let subLocality = place.subLocality {
-                                    items.append(subLocality)
-                                }
-                                if let administrativeArea = place.administrativeArea {
-                                    items.append(administrativeArea)
-                                }
-                            } else {
-                                print("Test")
-                            }
-                        }
-                        else {
-                            print("Test2")
-                        }
-                        if let searchEntity = SearchEntity(items, asset.localIdentifier){
-                            result.append(searchEntity)
-                        }
-                        self.trySaveSearchEntities(totalAssets, result)
-                    })
-                } else {
-                    if let searchEntity = SearchEntity(items, asset.localIdentifier){
-                        result.append(searchEntity)
-                    }
-                    trySaveSearchEntities(totalAssets, result)
-                }
-            }
-        }
-    }
-    
-    private func trySaveSearchEntities(_ initialAssets: Int, _ searchEntities: [SearchEntity]) -> Void {
-        lock(_locker){
-            _internalProcessedAssets = _internalProcessedAssets + 1
-            if initialAssets == _internalProcessedAssets {
-                _searchRepository.save(entities: searchEntities)
-            }
-        }
-        
     }
 }
 

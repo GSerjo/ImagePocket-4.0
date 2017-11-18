@@ -23,6 +23,8 @@ final class GeoAssetRepository {
             t.column(Columns.id, primaryKey: true)
             t.column(Columns.localIdentifier)
             t.column(Columns.geoHash)
+            t.column(Columns.latitude)
+            t.column(Columns.longitude)
         }
         
         let indexQuery = _table.createIndex([Columns.localIdentifier, Columns.geoHash], ifNotExists: true)

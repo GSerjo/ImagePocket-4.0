@@ -24,6 +24,8 @@ final class GeoHashRepository {
             t.column(Columns.geoHash)
             t.column(Columns.processed)
             t.column(Columns.adderess)
+            t.column(Columns.latitude)
+            t.column(Columns.longitude)
         }
         
         let indexQuery = _table.createIndex([Columns.geoHash], ifNotExists: true)
