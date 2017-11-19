@@ -12,6 +12,8 @@
 		B21E09261F5CA178002C2B41 /* TagImageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E09251F5CA178002C2B41 /* TagImageEntity.swift */; };
 		B23095181F4E6219002166A9 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23095171F4E6219002166A9 /* ImagePreviewCell.swift */; };
 		B23280FD1FBB7331007B7B36 /* GeoHashEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */; };
+		B2558A801FC08FEC00293DE3 /* AssetTaskEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */; };
+		B2558A891FC1159D00293DE3 /* AssetTaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */; };
 		B25E4F851F8A816F00AE34C0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25E4F841F8A816F00AE34C0 /* Settings.swift */; };
 		B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DC1DBC17D3001E579A /* AppDelegate.swift */; };
 		B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DE1DBC17D3001E579A /* ViewController.swift */; };
@@ -157,6 +159,8 @@
 		B21E09251F5CA178002C2B41 /* TagImageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagImageEntity.swift; sourceTree = "<group>"; };
 		B23095171F4E6219002166A9 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
 		B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashEntity.swift; sourceTree = "<group>"; };
+		B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskEntity.swift; sourceTree = "<group>"; };
+		B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskRepository.swift; sourceTree = "<group>"; };
 		B25E4F841F8A816F00AE34C0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B27D65D91DBC17D3001E579A /* ImagePocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27D65DC1DBC17D3001E579A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 				B2AE26531F812D9400CD0E6F /* SearchResultEntity.swift */,
 				B2EDC4341FB4D56A007D8B56 /* GeoAssetEntity.swift */,
 				B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */,
+				B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 				B2AE26481F81243600CD0E6F /* SearchRepository.swift */,
 				B2EDC4381FB6103D007D8B56 /* GeoAssetRepository.swift */,
 				B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */,
+				B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */,
 			);
 			name = Repositories;
 			sourceTree = "<group>";
@@ -559,7 +565,9 @@
 				B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */,
 				B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */,
 				B27D662E1DBC2DB0001E579A /* TagRepository.swift in Sources */,
+				B2558A891FC1159D00293DE3 /* AssetTaskRepository.swift in Sources */,
 				B27D662C1DBC2CFA001E579A /* DataAccessError.swift in Sources */,
+				B2558A801FC08FEC00293DE3 /* AssetTaskEntity.swift in Sources */,
 				B29181421F5340B100DBBC86 /* NWSToken.swift in Sources */,
 				B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */,
 			);

@@ -30,20 +30,20 @@ final class SearchCache {
             self.saveGeoAsset(assets)
             let geoHashes = self._geoHashAssetRepository.getUniqueGeoHashes()
             self._geoHashRepository.save(entities: geoHashes.map{$0.toGeoHash()})
-            self.enqueueLoadAddressWorkItem(delayInSeconds: 5)
+            self.enqueueLoadAddressWorkItem()
         }
+    }
+    
+    public func enqueueLoadAddressWorkItem(delayInSeconds: Int = 5) -> Void {
+        let workItem = DispatchWorkItem{ [unowned self] in
+            self.loadAddress()
+        }
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(delayInSeconds), execute: workItem)
     }
     
     private func saveGeoAsset(_ assets: [PHAsset]) -> Void {
         let geoAssets = assets.map{GeoAssetEntity($0.localIdentifier, $0.location)}.flatMap{$0}
         _geoHashAssetRepository.save(entities: geoAssets)
-    }
-    
-    private func enqueueLoadAddressWorkItem(delayInSeconds: Int) -> Void {
-        let workItem = DispatchWorkItem{ [unowned self] in
-            self.loadAddress()
-        }
-        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(delayInSeconds), execute: workItem)
     }
     
     private func loadAddress() -> Void {
