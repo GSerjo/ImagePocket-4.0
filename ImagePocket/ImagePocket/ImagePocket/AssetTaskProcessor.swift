@@ -29,8 +29,7 @@ final class AssetTaskProcessor {
         if entities.isEmpty {
             return
         }
-        let searchEntities = entities.map{SearchEntity(text: $0.text, localIdentifier: $0.localIdentifier)}
-        _searchRepository.save(entities: searchEntities)
+        _assetTaskRepositoty.markAsReady(entities)
     }
     
     private func enqueueGeoSearchItem(delayInSeconds: Int = 5) -> Void {
