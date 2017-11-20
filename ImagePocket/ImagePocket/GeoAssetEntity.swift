@@ -35,8 +35,4 @@ final class GeoAssetEntity {
         self.latitude = latitude
         self.longitude = longitude
     }
-    
-    func toGeoHash() -> GeoHashEntity {
-        return GeoHashEntity(geoHash: geoHash, latitude: latitude, longitude: longitude)
-    }
 }

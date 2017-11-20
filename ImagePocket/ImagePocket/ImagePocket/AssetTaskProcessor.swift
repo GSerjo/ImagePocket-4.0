@@ -13,8 +13,8 @@ final class AssetTaskProcessor {
     let _assetTaskRepositoty = AssetTaskResitory.instance
     let _searchRepository = SearchRepository.instance
     
-    public func start() -> Void {
-        
+    public func enqueueTask() -> Void {
+        enqueueGeoSearchItem()
     }
     
     private func enqueueReadWorkItem(delayInSeconds: Int) -> Void {
@@ -30,6 +30,7 @@ final class AssetTaskProcessor {
             return
         }
         _assetTaskRepositoty.markAsReady(entities)
+        _assetTaskRepositoty.removeReady()
     }
     
     private func enqueueGeoSearchItem(delayInSeconds: Int = 5) -> Void {
@@ -38,7 +39,6 @@ final class AssetTaskProcessor {
         }
         DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(delayInSeconds), execute: workItem)
     }
-    
     
     private func processForGeoSearchTasks() -> Void {
         let entities = _assetTaskRepositoty.getForGeoSearchChunk()
@@ -68,7 +68,7 @@ final class AssetTaskProcessor {
                             items.append(administrativeArea)
                         }
                     }
-                    entity.addAddress(items)
+                    entity.setAddress(items)
                     self._assetTaskRepositoty.update(entity)
                 }
             })

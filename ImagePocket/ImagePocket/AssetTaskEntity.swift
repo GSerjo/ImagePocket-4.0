@@ -25,6 +25,7 @@ final class AssetTaskEntity : Entity {
     let longitude: Double?
     private(set) var text = String.empty
     private(set) var status: AssetTaskStatus
+    private(set) var address: String?
     
     init?(_ localIdentifier: String, _ location: CLLocation?, _ creationDate: Date?) {
         if location == nil && creationDate == nil {
@@ -59,12 +60,16 @@ final class AssetTaskEntity : Entity {
         self.status = status
     }
     
-    public func addAddress(_ items: [String]) -> Void {
+    var isReady: Bool {
+        return status == .ready
+    }
+    
+    public func setAddress(_ items: [String]) -> Void {
         status = .forReady
         if items.isEmpty {
             return
         }
-        text.append(" " + items.joined(separator: " "))
+        address = items.joined(separator: " ")
     }
 
     private func getDateFormatter() -> DateFormatter {

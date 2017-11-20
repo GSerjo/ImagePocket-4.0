@@ -10,7 +10,7 @@ import Foundation
 
 struct Geohash {
     
-    private static let DecimalToBase32Map = Array("0123456789bcdefghjkmnpqrstuvwxyz".characters)
+    private static let DecimalToBase32Map = Array("0123456789bcdefghjkmnpqrstuvwxyz")
     private static let Base32BitflowInit: UInt8 = 0b10000
 
    private enum Parity {
@@ -26,7 +26,7 @@ struct Geohash {
         var lat = (-90.0, 90.0)
         var long = (-180.0, 180.0)
         
-        for char in hash.characters {
+        for char in hash {
             guard let bitmap = DecimalToBase32Map.index(of: char) else {
                 return nil
             }
@@ -97,7 +97,7 @@ struct Geohash {
                 base32char = 0
             }
             
-        } while result.characters.count < precision
+        } while result.count < precision
         return result
     }
 }

@@ -55,8 +55,15 @@ final class AssetTaskResitory {
     }
     
     public func update(_ entity: AssetTaskEntity) -> Void {
-        let query = _table.filter(Columns.id == entity.id)
-        let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.text <- entity.text))
+        
+        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+            let query = self._table.filter(Columns.id == entity.id)
+            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.text <- entity.text))
+            
+            if entity.isReady && entity.address != nil && entity.geoHash != nil {
+                GeoHashRepository.instance.save(entity: GeoHashEntity(geoHash: entity.geoHash!, address: entity.address!))
+            }
+        }
     }
     
     public func markAsReady(_ entities: [AssetTaskEntity]) -> Void {
@@ -77,14 +84,8 @@ final class AssetTaskResitory {
         }
     }
     
-    public func removeReady() -> Int? {
+    public func removeReady() -> Void {
         let query = _table.filter(Columns.status == AssetTaskStatus.ready.rawValue)
-        return try? DataStore.instance.db.run(query.delete())
-    }
-    
-    public func remove(_ entities: [AssetTaskEntity]) -> Void {
-        let ids = entities.map{$0.id}
-        let query = _table.filter(ids.contains(Columns.id))
         let _ = try? DataStore.instance.db.run(query.delete())
     }
     
