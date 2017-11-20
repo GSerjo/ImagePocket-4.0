@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-enum AssetTaskStatus {
+enum AssetTaskStatus: Int {
     case forGeoSearch
     case forReady
     case ready
@@ -47,6 +47,16 @@ final class AssetTaskEntity : Entity {
         if let date = creationDate {
             text = getDateFormatter().string(from: date)
         }
+    }
+    
+    init(id: Int64, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, text: String, status: AssetTaskStatus) {
+        self.id = id
+        self.localIdentifier = localIdentifier
+        self.geoHash = geoHash
+        self.latitude = latitude
+        self.longitude = longitude
+        self.text = text
+        self.status = status
     }
 
     private func getDateFormatter() -> DateFormatter {
