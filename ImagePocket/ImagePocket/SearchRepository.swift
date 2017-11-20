@@ -18,7 +18,7 @@ final class SearchRepository {
     private init(){
     }
     
-    func createTable() throws -> Void {
+    public func createTable() throws -> Void {
         let config = FTS4Config()
             .column(Columns.text)
             .column(Columns.localIdentifier)
@@ -27,7 +27,7 @@ final class SearchRepository {
         try DataStore.instance.db.run(tableQuery)
     }
     
-    func save(entities: [SearchEntity]) -> Void {
+    public func save(entities: [SearchEntity]) -> Void {
         if entities.isEmpty {
             return
         }
@@ -39,7 +39,19 @@ final class SearchRepository {
         }
     }
     
-    func remove(_ entityIds: [String]) -> Void {
+    public func save(entities: [AssetTaskEntity]) -> Void {
+        let searchEntities = entities.map{SearchEntity(text: $0.text, localIdentifier: $0.localIdentifier)}
+        
+        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+            for entity in searchEntities {
+                let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
+                let _ = try? DataStore.instance.db.run(query)
+            }
+            AssetTaskResitory.instance.updateStatus(entities, status: .ready)
+        }
+    }
+    
+    public func remove(_ entityIds: [String]) -> Void {
         if entityIds.isEmpty {
             return
         }
@@ -49,7 +61,7 @@ final class SearchRepository {
         }
     }
     
-    func search(_ terms: [String]) -> [SearchResultEntity] {
+    public func search(_ terms: [String]) -> [SearchResultEntity] {
         var result = [SearchResultEntity]()
         let searchText = createSearchText(terms)
         let table = _table.filter(Columns.text.match("\(searchText)"))

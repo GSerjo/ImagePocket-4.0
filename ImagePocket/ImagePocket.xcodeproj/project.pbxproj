@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B2086FD61DC5A29900A18E71 /* TagEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2086FD51DC5A29900A18E71 /* TagEntity.swift */; };
 		B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */; };
+		B218000D1FC28C0200EE7924 /* AssetTaskProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B218000C1FC28C0200EE7924 /* AssetTaskProcessor.swift */; };
 		B21E09261F5CA178002C2B41 /* TagImageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E09251F5CA178002C2B41 /* TagImageEntity.swift */; };
 		B23095181F4E6219002166A9 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23095171F4E6219002166A9 /* ImagePreviewCell.swift */; };
 		B23280FD1FBB7331007B7B36 /* GeoHashEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */; };
@@ -156,6 +157,7 @@
 /* Begin PBXFileReference section */
 		B2086FD51DC5A29900A18E71 /* TagEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagEntity.swift; sourceTree = "<group>"; };
 		B2086FD71DC5AE0F00A18E71 /* ImageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageEntity.swift; sourceTree = "<group>"; };
+		B218000C1FC28C0200EE7924 /* AssetTaskProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskProcessor.swift; sourceTree = "<group>"; };
 		B21E09251F5CA178002C2B41 /* TagImageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagImageEntity.swift; sourceTree = "<group>"; };
 		B23095171F4E6219002166A9 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
 		B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashEntity.swift; sourceTree = "<group>"; };
@@ -234,6 +236,15 @@
 			name = Entities;
 			sourceTree = "<group>";
 		};
+		B21800041FC28B9D00EE7924 /* Processros */ = {
+			isa = PBXGroup;
+			children = (
+				B218000C1FC28C0200EE7924 /* AssetTaskProcessor.swift */,
+			);
+			name = Processros;
+			path = ImagePocket;
+			sourceTree = "<group>";
+		};
 		B27D65D01DBC17D3001E579A = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +266,7 @@
 		B27D65DB1DBC17D3001E579A /* ImagePocket */ = {
 			isa = PBXGroup;
 			children = (
+				B21800041FC28B9D00EE7924 /* Processros */,
 				B291813E1F5340B100DBBC86 /* NWSTokenViews */,
 				B2DDD4C11DCD704400749A82 /* Caches */,
 				B2086FCD1DC5A26B00A18E71 /* Entities */,
@@ -559,6 +571,7 @@
 				B29007431F816CCA00270793 /* SearchCache.swift in Sources */,
 				B27D662A1DBC2732001E579A /* DataStore.swift in Sources */,
 				B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */,
+				B218000D1FC28C0200EE7924 /* AssetTaskProcessor.swift in Sources */,
 				B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */,
 				B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */,
 				B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */,

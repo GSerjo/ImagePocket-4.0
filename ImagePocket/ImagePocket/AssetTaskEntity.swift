@@ -58,6 +58,14 @@ final class AssetTaskEntity : Entity {
         self.text = text
         self.status = status
     }
+    
+    public func addAddress(_ items: [String]) -> Void {
+        status = .forReady
+        if items.isEmpty {
+            return
+        }
+        text.append(" " + items.joined(separator: " "))
+    }
 
     private func getDateFormatter() -> DateFormatter {
         let dateFormatter = DateFormatter()

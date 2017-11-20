@@ -19,4 +19,9 @@ struct SearchEntity {
         text = items.joined(separator: " ")
         self.localIdentifier = localIdentifier
     }
+    
+    init(text: String, localIdentifier: String) {
+        self.text = text
+        self.localIdentifier = localIdentifier
+    }
 }
