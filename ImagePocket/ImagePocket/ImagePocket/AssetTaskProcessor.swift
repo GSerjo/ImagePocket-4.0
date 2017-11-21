@@ -10,8 +10,9 @@ import Foundation
 import Photos
 
 final class AssetTaskProcessor {
-    let _assetTaskRepositoty = AssetTaskResitory.instance
-    let _searchRepository = SearchRepository.instance
+    private let _assetTaskRepositoty = AssetTaskResitory.instance
+    private let _searchRepository = SearchRepository.instance
+    private let _geoHashRepository = GeoHashRepository.instance
     
     public func enqueueTask() -> Void {
         enqueueGeoSearchItem()
@@ -49,7 +50,23 @@ final class AssetTaskProcessor {
         enqueueReadWorkItem(delayInSeconds: 120)
         enqueueGeoSearchItem(delayInSeconds: 180)
         
+        var notProcessed = [AssetTaskEntity]()
+        
         for entity in entities {
+            
+            if let geoHash = self._geoHashRepository.get(geoHash: entity.geoHash!) {
+                
+                entity.setAddress(address: geoHash.address)
+                self._assetTaskRepositoty.markAsReady(entity)
+                
+            } else {
+                notProcessed.append(entity)
+            }
+        }
+        
+        notProcessed = notProcessed.distinct()
+        
+        for entity in notProcessed {
             var items = [String]()
             let location = CLLocation(latitude: entity.latitude!, longitude: entity.longitude!)
             CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemark, error) in

@@ -16,6 +16,16 @@ enum AssetTaskStatus: Int {
 }
 
 
+extension AssetTaskEntity: Hashable {
+    static func ==(left: AssetTaskEntity, right: AssetTaskEntity) -> Bool{
+        return left.address == right.address
+    }
+    
+    var hashValue: Int {
+        return id.hashValue
+    }
+}
+
 final class AssetTaskEntity : Entity {
     
     var id: Int64 = 0
@@ -83,7 +93,12 @@ final class AssetTaskEntity : Entity {
         if items.isEmpty {
             return
         }
-        address = items.joined(separator: " ")
+        setAddress(address: items.joined(separator: " "))
+    }
+    
+    public func setAddress(address: String) -> Void {
+        status = .forReady
+        self.address = address
     }
 
     private func getDateFormatter() -> DateFormatter {

@@ -87,6 +87,17 @@ final class AssetTaskResitory {
         }
     }
     
+    public func markAsReady(_ entity: AssetTaskEntity) -> Void {
+        let searchEntity = SearchEntity(text: entity.text, localIdentifier: entity.localIdentifier)
+        
+        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+            SearchRepository.instance.save(entity: searchEntity)
+
+            let query = self._table.filter(Columns.id == entity.id)
+            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- AssetTaskStatus.ready.rawValue))
+        }
+    }
+    
     public func removeReady() -> Void {
         let query = _table.filter(Columns.status == AssetTaskStatus.ready.rawValue)
         let _ = try? DataStore.instance.db.run(query.delete())
