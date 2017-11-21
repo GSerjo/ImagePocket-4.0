@@ -23,9 +23,9 @@ final class AssetTaskEntity : Entity {
     private (set) var geoHash: String? = String.empty
     let latitude: Double?
     let longitude: Double?
-    private(set) var text = String.empty
     private(set) var status: AssetTaskStatus
     private(set) var address: String?
+    private(set) var creationDate: String?
     
     init?(_ localIdentifier: String, _ location: CLLocation?, _ creationDate: Date?) {
         if location == nil && creationDate == nil {
@@ -46,18 +46,32 @@ final class AssetTaskEntity : Entity {
         }
         
         if let date = creationDate {
-            text = getDateFormatter().string(from: date)
-        }
+            self.creationDate = getDateFormatter().string(from: date)
+        }        
     }
     
-    init(id: Int64, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, text: String, status: AssetTaskStatus) {
+    init(id: Int64, creationDate: String?, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, address: String?, status: AssetTaskStatus) {
+        self.creationDate = creationDate
         self.id = id
         self.localIdentifier = localIdentifier
         self.geoHash = geoHash
         self.latitude = latitude
         self.longitude = longitude
-        self.text = text
+        self.address = address
         self.status = status
+    }
+    
+    var text: String {
+        if address == nil && creationDate == nil {
+            return String.empty
+        }
+        if address != nil && creationDate != nil {
+            return address! + " " + creationDate!
+        }
+        if address == nil {
+            return creationDate!
+        }
+        return address!
     }
     
     var isReady: Bool {

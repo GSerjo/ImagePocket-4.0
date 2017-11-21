@@ -22,8 +22,10 @@ final class AssetTaskResitory {
         
         let tableQuery = _table.create(ifNotExists: true){ t in
             t.column(Columns.id, primaryKey: true)
+            t.column(Columns.creationDate)
             t.column(Columns.localIdentifier)
             t.column(Columns.geoHash)
+            t.column(Columns.address)
             t.column(Columns.latitude)
             t.column(Columns.longitude)
         }
@@ -42,11 +44,12 @@ final class AssetTaskResitory {
             for entity in entities {
                 
                 let query = self._table.insert(
+                    Columns.creationDate <- entity.creationDate,
                     Columns.localIdentifier <- entity.localIdentifier,
                     Columns.geoHash <- entity.geoHash,
                     Columns.latitude <- entity.latitude,
                     Columns.longitude <- entity.longitude,
-                    Columns.text <- entity.text,
+                    Columns.address <- entity.address,
                     Columns.status <- entity.status.rawValue)
                 
                 let _ = try? DataStore.instance.db.run(query)
@@ -54,11 +57,11 @@ final class AssetTaskResitory {
         }
     }
     
-    public func update(_ entity: AssetTaskEntity) -> Void {
+    public func updateAddress(_ entity: AssetTaskEntity) -> Void {
         
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             let query = self._table.filter(Columns.id == entity.id)
-            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.text <- entity.text))
+            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.address <- entity.address))
             
             if entity.isReady && entity.address != nil && entity.geoHash != nil {
                 GeoHashRepository.instance.save(entity: GeoHashEntity(geoHash: entity.geoHash!, address: entity.address!))
@@ -106,11 +109,12 @@ final class AssetTaskResitory {
                 
                 let item = AssetTaskEntity(
                     id: row[Columns.id],
+                    creationDate: row[Columns.creationDate],
                     localIdentifier: row[Columns.localIdentifier],
                     geoHash: row[Columns.geoHash],
                     latitude: row[Columns.latitude],
                     longitude: row[Columns.longitude],
-                    text: row[Columns.text],
+                    address: row[Columns.address],
                     status: AssetTaskStatus(rawValue: row[Columns.status])!)
                 
                 result.append(item)
@@ -125,7 +129,8 @@ final class AssetTaskResitory {
         static let geoHash = Expression<String?>("geoHash")
         static let latitude = Expression<Double?>("latitude")
         static let longitude = Expression<Double?>("longitude")
-        static let text = Expression<String>("text")
+        static let address = Expression<String?>("address")
+        static let creationDate = Expression<String?>("creationDate")
         static let status = Expression<Int>("status")
     }
 }

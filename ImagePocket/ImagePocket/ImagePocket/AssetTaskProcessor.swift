@@ -69,7 +69,7 @@ final class AssetTaskProcessor {
                         }
                     }
                     entity.setAddress(items)
-                    self._assetTaskRepositoty.update(entity)
+                    self._assetTaskRepositoty.updateAddress(entity)
                 }
             })
         }

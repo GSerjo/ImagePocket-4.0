@@ -24,26 +24,25 @@ final class GeoHashRepository {
             t.column(Columns.adderess)
         }
         
-        let indexQuery = _table.createIndex([Columns.geoHash], ifNotExists: true)
+        let indexQuery = _table.createIndex([Columns.geoHash], unique: true, ifNotExists: true)
         
         try DataStore.instance.db.run(tableQuery)
         try DataStore.instance.db.run(indexQuery)
     }
     
-    func save(entities: [GeoHashEntity]) -> Void {
-        if entities.isEmpty {
-            return
-        }
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
-            for entity in entities {
-                let query = self._table.insert(Columns.adderess <- String.empty, Columns.geoHash <- entity.geoHash )
-                let _ = try? DataStore.instance.db.run(query)
+    public func get(geoHash: String) -> GeoHashEntity? {
+        let query = _table.filter(Columns.geoHash == geoHash)
+        
+        if let rows = try? DataStore.instance.db.prepare(query) {
+            for row in rows {
+                return GeoHashEntity(geoHash: row[Columns.geoHash], address: row[Columns.adderess])
             }
         }
+        return nil
     }
     
     public func save(entity: GeoHashEntity) -> Void {
-        let query = self._table.insert(Columns.adderess <- String.empty, Columns.geoHash <- entity.geoHash )
+        let query = self._table.insert(or: .ignore, Columns.adderess <- String.empty, Columns.geoHash <- entity.geoHash)
         let _ = try? DataStore.instance.db.run(query)
     }
     
