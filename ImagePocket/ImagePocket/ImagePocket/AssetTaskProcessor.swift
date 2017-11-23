@@ -14,8 +14,18 @@ final class AssetTaskProcessor {
     private let _searchRepository = SearchRepository.instance
     private let _geoHashRepository = GeoHashRepository.instance
     
+    public static let instance = AssetTaskProcessor()
+    
+    private init(){
+    }
+    
     public func enqueueTask() -> Void {
         enqueueGeoSearchItem()
+    }
+    
+    public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
+        let assetTasks = tasks.map{AssetTaskEntity(task: $0)}.flatMap{$0}
+        _assetTaskRepositoty.save(assetTasks)
     }
     
     private func enqueueReadWorkItem(delayInSeconds: Int) -> Void {

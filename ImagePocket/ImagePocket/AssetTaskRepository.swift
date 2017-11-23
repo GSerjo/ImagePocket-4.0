@@ -28,6 +28,7 @@ final class AssetTaskResitory {
             t.column(Columns.address)
             t.column(Columns.latitude)
             t.column(Columns.longitude)
+            t.column(Columns.status)
         }
         
         let indexQuery = _table.createIndex([Columns.localIdentifier, Columns.geoHash], ifNotExists: true)

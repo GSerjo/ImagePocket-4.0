@@ -9,6 +9,9 @@
 import Foundation
 import Photos
 
+extension PHAsset: AssetTaskable {
+}
+
 final class ImageCache{
     
     static let instance = ImageCache()
@@ -49,7 +52,10 @@ final class ImageCache{
             
             self.fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
             
-            self._assets = self.getAssets(self.fetchResult).toDictionary{$0.localIdentifier}
+            let assets = self.getAssets(self.fetchResult)
+            AssetTaskProcessor.instance.enqueueTasks(tasks: assets)
+        
+            self._assets = assets.toDictionary{$0.localIdentifier}
             self._actualImages  = self._assets.values.map(self.createImage).toDictionary{$0.localIdentifier}
             
             self.syncImages()

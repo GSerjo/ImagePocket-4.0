@@ -15,6 +15,11 @@ enum AssetTaskStatus: Int {
     case ready
 }
 
+protocol AssetTaskable {
+    var localIdentifier: String { get }
+    var creationDate: Date? { get }
+    var location: CLLocation? { get }
+}
 
 extension AssetTaskEntity: Hashable {
     static func ==(left: AssetTaskEntity, right: AssetTaskEntity) -> Bool{
@@ -37,13 +42,13 @@ final class AssetTaskEntity : Entity {
     private(set) var address: String?
     private(set) var creationDate: String?
     
-    init?(_ localIdentifier: String, _ location: CLLocation?, _ creationDate: Date?) {
-        if location == nil && creationDate == nil {
+    init?(task: AssetTaskable) {
+        if task.location == nil && task.creationDate == nil {
             return nil
         }
-        self.localIdentifier = localIdentifier
+        self.localIdentifier = task.localIdentifier
         
-        if let coordinate = location?.coordinate {
+        if let coordinate = task.location?.coordinate {
             self.latitude = coordinate.latitude
             self.longitude = coordinate.longitude
             geoHash = Geohash.encode(latitude: latitude!, longitude: longitude!, precision: 5)
@@ -55,7 +60,7 @@ final class AssetTaskEntity : Entity {
             status = .forReady
         }
         
-        if let date = creationDate {
+        if let date = task.creationDate {
             self.creationDate = getDateFormatter().string(from: date)
         }        
     }
