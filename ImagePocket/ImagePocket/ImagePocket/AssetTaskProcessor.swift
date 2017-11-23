@@ -36,7 +36,7 @@ final class AssetTaskProcessor {
     }
     
     private func processForReadyTasks() -> Void {
-        let entities = _assetTaskRepositoty.getForReadyChunk()
+        let entities = _assetTaskRepositoty.getForReady()
         if entities.isEmpty {
             return
         }

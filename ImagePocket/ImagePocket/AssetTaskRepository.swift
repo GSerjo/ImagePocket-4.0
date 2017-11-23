@@ -13,7 +13,6 @@ final class AssetTaskResitory {
     private let _table = Table("AssetTask")
     static let instance = AssetTaskResitory()
     private let _forGeoSearchChunkSize = 10
-    private let _forReadyChunkSize = 100
     
     private init(){
     }
@@ -108,11 +107,11 @@ final class AssetTaskResitory {
         return getByStatus(status: .forGeoSearch, chunkSize: _forGeoSearchChunkSize)
     }
     
-    public func getForReadyChunk() -> [AssetTaskEntity] {
-        return getByStatus(status: .forReady, chunkSize: _forReadyChunkSize)
+    public func getForReady() -> [AssetTaskEntity] {
+        return getByStatus(status: .forReady)
     }
     
-    private func getByStatus(status: AssetTaskStatus, chunkSize: Int) -> [AssetTaskEntity] {
+    private func getByStatus(status: AssetTaskStatus, chunkSize: Int? = nil) -> [AssetTaskEntity] {
         var result = [AssetTaskEntity]()
         
         let query = _table.filter(Columns.status == status.rawValue).limit(chunkSize)
