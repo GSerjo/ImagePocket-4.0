@@ -89,8 +89,8 @@ final class AssetTaskEntity : Entity {
         return address!
     }
     
-    var isReady: Bool {
-        return status == .ready
+    var isForReady: Bool {
+        return status == .forReady
     }
     
     public func setAddress(_ items: [String]) -> Void {

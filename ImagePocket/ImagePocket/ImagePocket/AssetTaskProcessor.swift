@@ -20,15 +20,17 @@ final class AssetTaskProcessor {
     }
     
     public func enqueueTask() -> Void {
-        enqueueGeoSearchItem()
+        enqueueForGeoSearchItem()
     }
     
     public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
         let assetTasks = tasks.map{AssetTaskEntity(task: $0)}.flatMap{$0}
         _assetTaskRepositoty.save(assetTasks)
+        
+        enqueueTask()
     }
     
-    private func enqueueReadWorkItem(delayInSeconds: Int) -> Void {
+    private func enqueueForReadyWorkItem(delayInSeconds: Int) -> Void {
         let workItem = DispatchWorkItem { [unowned self] in
             self.processForReadyTasks()
         }
@@ -44,7 +46,7 @@ final class AssetTaskProcessor {
         _assetTaskRepositoty.removeReady()
     }
     
-    private func enqueueGeoSearchItem(delayInSeconds: Int = 5) -> Void {
+    private func enqueueForGeoSearchItem(delayInSeconds: Int = 5) -> Void {
         let workItem = DispatchWorkItem{ [unowned self] in
             self.processForGeoSearchTasks()
         }
@@ -57,8 +59,8 @@ final class AssetTaskProcessor {
             return
         }
         
-        enqueueReadWorkItem(delayInSeconds: 120)
-        enqueueGeoSearchItem(delayInSeconds: 180)
+        enqueueForReadyWorkItem(delayInSeconds: 60)
+        enqueueForGeoSearchItem(delayInSeconds: 80)
         
         var notProcessed = [AssetTaskEntity]()
         

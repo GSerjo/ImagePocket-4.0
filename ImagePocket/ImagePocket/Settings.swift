@@ -10,21 +10,34 @@ import Foundation
 
 final class Settings {
     
-    private let _tagKey = "TagKey"
     private let _tagCache = TagCache.instance
+    private var _appStatus: AppStatus = .none
     
     static let instance = Settings()
     
     private init(){
+        if containsKey(key: Key.AppStatus) {
+            _appStatus = AppStatus(rawValue: UserDefaults.standard.integer(forKey: Key.AppStatus)) ?? .none
+        }
     }
     
-    func save(_ tag: TagEntity) -> Void {
-        UserDefaults.standard.set(tag.id, forKey: _tagKey)
+    var appStatus: AppStatus {
+        get {
+            return _appStatus
+        }
+        set(valueValue){
+            UserDefaults.standard.set(valueValue.rawValue, forKey: Key.AppStatus)
+            _appStatus = valueValue
+        }
     }
     
-    func getTag() -> TagEntity {
-        if containsKey(key: _tagKey) {
-            let id = UserDefaults.standard.integer(forKey: _tagKey)
+    public func save(_ tag: TagEntity) -> Void {
+        UserDefaults.standard.set(tag.id, forKey: Key.Tag)
+    }
+    
+    public func getTag() -> TagEntity {
+        if containsKey(key: Key.Tag) {
+            let id = UserDefaults.standard.integer(forKey: Key.Tag)
             if let entity = TagCache.instance.getById(tagId: Int64(id)){
                 return entity
             }
@@ -35,5 +48,13 @@ final class Settings {
     
     private func containsKey(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil
+    }
+    
+    private struct Key {
+        static let Tag = "TagKey"
+        static let AppStatus = "AppStatus"
+        
+        private init(){
+        }
     }
 }

@@ -63,7 +63,7 @@ final class AssetTaskResitory {
             let query = self._table.filter(Columns.id == entity.id)
             let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.address <- entity.address))
             
-            if entity.isReady && entity.address != nil && entity.geoHash != nil {
+            if entity.isForReady && entity.address != nil && entity.geoHash != nil {
                 GeoHashRepository.instance.save(entity: GeoHashEntity(geoHash: entity.geoHash!, address: entity.address!))
             }
         }

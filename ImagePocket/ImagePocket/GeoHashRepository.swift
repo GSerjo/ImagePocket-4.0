@@ -42,7 +42,7 @@ final class GeoHashRepository {
     }
     
     public func save(entity: GeoHashEntity) -> Void {
-        let query = self._table.insert(or: .ignore, Columns.adderess <- String.empty, Columns.geoHash <- entity.geoHash)
+        let query = self._table.insert(or: .ignore, Columns.adderess <- entity.address, Columns.geoHash <- entity.geoHash)
         let _ = try? DataStore.instance.db.run(query)
     }
     
