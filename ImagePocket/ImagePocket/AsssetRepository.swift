@@ -43,7 +43,7 @@ final class AssetRespository {
         let _ = try? DataStore.instance.db.run(query)
     }
     
-    public func getChanges(tasks: [AssetTaskable]) -> Void {
+    public func update(tasks: [AssetTaskable]) -> Void {
         
         if tasks.isEmpty {
             return
