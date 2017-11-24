@@ -22,6 +22,23 @@ protocol AssetTaskable {
     var longitude: Double? { get }
 }
 
+extension AssetTaskable {
+    var creationDateText: String? {
+        get {
+            if let date = self.creationDate{
+                return getDateFormatter().string(from: date)
+            }
+            return nil
+        }
+    }
+    
+    private func getDateFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy LLLL"
+        return dateFormatter
+    }
+}
+
 extension AssetTaskEntity: Hashable {
     static func ==(left: AssetTaskEntity, right: AssetTaskEntity) -> Bool{
         return left.address == right.address
@@ -33,7 +50,7 @@ extension AssetTaskEntity: Hashable {
 }
 
 final class AssetTaskEntity : Entity {
-    
+ 
     var id: Int64 = 0
     private(set) var localIdentifier: String
     private (set) var geoHash: String? = String.empty

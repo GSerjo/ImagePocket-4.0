@@ -30,7 +30,7 @@ final class AssetTaskResitory {
             t.column(Columns.status)
         }
         
-        let indexQuery = _table.createIndex([Columns.localIdentifier, Columns.geoHash], ifNotExists: true)
+        let indexQuery = _table.createIndex([Columns.localIdentifier, Columns.geoHash], unique: true, ifNotExists: true)
         
         try DataStore.instance.db.run(tableQuery)
         try DataStore.instance.db.run(indexQuery)
@@ -43,7 +43,7 @@ final class AssetTaskResitory {
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             for entity in entities {
                 
-                let query = self._table.insert(
+                let query = self._table.insert(or: .ignore,
                     Columns.creationDate <- entity.creationDate,
                     Columns.localIdentifier <- entity.localIdentifier,
                     Columns.geoHash <- entity.geoHash,
@@ -56,6 +56,19 @@ final class AssetTaskResitory {
                 AssetRespository.instance.save(entity)
             }
         }
+    }
+    
+    public func save(entity: AssetTaskEntity) -> Void {
+        let query = _table.insert(or: .ignore,
+            Columns.creationDate <- entity.creationDate,
+            Columns.localIdentifier <- entity.localIdentifier,
+            Columns.geoHash <- entity.geoHash,
+            Columns.latitude <- entity.latitude,
+            Columns.longitude <- entity.longitude,
+            Columns.address <- entity.address,
+            Columns.status <- entity.status.rawValue)
+    
+        let _ = try? DataStore.instance.db.run(query)
     }
     
     public func updateAddress(_ entity: AssetTaskEntity) -> Void {
