@@ -12,12 +12,12 @@ import SQLite
 final class AssetTaskResitory {
     private let _table = Table("AssetTask")
     static let instance = AssetTaskResitory()
-    private let _forGeoSearchChunkSize = 10
+    private let _forGeoSearchChunkSize = 12
     
     private init(){
     }
     
-    func createTable() throws {
+    public func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true){ t in
             t.column(Columns.id, primaryKey: true)
@@ -34,6 +34,13 @@ final class AssetTaskResitory {
         
         try DataStore.instance.db.run(tableQuery)
         try DataStore.instance.db.run(indexQuery)
+    }
+    
+    public func isEmpty() -> Bool {
+        if let count = try? DataStore.instance.db.scalar(_table.count){
+            return count == 0
+        }
+        return false
     }
     
     public func save(_ entities: [AssetTaskEntity]) -> Void {
@@ -101,14 +108,15 @@ final class AssetTaskResitory {
         }
     }
     
-    public func markAsReady(_ entity: AssetTaskEntity) -> Void {
+    public func markAsForReady(_ entity: AssetTaskEntity) -> Void {
         let searchEntity = SearchEntity(text: entity.text, localIdentifier: entity.localIdentifier)
         
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             SearchRepository.instance.save(entity: searchEntity)
 
+            
             let query = self._table.filter(Columns.id == entity.id)
-            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- AssetTaskStatus.ready.rawValue))
+            let _ = try? DataStore.instance.db.run(query.update(Columns.address <- entity.address, Columns.status <- AssetTaskStatus.forReady.rawValue))
         }
     }
     

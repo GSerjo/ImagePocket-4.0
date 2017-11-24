@@ -59,8 +59,8 @@ final class AssetRespository {
             }
         }
         
-        let removed = Array(currentAssets.subtracting(currentAssets)).map{$0.localIdentifier}
-        let added = Array(newAssets.subtracting(currentAssets))
+        let removed = Array(currentAssets.subtracting(newAssets)).map{$0.localIdentifier}
+        let added = newAssets.subtracting(currentAssets)
         
         let _ = try? DataStore.instance.db.transaction {[unowned self] in
             if removed.isEmpty == false {

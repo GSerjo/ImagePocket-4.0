@@ -16,20 +16,12 @@ final class GeoHashEntity: Entity, CustomStringConvertible {
     
     var id: Int64
     let geoHash: String
-    private(set) var address = String.empty
+    private(set) var address: String
     
-    init(id: Int64 = 0, geoHash: String) {
-        self.id = id
-        self.geoHash = geoHash
-    }
     
     init(geoHash: String, address: String) {
         self.geoHash = geoHash
         self.address = address
         id = 0
-    }
-    
-    func setAddress(_ addressItems: [String]) -> Void {
-        address = addressItems.joined(separator: " ")
     }
 }

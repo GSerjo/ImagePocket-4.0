@@ -22,18 +22,26 @@ final class AssetTaskProcessor {
     
     public func enqueueTask() -> Void {
         enqueueForGeoSearchItem()
+        enqueueForReadyWorkItem()
     }
     
     public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
         
+        if _settings.appStatus != .none && _settings.appStatus != .assetTaskProcessed {
+            if _assetTaskRepositoty.isEmpty() {
+                _settings.appStatus = .assetTaskProcessed
+            }
+        }
+        
         switch _settings.appStatus {
-        case .none:
-            addAssetTasks(tasks: tasks)
-            enqueueTask()
-        case .assetTaskLoaded: break
-            
-        default:
-            return
+            case .none:
+                addAssetTasks(tasks: tasks)
+                enqueueForGeoSearchItem()
+            case .assetTaskLoaded:
+                enqueueTask()
+            case .assetTaskProcessed:
+                updateAssetTasks(tasks: tasks)
+                enqueueTask()
         }
     }
     
@@ -43,7 +51,11 @@ final class AssetTaskProcessor {
         _settings.appStatus = .assetTaskLoaded
     }
     
-    private func enqueueForReadyWorkItem(delayInSeconds: Int) -> Void {
+    private func updateAssetTasks(tasks: [AssetTaskable]) -> Void {
+        AssetRespository.instance.update(tasks: tasks)
+    }
+    
+    private func enqueueForReadyWorkItem(delayInSeconds: Int = 5) -> Void {
         let workItem = DispatchWorkItem { [unowned self] in
             self.processForReadyTasks()
         }
@@ -82,7 +94,7 @@ final class AssetTaskProcessor {
             if let geoHash = self._geoHashRepository.get(geoHash: entity.geoHash!) {
                 
                 entity.setAddress(address: geoHash.address)
-                self._assetTaskRepositoty.markAsReady(entity)
+                self._assetTaskRepositoty.markAsForReady(entity)
                 
             } else {
                 notProcessed.append(entity)
