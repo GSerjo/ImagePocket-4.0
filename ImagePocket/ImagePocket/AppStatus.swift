@@ -11,4 +11,5 @@ import Foundation
 enum AppStatus: Int {
     case none
     case assetTaskLoaded
+    case assetTaskProcessed
 }

@@ -18,7 +18,8 @@ enum AssetTaskStatus: Int {
 protocol AssetTaskable {
     var localIdentifier: String { get }
     var creationDate: Date? { get }
-    var location: CLLocation? { get }
+    var latitude: Double? { get }
+    var longitude: Double? { get }
 }
 
 extension AssetTaskEntity: Hashable {
@@ -43,17 +44,18 @@ final class AssetTaskEntity : Entity {
     private(set) var creationDate: String?
     
     init?(task: AssetTaskable) {
-        if task.location == nil && task.creationDate == nil {
+        let hasLocation = task.latitude != nil && task.longitude != nil
+        if hasLocation && task.creationDate == nil {
             return nil
         }
         self.localIdentifier = task.localIdentifier
         
-        if let coordinate = task.location?.coordinate {
-            self.latitude = coordinate.latitude
-            self.longitude = coordinate.longitude
+        if hasLocation{
+            self.latitude = task.latitude
+            self.longitude = task.longitude
             geoHash = Geohash.encode(latitude: latitude!, longitude: longitude!, precision: 5)
             status = .forGeoSearch
-    
+            
         } else {
             latitude = nil
             longitude = nil
@@ -62,7 +64,7 @@ final class AssetTaskEntity : Entity {
         
         if let date = task.creationDate {
             self.creationDate = getDateFormatter().string(from: date)
-        }        
+        }
     }
     
     init(id: Int64, creationDate: String?, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, address: String?, status: AssetTaskStatus) {

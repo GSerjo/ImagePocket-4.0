@@ -33,5 +33,6 @@ final class DataStore {
         try SearchRepository.instance.createTable()
         try GeoHashRepository.instance.createTable()
         try AssetTaskResitory.instance.createTable()
+        try AssetRespository.instance.createTable()
     }
 }

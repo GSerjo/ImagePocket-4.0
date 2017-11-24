@@ -13,6 +13,7 @@ final class AssetTaskProcessor {
     private let _assetTaskRepositoty = AssetTaskResitory.instance
     private let _searchRepository = SearchRepository.instance
     private let _geoHashRepository = GeoHashRepository.instance
+    private let _settings = Settings.instance
     
     public static let instance = AssetTaskProcessor()
     
@@ -24,10 +25,22 @@ final class AssetTaskProcessor {
     }
     
     public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
+        
+        switch _settings.appStatus {
+        case .none:
+            addAssetTasks(tasks: tasks)
+            enqueueTask()
+        case .assetTaskLoaded: break
+            
+        default:
+            return
+        }
+    }
+    
+    private func addAssetTasks(tasks: [AssetTaskable]) -> Void {
         let assetTasks = tasks.map{AssetTaskEntity(task: $0)}.flatMap{$0}
         _assetTaskRepositoty.save(assetTasks)
-        
-        enqueueTask()
+        _settings.appStatus = .assetTaskLoaded
     }
     
     private func enqueueForReadyWorkItem(delayInSeconds: Int) -> Void {

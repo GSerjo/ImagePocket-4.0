@@ -10,6 +10,13 @@ import Foundation
 import Photos
 
 extension PHAsset: AssetTaskable {
+    var latitude: Double? {
+        return self.location?.coordinate.latitude
+    }
+    
+    var longitude: Double? {
+        return self.location?.coordinate.longitude
+    }
 }
 
 final class ImageCache{

@@ -53,6 +53,7 @@ final class AssetTaskResitory {
                     Columns.status <- entity.status.rawValue)
                 
                 let _ = try? DataStore.instance.db.run(query)
+                AssetRespository.instance.save(entity)
             }
         }
     }
