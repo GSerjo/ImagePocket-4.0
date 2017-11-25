@@ -19,12 +19,7 @@ final class AssetTaskProcessor {
     
     private init(){
     }
-    
-    public func enqueueTask() -> Void {
-        enqueueForGeoSearchItem()
-        enqueueForReadyWorkItem()
-    }
-    
+
     public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
         
         if _settings.appStatus != .none && _settings.appStatus != .assetTaskProcessed {
@@ -43,6 +38,11 @@ final class AssetTaskProcessor {
                 updateAssetTasks(tasks: tasks)
                 enqueueTask()
         }
+    }
+    
+    private func enqueueTask() -> Void {
+        enqueueForGeoSearchItem()
+        enqueueForReadyWorkItem()
     }
     
     private func addAssetTasks(tasks: [AssetTaskable]) -> Void {
@@ -84,8 +84,8 @@ final class AssetTaskProcessor {
             return
         }
         
-        enqueueForReadyWorkItem(delayInSeconds: 60)
-        enqueueForGeoSearchItem(delayInSeconds: 80)
+        enqueueForReadyWorkItem(delayInSeconds: 40)
+        enqueueForGeoSearchItem(delayInSeconds: 60)
         
         var notProcessed = [AssetTaskEntity]()
         

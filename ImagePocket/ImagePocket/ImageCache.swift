@@ -22,8 +22,6 @@ extension PHAsset: AssetTaskable {
 final class ImageCache{
     
     static let instance = ImageCache()
-    
-    private var _assets = [String: PHAsset]()
     private let _imageRepository = ImageRepository.instance
     private var _taggedImages = [String: ImageEntity]()
     private var _actualImages = [String:ImageEntity]()
@@ -31,23 +29,9 @@ final class ImageCache{
     private let _searchCache = SearchCache.instance
     var fetchResult: PHFetchResult<PHAsset>!
     
-//    private init(){
-//        
-//        _taggedImages = _imageRepository.getAll().toDictionary{$0.localIdentifier}
-//        
-//        let allPhotosOptions = PHFetchOptions()
-//        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-//        
-//        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
-//        
-//        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
-//        _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
-//        
-//        syncImages()
-//    }
-    
     subscript(localId: String) -> PHAsset?{
-        return _assets[localId]
+        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
+        return result.firstObject
     }
     
     func start(onComplete: @escaping () -> Void) -> Void {
@@ -62,8 +46,7 @@ final class ImageCache{
             let assets = self.getAssets(self.fetchResult)
             AssetTaskProcessor.instance.enqueueTasks(tasks: assets)
         
-            self._assets = assets.toDictionary{$0.localIdentifier}
-            self._actualImages  = self._assets.values.map(self.createImage).toDictionary{$0.localIdentifier}
+            self._actualImages  = assets.map(self.createImage).toDictionary{$0.localIdentifier}
             
             self.syncImages()
             
@@ -71,14 +54,18 @@ final class ImageCache{
         }
     }
     
-    func reloadImages() -> Void {
-        _assets = getAssets(fetchResult).toDictionary{$0.localIdentifier}
-        _actualImages  = _assets.values.map(createImage).toDictionary{$0.localIdentifier}
+    public func photoLibraryDidChange(_ changeInstance: PHChange) -> Void {
+        guard let changes = changeInstance.changeDetails(for: fetchResult) else {
+            return
+        }
+        if changes.hasIncrementalChanges == false {
+            return
+        }
         
-        syncImages()
+        remove(localIdentifiers: changes.removedObjects.map{$0.localIdentifier})
     }
     
-    func search(text: String) -> [ImageEntity] {
+   public func search(text: String) -> [ImageEntity] {
         if text.isEmpty() {
             return getImages(tag: TagEntity.all)
         }
@@ -104,12 +91,20 @@ final class ImageCache{
         return result
     }
 
-    func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
+    public func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
         DispatchQueue.global().async {[unowned self] in
             let result = self.getImages(tag: tag)
             
             onComplete(result)
         }
+    }
+    
+    private func remove(localIdentifiers: [String]) -> Void {
+        for localIdentifier in localIdentifiers {
+            _ = _actualImages.removeValue(forKey: localIdentifier)
+            _ = _taggedImages.removeValue(forKey: localIdentifier)
+        }
+        _imageRepository.remove(localIdentifiers: localIdentifiers)
     }
     
     private func getImages(tag: TagEntity) -> [ImageEntity]{
@@ -175,7 +170,7 @@ final class ImageCache{
         return assets
     }
     
-    private func createImage(asset: PHAsset) -> ImageEntity{
+    private func createImage(asset: PHAsset) -> ImageEntity {
         return ImageEntity(localIdentifier: asset.localIdentifier, creationDate: asset.creationDate)
     }
 }

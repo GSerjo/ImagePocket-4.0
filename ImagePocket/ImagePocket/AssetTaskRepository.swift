@@ -47,7 +47,7 @@ final class AssetTaskResitory {
         if entities.isEmpty {
             return
         }
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
             for entity in entities {
                 
                 let query = self._table.insert(or: .ignore,
@@ -59,7 +59,7 @@ final class AssetTaskResitory {
                     Columns.address <- entity.address,
                     Columns.status <- entity.status.rawValue)
                 
-                let _ = try? DataStore.instance.db.run(query)
+                _ = try? DataStore.instance.db.run(query)
                 AssetRespository.instance.save(entity)
             }
         }
@@ -75,14 +75,19 @@ final class AssetTaskResitory {
             Columns.address <- entity.address,
             Columns.status <- entity.status.rawValue)
     
-        let _ = try? DataStore.instance.db.run(query)
+        _ = try? DataStore.instance.db.run(query)
     }
     
     public func updateAddress(_ entity: AssetTaskEntity) -> Void {
         
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
-            let query = self._table.filter(Columns.id == entity.id)
-            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.address <- entity.address))
+        if entity.geoHash == nil || entity.address == nil {
+            print("Failed updateAddress")
+            return
+        }
+        
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            let query = self._table.filter(Columns.geoHash == entity.geoHash)
+            _ = try? DataStore.instance.db.run(query.update(Columns.status <- entity.status.rawValue, Columns.address <- entity.address))
             
             if entity.isForReady && entity.address != nil && entity.geoHash != nil {
                 GeoHashRepository.instance.save(entity: GeoHashEntity(geoHash: entity.geoHash!, address: entity.address!))
@@ -98,20 +103,20 @@ final class AssetTaskResitory {
         let ids = entities.map{$0.id}
         let searchEntities = entities.map{SearchEntity(text: $0.text, localIdentifier: $0.localIdentifier)}
         
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
             for searchEntity in searchEntities {
                 SearchRepository.instance.save(entity: searchEntity)
             }
             
             let query = self._table.filter(ids.contains(Columns.id))
-            let _ = try? DataStore.instance.db.run(query.update(Columns.status <- AssetTaskStatus.ready.rawValue))
+            _ = try? DataStore.instance.db.run(query.update(Columns.status <- AssetTaskStatus.ready.rawValue))
         }
     }
     
     public func markAsForReady(_ entity: AssetTaskEntity) -> Void {
         let searchEntity = SearchEntity(text: entity.text, localIdentifier: entity.localIdentifier)
         
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
             SearchRepository.instance.save(entity: searchEntity)
 
             
@@ -122,11 +127,30 @@ final class AssetTaskResitory {
     
     public func removeReady() -> Void {
         let query = _table.filter(Columns.status == AssetTaskStatus.ready.rawValue)
-        let _ = try? DataStore.instance.db.run(query.delete())
+        _ = try? DataStore.instance.db.run(query.delete())
     }
     
     public func getForGeoSearchChunk() -> [AssetTaskEntity] {
-        return getByStatus(status: .forGeoSearch, chunkSize: _forGeoSearchChunkSize)
+        var result = [AssetTaskEntity]()
+        
+        let query = _table.filter(Columns.status == AssetTaskStatus.forGeoSearch.rawValue).group(Columns.geoHash).limit(_forGeoSearchChunkSize)
+        if let rows = try? DataStore.instance.db.prepare(query){
+            rows.forEach{ row in
+                
+                let item = AssetTaskEntity(
+                    id: row[Columns.id],
+                    creationDate: row[Columns.creationDate],
+                    localIdentifier: row[Columns.localIdentifier],
+                    geoHash: row[Columns.geoHash],
+                    latitude: row[Columns.latitude],
+                    longitude: row[Columns.longitude],
+                    address: row[Columns.address],
+                    status: AssetTaskStatus(rawValue: row[Columns.status])!)
+                
+                result.append(item)
+            }
+        }
+        return result
     }
     
     public func getForReady() -> [AssetTaskEntity] {

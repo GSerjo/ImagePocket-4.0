@@ -19,7 +19,7 @@ final class ImageRepository {
     private init(){
     }
     
-    func createTable() throws {
+    public func createTable() throws {
         
         let tableQuery = _table.create(ifNotExists: true) { t in
             t.column(Columns.id, primaryKey: true)
@@ -33,7 +33,7 @@ final class ImageRepository {
         try DataStore.instance.db.run(indexQuery)
     }
     
-    func createTagImageTable() throws {
+    public func createTagImageTable() throws {
         
         let tableQuery = _tagImageTable.create(ifNotExists: true) { t in
             t.column(TagImageColumns.id, primaryKey: true)
@@ -48,7 +48,7 @@ final class ImageRepository {
     }
 
     
-    func getAll() -> [ImageEntity] {
+    public func getAll() -> [ImageEntity] {
         
         var result = [Int64: ImageEntity]()
         
@@ -75,7 +75,7 @@ final class ImageRepository {
         return result.values.toArray()
     }
     
-    func addTagImage(imageId: Int64, entities: [TagEntity]) -> [TagImageEntity] {
+    public func addTagImage(imageId: Int64, entities: [TagEntity]) -> [TagImageEntity] {
         if entities.isEmpty {
             return []
         }
@@ -89,21 +89,14 @@ final class ImageRepository {
         return result
     }
     
-    func remove(tagImages: [TagImageEntity]) -> Void {
+    public func remove(tagImages: [TagImageEntity]) -> Void {
         if tagImages.isEmpty {
             return
         }
         _ = _tagImageTable.filter(tagImages.map {$0.id}.contains(Columns.id)).delete()
     }
     
-    func remove(_ entities: [ImageEntity]) -> Void {
-        if entities.isEmpty {
-            return
-        }
-        _ = _table.filter(entities.map {$0.id}.contains(Columns.id)).delete()
-    }
-    
-    func saveOrUpdate(_ entities: [ImageEntity]) -> (remove: [ImageEntity], add: [ImageEntity]) {
+    public func saveOrUpdate(_ entities: [ImageEntity]) -> (remove: [ImageEntity], add: [ImageEntity]) {
         if entities.isEmpty {
             return ([], [])
         }
@@ -111,27 +104,47 @@ final class ImageRepository {
         let forRemove = entities.filter{ $0.isNew == false && $0.hasTags == false }
         let forAdd = entities.filter { $0.isNew && $0.hasTags }
         
-        remove(forRemove)
-        add(forAdd)
-        return (forRemove, forAdd)
-    }
-    
-    private func add(_ entities: [ImageEntity]) -> Void {
-        
-        if entities.isEmpty {
-            return
-        }
-        
-        entities.forEach{ entity in
-            if entity.isNew {
-                let query = _table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.creationDate <- entity.creationDate)
-                if let id  = try? DataStore.instance.db.run(query){
-                    entity.id = id
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            
+            if forRemove.isEmpty == false {
+                _ = self._table.filter(forRemove.map {$0.id}.contains(Columns.id)).delete()
+            }
+            
+            
+            if forAdd.isEmpty == false {
+                for entity in forAdd {
+                    if entity.isNew {
+                        let query = self._table.insert(
+                            Columns.localIdentifier <- entity.localIdentifier,
+                            Columns.creationDate <- entity.creationDate)
+                        
+                        if let id  = try? DataStore.instance.db.run(query){
+                            entity.id = id
+                        }
+                    }
                 }
             }
         }
+        return (forRemove, forAdd)
     }
     
+    public func remove(localIdentifiers: [String]) -> Void {
+        if localIdentifiers.isEmpty {
+            return
+        }
+        let query = _table.select(Columns.id).filter(localIdentifiers.contains(Columns.localIdentifier))
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            
+            var forRemove = [Int64]()
+            if let rows = try? DataStore.instance.db.prepare(query) {
+                for row in rows {
+                    forRemove.append(row[Columns.id])
+                }
+            }
+            _ = self._table.filter(forRemove.contains(Columns.id)).delete()
+            _ = self._tagImageTable.filter(forRemove.contains(TagImageColumns.imageId)).delete()
+        }
+    }
     
     private struct Columns {
         static let id = Expression<Int64>("id")

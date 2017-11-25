@@ -43,15 +43,15 @@ extension ContentViewController: UISearchBarDelegate {
 extension ContentViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         
-        guard let changes = changeInstance.changeDetails(for: _imageCache.fetchResult)
-            else { return }
+        guard let changes = changeInstance.changeDetails(for: _imageCache.fetchResult) else {
+            return
+        }
         
         // Change notifications may be made on a background queue. Re-dispatch to the
         // main queue before acting on the change as we'll be updating the UI.
         DispatchQueue.main.sync { [unowned self] in
-            // Hang on to the new fetch result.
             self._imageCache.fetchResult = changes.fetchResultAfterChanges
-            self._imageCache.reloadImages()
+            self._imageCache.photoLibraryDidChange(changeInstance)
             filterImages(by: self._selectedTag)
             
             if changes.hasIncrementalChanges {

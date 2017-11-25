@@ -40,7 +40,7 @@ final class AssetRespository {
             Columns.latitude <- entity.latitude,
             Columns.longitude <- entity.longitude)
         
-        let _ = try? DataStore.instance.db.run(query)
+        _ = try? DataStore.instance.db.run(query)
     }
     
     public func update(tasks: [AssetTaskable]) -> Void {
@@ -62,10 +62,10 @@ final class AssetRespository {
         let removed = Array(currentAssets.subtracting(newAssets)).map{$0.localIdentifier}
         let added = newAssets.subtracting(currentAssets)
         
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
             if removed.isEmpty == false {
                 let query = self._table.filter(removed.contains(Columns.localIdentifier))
-                let _ = try? DataStore.instance.db.run(query.delete())
+                _ = try? DataStore.instance.db.run(query.delete())
             }
             
             if added.isEmpty == false {
@@ -76,7 +76,7 @@ final class AssetRespository {
                                               Columns.latitude <- item.latitude,
                                               Columns.longitude <- item.longitude)
                     
-                    let _ = try? DataStore.instance.db.run(query)
+                    _ = try? DataStore.instance.db.run(query)
                     
                     if let assetTask = AssetTaskEntity(task: item) {
                         AssetTaskResitory.instance.save(entity: assetTask)
