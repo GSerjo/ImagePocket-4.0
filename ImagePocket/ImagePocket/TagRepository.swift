@@ -31,11 +31,12 @@ final class TagRepository {
     }
     
     func saveOrUpdate(_ values: [TagEntity]) -> Void {
-        
-        values.forEach { item in
-            let query = _table.insert(Columns.name <- item.name)
-            if let id  = try? DataStore.instance.db.run(query){
-                item.id = id
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            values.forEach { item in
+                let query = self._table.insert(Columns.name <- item.name)
+                if let id  = try? DataStore.instance.db.run(query){
+                    item.id = id
+                }
             }
         }
     }

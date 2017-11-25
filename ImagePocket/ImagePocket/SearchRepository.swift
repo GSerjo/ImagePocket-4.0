@@ -31,17 +31,17 @@ final class SearchRepository {
         if entities.isEmpty {
             return
         }
-        let _ = try? DataStore.instance.db.transaction {[unowned self] in
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
             for entity in entities {
                 let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
-                let _ = try? DataStore.instance.db.run(query)
+                _ = try? DataStore.instance.db.run(query)
             }
         }
     }
     
     public func save(entity: SearchEntity) -> Void {
         let query = self._table.insert(Columns.localIdentifier <- entity.localIdentifier, Columns.text <- entity.text)
-        let _ = try? DataStore.instance.db.run(query)
+        _ = try? DataStore.instance.db.run(query)
     }
         
     public func remove(_ entityIds: [String]) -> Void {
@@ -50,7 +50,7 @@ final class SearchRepository {
         }
         
         for id in entityIds {
-            let _ = _table.filter(Columns.localIdentifier.match(id)).delete()
+            _ = _table.filter(Columns.localIdentifier.match(id)).delete()
         }
     }
     
