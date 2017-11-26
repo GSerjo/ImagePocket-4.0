@@ -16,6 +16,7 @@ final class SearchCache {
     private init() {
     }
     
+    // TODO Check on duplicates
     public func search(_ terms: [String]) -> [SearchResultEntity] {
         return _searchRepository.search(terms)
     }

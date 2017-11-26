@@ -44,12 +44,12 @@ final class SearchRepository {
         _ = try? DataStore.instance.db.run(query)
     }
         
-    public func remove(_ entityIds: [String]) -> Void {
-        if entityIds.isEmpty {
+    public func remove(_ localIdentifiers: [String]) -> Void {
+        if localIdentifiers.isEmpty {
             return
         }
         
-        for id in entityIds {
+        for id in localIdentifiers {
             _ = _table.filter(Columns.localIdentifier.match(id)).delete()
         }
     }

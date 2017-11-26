@@ -141,9 +141,12 @@ final class ImageRepository {
                     forRemove.append(row[Columns.id])
                 }
             }
-            _ = self._table.filter(forRemove.contains(Columns.id)).delete()
-            _ = self._tagImageTable.filter(forRemove.contains(TagImageColumns.imageId)).delete()
+            if forRemove.isEmpty == false {
+                _ = self._table.filter(forRemove.contains(Columns.id)).delete()
+                _ = self._tagImageTable.filter(forRemove.contains(TagImageColumns.imageId)).delete()
+            }
         }
+        SearchRepository.instance.remove(localIdentifiers)
     }
     
     private struct Columns {
