@@ -36,7 +36,7 @@ final class AssetTaskProcessor {
             case .none:
                 addAssetTasks(tasks: tasks)
                 _settings.appStatus = .assetTaskLoaded
-                enqueueForGeoSearchItem()
+                enqueueTask()
             case .assetTaskLoaded:
                 enqueueTask()
             case .assetTaskProcessed:

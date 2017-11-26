@@ -19,9 +19,7 @@ private extension UICollectionView {
 
 extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        _searchBar.text = nil
-        setReadMode()
-        filterImagesAndReloadAsync(by: _selectedTag)
+        onCancelSearch()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -36,7 +34,7 @@ extension ContentViewController: UISearchBarDelegate {
     
     func dismissKeyboard() {
         _searchBar.text = nil
-        _searchBar.endEditing(true)
+        _searchBar.endEditing(false)
     }
 }
 
@@ -110,6 +108,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     fileprivate var _selectedTag = TagEntity.all
     fileprivate var _searchBar = UISearchBar()
     private var _pendingSearchRequest: DispatchWorkItem?
+    private var _searchText = String.empty
     
     private enum ViewMode {
         case read
@@ -228,9 +227,13 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     fileprivate func searchImages(by searchText: String) -> Void {
+        _searchText = searchText
+        if searchText.isEmpty() {
+            return
+        }
         _pendingSearchRequest?.cancel()
         let searchRequest = DispatchWorkItem{ [unowned self] in
-            self._filteredImages = self._imageCache.search(text: searchText)
+            self._filteredImages = self._imageCache.search(text: self._searchText)
             self.reloadDataAsync()
         }
 
@@ -256,6 +259,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _searchBar.showsCancelButton = true
         _searchBar.delegate = self
         _searchBar.placeholder = "Search Photos"
+        _searchBar.returnKeyType = UIReturnKeyType.done
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
@@ -306,8 +310,30 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         navigationItem.leftBarButtonItems = nil
         navigationItem.rightBarButtonItems = nil
         
+        configureSearchCancelButtonIfPad()
         navigationItem.titleView = _searchBar
+        
         _searchBar.becomeFirstResponder()
+        _searchBar.sizeToFit()
+        _searchBar.endEditing(true)
+    }
+    
+    private func configureSearchCancelButtonIfPad() -> Void {
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            return
+        }
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelSearch))
+        navigationItem.rightBarButtonItem = cancelButton
+    }
+    
+    @objc fileprivate func onCancelSearch() -> Void {
+        _searchBar.text = nil
+        setReadMode()
+        
+        if _searchText.isEmpty() == false{
+            filterImagesAndReloadAsync(by: _selectedTag)
+            _searchText = String.empty
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
