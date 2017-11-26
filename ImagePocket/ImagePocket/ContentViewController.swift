@@ -21,7 +21,7 @@ extension ContentViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         _searchBar.text = nil
         setReadMode()
-        filterImagesAndReload(by: _selectedTag)
+        filterImagesAndReloadAsync(by: _selectedTag)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -49,32 +49,33 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
         
         DispatchQueue.global().async { [unowned self] in
             self._imageCache.photoLibraryDidChange(changes: changes, changeInstance: changeInstance)
-            self.filterImagesSyns(by: self._selectedTag)
+            self.filterImagesSync(by: self._selectedTag)
             
             DispatchQueue.main.sync { [unowned self] in
-                if changes.hasIncrementalChanges {
-
-                    guard let collectionView = self._collectionView else { fatalError() }
-                    collectionView.performBatchUpdates({
-                        // For indexes to make sense, updates must be in this order:
-                        // delete, insert, reload, move
-                        if let removed = changes.removedIndexes, !removed.isEmpty {
-                            collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
-                        }
-                        if let inserted = changes.insertedIndexes, !inserted.isEmpty {
-                            collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
-                        }
-                        if let changed = changes.changedIndexes, !changed.isEmpty {
-                            collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
-                        }
-                        changes.enumerateMoves { fromIndex, toIndex in
-                            collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
-                                                    to: IndexPath(item: toIndex, section: 0))
-                        }
-                    })
-                } else {
-                    self.reloadDataAsync()
-                }
+//                if changes.hasIncrementalChanges {
+//                    guard let collectionView = self._collectionView else { fatalError() }
+//                    collectionView.performBatchUpdates({
+//                        // For indexes to make sense, updates must be in this order:
+//                        // delete, insert, reload, move
+//                        if let removed = changes.removedIndexes, !removed.isEmpty {
+//                            collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
+//                        }
+//                        if let inserted = changes.insertedIndexes, !inserted.isEmpty {
+//                            collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
+//                        }
+//                        if let changed = changes.changedIndexes, !changed.isEmpty {
+//                            collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
+//                        }
+//                        changes.enumerateMoves { fromIndex, toIndex in
+//                            collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+//                                                    to: IndexPath(item: toIndex, section: 0))
+//                        }
+//                    })
+////                    self.filterImagesAndReloadSync(by: self._selectedTag)
+//                } else {
+//                    self.reloadData()
+//                }
+                self.reloadData()
                 self.resetCachedAssets()
             }
         }
@@ -175,7 +176,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             return
         }
         
-        filterImagesAndReload(by: menuController.selectedTag)
+        filterImagesAndReloadAsync(by: menuController.selectedTag)
     }
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
@@ -203,13 +204,13 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
-    fileprivate func filterImagesAndReload(by tag: TagEntity?) -> Void {
+    fileprivate func filterImagesAndReloadAsync(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
-            filterImagesAsyns(by: tagEntity, onComplete: reloadDataAsync)
+            filterImagesAsync(by: tagEntity, onComplete: reloadDataAsync)
         }
     }
     
-    fileprivate func filterImagesAsyns(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
+    fileprivate func filterImagesAsync(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
             _imageCache.getImagesAsync(tag: tagEntity, onComplete: { images in
@@ -219,10 +220,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
-    fileprivate func filterImagesSyns(by tag: TagEntity?) -> Void {
+    fileprivate func filterImagesSync(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
-            self._filteredImages = _imageCache.getImagesSync(tag: tagEntity)
+            _filteredImages = _imageCache.getImagesSync(tag: tagEntity)
         }
     }
     
@@ -243,7 +244,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
-    private func reloadData() {
+    fileprivate func reloadData() {
         _collectionView.reloadData()
     }
 
@@ -434,7 +435,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         _imageCache = ImageCache.instance
         _imageCache.start(onComplete: {
-            self.filterImagesAndReload(by: self._selectedTag)
+            self.filterImagesAndReloadAsync(by: self._selectedTag)
         })
 
         resetCachedAssets()
