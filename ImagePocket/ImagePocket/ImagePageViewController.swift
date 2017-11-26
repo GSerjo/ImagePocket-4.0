@@ -79,7 +79,7 @@ final class ImagePageViewController: UIPageViewController, UIPageViewControllerD
 //        navigationController?.isToolbarHidden = false
     }
     
-    func onTagClicked() {
+    @objc func onTagClicked() {
         performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
     }
     

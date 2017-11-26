@@ -107,7 +107,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: Keyboard
-    func keyboardWillShow(_ notification: Notification) -> Void {
+    @objc func keyboardWillShow(_ notification: Notification) -> Void {
         if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
             tableView.contentInset = contentInsets
@@ -115,7 +115,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func keyboardWillHide(_ notification: NotificationCenter) -> Void {
+    @objc func keyboardWillHide(_ notification: NotificationCenter) -> Void {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
@@ -338,7 +338,7 @@ final class NWSTokenViewCell: UITableViewCell {
     func updateAttributedText(_ tag: TagItem) -> Void {
         tagItem = tag
         
-        let attributes = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 18.0)]
+        let attributes = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18.0)]
         let prettyString = NSMutableAttributedString(string: "Add new tag \(tag.name)")
         prettyString.setAttributes(attributes, range: NSRange(location: 12, length: tag.name.count))
         

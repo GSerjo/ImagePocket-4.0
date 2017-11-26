@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension LazyMapCollection  {
+public extension MutableCollection  {
     
     func toArray() -> [Element]{
         return Array(self)

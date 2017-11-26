@@ -63,11 +63,11 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
         self.view.addGestureRecognizer(swipeDown)
     }
     
-    func onSwipeDown() -> Void {
+    @objc func onSwipeDown() -> Void {
         navigationController?.popViewController(animated: true)
     }
     
-    func onDoubleTap(recognizer: UITapGestureRecognizer) -> Void {
+    @objc func onDoubleTap(recognizer: UITapGestureRecognizer) -> Void {
         if (_scrollView.zoomScale > _scrollView.minimumZoomScale) {
             _scrollView.setZoomScale(_scrollView.minimumZoomScale, animated: true)
         } else {

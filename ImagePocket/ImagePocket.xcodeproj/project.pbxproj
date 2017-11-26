@@ -55,7 +55,7 @@
 		B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
-		B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */; };
+		B2DDD4C51DCD7E9B00749A82 /* MutableCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* MutableCollectionExtensions.swift */; };
 		B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */; };
 		B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */; };
 /* End PBXBuildFile section */
@@ -204,7 +204,7 @@
 		B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifiableOnCloseProtocol.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
-		B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyMapCollectionExtensions.swift; sourceTree = "<group>"; };
+		B2DDD4C41DCD7E9B00749A82 /* MutableCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableCollectionExtensions.swift; sourceTree = "<group>"; };
 		B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geohash.swift; sourceTree = "<group>"; };
 		B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -304,7 +304,7 @@
 			children = (
 				B27D66241DBC1D10001E579A /* StringExtensions.swift */,
 				B27D66261DBC1E7E001E579A /* SequenceTypeExtensions.swift */,
-				B2DDD4C41DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift */,
+				B2DDD4C41DCD7E9B00749A82 /* MutableCollectionExtensions.swift */,
 				B25E4F841F8A816F00AE34C0 /* Settings.swift */,
 				B2BD76A81FA6BE9800024DF9 /* Locking.swift */,
 				B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */,
@@ -427,6 +427,7 @@
 					B27D65D81DBC17D3001E579A = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NAXXC43K8R;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -576,7 +577,7 @@
 				B2086FD81DC5AE0F00A18E71 /* ImageEntity.swift in Sources */,
 				B218000D1FC28C0200EE7924 /* AssetTaskProcessor.swift in Sources */,
 				B29181431F5340B100DBBC86 /* NWSTokenView.swift in Sources */,
-				B2DDD4C51DCD7E9B00749A82 /* LazyMapCollectionExtensions.swift in Sources */,
+				B2DDD4C51DCD7E9B00749A82 /* MutableCollectionExtensions.swift in Sources */,
 				B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */,
 				B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */,
 				B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */,
@@ -744,7 +745,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.tinynote.ImagePocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -758,7 +760,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.tinynote.ImagePocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

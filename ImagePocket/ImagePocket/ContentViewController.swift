@@ -32,7 +32,7 @@ extension ContentViewController: UISearchBarDelegate {
         view.addGestureRecognizer(tap)
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         _searchBar.text = nil
         _searchBar.endEditing(false)
     }
