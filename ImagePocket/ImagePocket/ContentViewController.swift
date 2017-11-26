@@ -43,41 +43,40 @@ extension ContentViewController: UISearchBarDelegate {
 extension ContentViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         
-        guard let changes = changeInstance.changeDetails(for: _imageCache.fetchResult) else {
+        guard let changes = _imageCache.changeDetails(changeInstance: changeInstance) else {
             return
         }
         
-        // Change notifications may be made on a background queue. Re-dispatch to the
-        // main queue before acting on the change as we'll be updating the UI.
-        DispatchQueue.main.sync { [unowned self] in
-            self._imageCache.fetchResult = changes.fetchResultAfterChanges
-            self._imageCache.photoLibraryDidChange(changeInstance)
-            filterImages(by: self._selectedTag)
+        DispatchQueue.global().async { [unowned self] in
+            self._imageCache.photoLibraryDidChange(changes: changes, changeInstance: changeInstance)
+            self.filterImagesSyns(by: self._selectedTag)
             
-            if changes.hasIncrementalChanges {
-                // If we have incremental diffs, animate them in the collection view.
-                guard let collectionView = self._collectionView else { fatalError() }
-                collectionView.performBatchUpdates({
-                    // For indexes to make sense, updates must be in this order:
-                    // delete, insert, reload, move
-                    if let removed = changes.removedIndexes, !removed.isEmpty {
-                        collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
-                    }
-                    if let inserted = changes.insertedIndexes, !inserted.isEmpty {
-                        collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
-                    }
-                    if let changed = changes.changedIndexes, !changed.isEmpty {
-                        collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
-                    }
-                    changes.enumerateMoves { fromIndex, toIndex in
-                        collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
-                                                to: IndexPath(item: toIndex, section: 0))
-                    }
-                })
-            } else {
-                reloadDataAsync()
+            DispatchQueue.main.sync { [unowned self] in
+                if changes.hasIncrementalChanges {
+
+                    guard let collectionView = self._collectionView else { fatalError() }
+                    collectionView.performBatchUpdates({
+                        // For indexes to make sense, updates must be in this order:
+                        // delete, insert, reload, move
+                        if let removed = changes.removedIndexes, !removed.isEmpty {
+                            collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
+                        }
+                        if let inserted = changes.insertedIndexes, !inserted.isEmpty {
+                            collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
+                        }
+                        if let changed = changes.changedIndexes, !changed.isEmpty {
+                            collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
+                        }
+                        changes.enumerateMoves { fromIndex, toIndex in
+                            collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+                                                    to: IndexPath(item: toIndex, section: 0))
+                        }
+                    })
+                } else {
+                    self.reloadDataAsync()
+                }
+                self.resetCachedAssets()
             }
-            resetCachedAssets()
         }
     }
 }
@@ -206,17 +205,24 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     fileprivate func filterImagesAndReload(by tag: TagEntity?) -> Void {
         if let tagEntity = tag {
-            filterImages(by: tagEntity, onComplete: reloadDataAsync)
+            filterImagesAsyns(by: tagEntity, onComplete: reloadDataAsync)
         }
     }
     
-    fileprivate func filterImages(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
+    fileprivate func filterImagesAsyns(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
             _imageCache.getImagesAsync(tag: tagEntity, onComplete: { images in
                 self._filteredImages = images
                 onComplete()
             })
+        }
+    }
+    
+    fileprivate func filterImagesSyns(by tag: TagEntity?) -> Void {
+        if let tagEntity = tag {
+            _selectedTag = tagEntity
+            self._filteredImages = _imageCache.getImagesSync(tag: tagEntity)
         }
     }
     

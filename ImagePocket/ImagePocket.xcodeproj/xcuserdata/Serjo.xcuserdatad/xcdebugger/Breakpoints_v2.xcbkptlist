@@ -298,54 +298,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/ContentViewController.swift"
-            timestampString = "533148880.892505"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "photoLibraryDidChange(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; () in closure #1 () -&gt; () in ImagePocket.ContentViewController.photoLibraryDidChange(__ObjC.PHChange) -&gt; ()"
-                  moduleName = "ImagePocket"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/gserjo/Development/ImagePocket-4.0/ImagePocket/ImagePocket/ContentViewController.swift"
-                  timestampString = "529988168.679182"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "216">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Int) -&gt; Foundation.IndexPath in closure #1 () -&gt; () in closure #1 () -&gt; () in closure #1 () -&gt; () in ImagePocket.ContentViewController.photoLibraryDidChange(__ObjC.PHChange) -&gt; ()"
-                  moduleName = "ImagePocket"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/gserjo/Development/ImagePocket-4.0/ImagePocket/ImagePocket/ContentViewController.swift"
-                  timestampString = "529988168.680879"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ImagePocket/ContentViewController.swift"
             timestampString = "533148880.893136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"

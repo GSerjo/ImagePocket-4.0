@@ -19,8 +19,12 @@ final class AssetTaskProcessor {
     
     private init(){
     }
-
+    
     public func enqueueTasks(tasks: [AssetTaskable]) -> Void {
+        addAssetTasks(tasks: tasks)
+    }
+
+    public func initTasks(tasks: [AssetTaskable]) -> Void {
         
         if _settings.appStatus != .none && _settings.appStatus != .assetTaskProcessed {
             if _assetTaskRepositoty.isEmpty() {
@@ -31,6 +35,7 @@ final class AssetTaskProcessor {
         switch _settings.appStatus {
             case .none:
                 addAssetTasks(tasks: tasks)
+                _settings.appStatus = .assetTaskLoaded
                 enqueueForGeoSearchItem()
             case .assetTaskLoaded:
                 enqueueTask()
@@ -48,7 +53,6 @@ final class AssetTaskProcessor {
     private func addAssetTasks(tasks: [AssetTaskable]) -> Void {
         let assetTasks = tasks.map{AssetTaskEntity(task: $0)}.flatMap{$0}
         _assetTaskRepositoty.save(assetTasks)
-        _settings.appStatus = .assetTaskLoaded
     }
     
     private func updateAssetTasks(tasks: [AssetTaskable]) -> Void {

@@ -44,7 +44,7 @@ final class ImageCache{
             self.fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
             
             let assets = self.getAssets(self.fetchResult)
-            AssetTaskProcessor.instance.enqueueTasks(tasks: assets)
+            AssetTaskProcessor.instance.initTasks(tasks: assets)
         
             self._actualImages  = assets.map(self.createImage).toDictionary{$0.localIdentifier}
             
@@ -54,14 +54,16 @@ final class ImageCache{
         }
     }
     
-    public func photoLibraryDidChange(_ changeInstance: PHChange) -> Void {
-        guard let changes = changeInstance.changeDetails(for: fetchResult) else {
-            return
-        }
+    public func changeDetails(changeInstance: PHChange) -> PHFetchResultChangeDetails<PHAsset>? {
+        return changeInstance.changeDetails(for: fetchResult)
+    }
+    
+    public func photoLibraryDidChange(changes: PHFetchResultChangeDetails<PHAsset>, changeInstance: PHChange) -> Void {
         if changes.hasIncrementalChanges == false {
             return
         }
         
+        fetchResult = changes.fetchResultAfterChanges
         remove(localIdentifiers: changes.removedObjects.map{$0.localIdentifier})
         addAssets(assets: changes.insertedObjects)
     }
@@ -98,6 +100,10 @@ final class ImageCache{
             
             onComplete(result)
         }
+    }
+    
+    public func getImagesSync(tag: TagEntity) -> [ImageEntity] {
+        return getImages(tag: tag)
     }
     
     private func remove(localIdentifiers: [String]) -> Void {
