@@ -63,6 +63,7 @@ final class ImageCache{
         }
         
         remove(localIdentifiers: changes.removedObjects.map{$0.localIdentifier})
+        addAssets(assets: changes.insertedObjects)
     }
     
    public func search(text: String) -> [ImageEntity] {
@@ -105,6 +106,16 @@ final class ImageCache{
             _ = _taggedImages.removeValue(forKey: localIdentifier)
         }
         _imageRepository.remove(localIdentifiers: localIdentifiers)
+    }
+    
+    private func addAssets(assets: [PHAsset]) -> Void {
+        if assets.isEmpty {
+            return
+        }
+        for asset in assets {
+            let imageEntity = createImage(asset: asset)
+            _actualImages[imageEntity.localIdentifier] = imageEntity
+        }
     }
     
     private func getImages(tag: TagEntity) -> [ImageEntity]{
