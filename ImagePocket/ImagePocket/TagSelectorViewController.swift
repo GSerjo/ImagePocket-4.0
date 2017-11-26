@@ -340,7 +340,7 @@ final class NWSTokenViewCell: UITableViewCell {
         
         let attributes = [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 18.0)]
         let prettyString = NSMutableAttributedString(string: "Add new tag \(tag.name)")
-        prettyString.setAttributes(attributes, range: NSRange(location: 12, length: tag.name.characters.count))
+        prettyString.setAttributes(attributes, range: NSRange(location: 12, length: tag.name.count))
         
         _tagName.attributedText = prettyString
     }

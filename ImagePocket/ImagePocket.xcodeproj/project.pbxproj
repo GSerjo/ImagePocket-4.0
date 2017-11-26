@@ -16,6 +16,7 @@
 		B2558A801FC08FEC00293DE3 /* AssetTaskEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */; };
 		B2558A891FC1159D00293DE3 /* AssetTaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */; };
 		B25E4F851F8A816F00AE34C0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25E4F841F8A816F00AE34C0 /* Settings.swift */; };
+		B26CEE961FCB4736008DE0E2 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */; };
 		B277463C1FC742EE003C6D28 /* AppStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B277463B1FC742EE003C6D28 /* AppStatus.swift */; };
 		B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DC1DBC17D3001E579A /* AppDelegate.swift */; };
 		B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DE1DBC17D3001E579A /* ViewController.swift */; };
@@ -164,6 +165,7 @@
 		B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskEntity.swift; sourceTree = "<group>"; };
 		B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskRepository.swift; sourceTree = "<group>"; };
 		B25E4F841F8A816F00AE34C0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		B277463B1FC742EE003C6D28 /* AppStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatus.swift; sourceTree = "<group>"; };
 		B27D65D91DBC17D3001E579A /* ImagePocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27D65DC1DBC17D3001E579A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		B27D65DB1DBC17D3001E579A /* ImagePocket */ = {
 			isa = PBXGroup;
 			children = (
+				B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */,
 				B21800041FC28B9D00EE7924 /* Processros */,
 				B291813E1F5340B100DBBC86 /* NWSTokenViews */,
 				B2DDD4C11DCD704400749A82 /* Caches */,
@@ -528,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B27D65E71DBC17D3001E579A /* LaunchScreen.storyboard in Resources */,
+				B26CEE961FCB4736008DE0E2 /* iTunesArtwork@2x.png in Resources */,
 				B27D65E41DBC17D3001E579A /* Assets.xcassets in Resources */,
 				B29181601F538EB600DBBC86 /* NWSImageToken.xib in Resources */,
 				B27D65E21DBC17D3001E579A /* Main.storyboard in Resources */,
