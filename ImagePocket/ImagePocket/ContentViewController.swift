@@ -279,11 +279,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         setSearchMode()
     }
     
-    @IBAction func onTrashClicked(_ sender: Any) {
-        if _selectedImages.isEmpty {
-            return
-        }
+    @IBAction func onShareClicked(_ sender: Any) {
         
+    }
+    
+    @IBAction func onTrashClicked(_ sender: Any) {
         let ids = Array(_selectedImages.keys)
         
         PHPhotoLibrary.shared().performChanges({
@@ -456,6 +456,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         
         navigationItem.leftBarButtonItem?.isEnabled = isAnySelected
         _btTrash.isEnabled = isAnySelected
+        _btShare.isEnabled = isAnySelected
     }
     
     

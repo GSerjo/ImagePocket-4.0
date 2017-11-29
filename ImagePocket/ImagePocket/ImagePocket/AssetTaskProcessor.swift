@@ -75,7 +75,7 @@ final class AssetTaskProcessor {
         _assetTaskRepositoty.removeReady()
     }
     
-    private func enqueueForGeoSearchItem(delayInSeconds: Int = 5) -> Void {
+    private func enqueueForGeoSearchItem(delayInSeconds: Int = 1) -> Void {
         let workItem = DispatchWorkItem{ [unowned self] in
             self.processForGeoSearchTasks()
         }

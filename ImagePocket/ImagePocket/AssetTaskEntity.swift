@@ -41,11 +41,14 @@ extension AssetTaskable {
 
 extension AssetTaskEntity: Hashable {
     static func ==(left: AssetTaskEntity, right: AssetTaskEntity) -> Bool{
-        return left.address == right.address
+        return left.geoHash == right.geoHash
     }
     
     var hashValue: Int {
-        return id.hashValue
+        if geoHash == nil {
+            return 0
+        }
+        return geoHash!.hashValue
     }
 }
 

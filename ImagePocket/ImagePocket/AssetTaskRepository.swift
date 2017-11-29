@@ -12,7 +12,7 @@ import SQLite
 final class AssetTaskResitory {
     private let _table = Table("AssetTask")
     static let instance = AssetTaskResitory()
-    private let _forGeoSearchChunkSize = 12
+    private let _forGeoSearchChunkSize = 35
     
     private init(){
     }
