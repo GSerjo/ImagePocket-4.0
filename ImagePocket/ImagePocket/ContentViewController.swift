@@ -279,6 +279,26 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         setSearchMode()
     }
     
+    @IBAction func onTrashClicked(_ sender: Any) {
+        if _selectedImages.isEmpty {
+            return
+        }
+        
+        let ids = Array(_selectedImages.keys)
+        
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.deleteAssets(self._imageCache[ids])
+        }) { (completed, _) in
+            if completed {
+                self._imageCache.remove(localIdentifiers: ids)
+            }
+            DispatchQueue.main.sync {
+                self.setReadMode()
+            }
+        }
+    }
+    
+    
     fileprivate func setReadMode() -> Void {
         _viewMode = .read
         
@@ -432,7 +452,10 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
             cell.selectCell()
         }
         
-        navigationItem.leftBarButtonItem?.isEnabled = _selectedImages.count != 0
+        let isAnySelected = !_selectedImages.isEmpty
+        
+        navigationItem.leftBarButtonItem?.isEnabled = isAnySelected
+        _btTrash.isEnabled = isAnySelected
     }
     
     

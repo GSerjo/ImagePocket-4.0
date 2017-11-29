@@ -29,10 +29,13 @@ final class ImageCache{
     private let _searchCache = SearchCache.instance
     var fetchResult: PHFetchResult<PHAsset>!
     
-    subscript(localId: String) -> PHAsset?{
-//        print("requested: \(localId)")
-        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
+    subscript(localIdentifier: String) -> PHAsset?{
+        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil)
         return result.firstObject
+    }
+    
+    subscript(localIdentifiers: [String]) -> PHFetchResult<PHAsset>{
+        return PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
     }
     
     func start(onComplete: @escaping () -> Void) -> Void {
@@ -52,7 +55,6 @@ final class ImageCache{
             self.syncImages()
             
             onComplete()
-//            print(self._actualImages)
         }
     }
     
@@ -108,9 +110,8 @@ final class ImageCache{
         return getImages(tag: tag)
     }
     
-    private func remove(localIdentifiers: [String]) -> Void {
+    public func remove(localIdentifiers: [String]) -> Void {
         for localIdentifier in localIdentifiers {
-//            print("removed: \(localIdentifier)")
             _ = _actualImages.removeValue(forKey: localIdentifier)
             _ = _taggedImages.removeValue(forKey: localIdentifier)
         }
@@ -122,7 +123,6 @@ final class ImageCache{
             return
         }
         for asset in assets {
-//            print("added: \(asset.localIdentifier)")
             let imageEntity = createImage(asset: asset)
             _actualImages[imageEntity.localIdentifier] = imageEntity
         }
