@@ -313,9 +313,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         configureSearchCancelButtonIfPad()
         navigationItem.titleView = _searchBar
         
-        _searchBar.becomeFirstResponder()
         _searchBar.sizeToFit()
         _searchBar.endEditing(true)
+        _searchBar.becomeFirstResponder()
     }
     
     private func configureSearchCancelButtonIfPad() -> Void {
