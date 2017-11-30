@@ -109,6 +109,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     fileprivate var _searchBar = UISearchBar()
     private var _pendingSearchRequest: DispatchWorkItem?
     private var _searchText = String.empty
+    private let _sharedImageLoader = SharedImageLoader()
     
     private enum ViewMode {
         case read
@@ -280,7 +281,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     @IBAction func onShareClicked(_ sender: Any) {
-        
+        _sharedImageLoader.load(images: _selectedImages.values.toArray()) { (loadedImages) in
+            
+        }
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
