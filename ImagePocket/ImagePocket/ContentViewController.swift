@@ -282,7 +282,8 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     @IBAction func onShareClicked(_ sender: Any) {
         _sharedImageLoader.load(images: _selectedImages.values.toArray()) { (loadedImages) in
-            
+            let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
+            self.present(controller, animated: true, completion: nil)
         }
     }
     
