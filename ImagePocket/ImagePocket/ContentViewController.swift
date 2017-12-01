@@ -121,7 +121,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = randomColor
         sideMenuController?.delegate = self
-        
+
         self.title = _rootTitle
         configureToolbar()
         setReadMode()
@@ -291,7 +291,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         let ids = Array(_selectedImages.keys)
         
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.deleteAssets(self._imageCache[ids])
+            PHAssetChangeRequest.deleteAssets(self._imageCache[ids] as NSArray)
         }) { (completed, _) in
             if completed {
                 self._imageCache.remove(localIdentifiers: ids)

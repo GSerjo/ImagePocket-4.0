@@ -25,17 +25,17 @@ final class ImageCache{
     private let _imageRepository = ImageRepository.instance
     private var _taggedImages = [String: ImageEntity]()
     private var _actualImages = [String:ImageEntity]()
+    private var _assets = [String: PHAsset]()
     private let _tagCache = TagCache.instance
     private let _searchCache = SearchCache.instance
     var fetchResult: PHFetchResult<PHAsset>!
     
     subscript(localIdentifier: String) -> PHAsset?{
-        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil)
-        return result.firstObject
+        return _assets[localIdentifier]
     }
     
-    subscript(localIdentifiers: [String]) -> PHFetchResult<PHAsset>{
-        return PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
+    subscript(localIdentifiers: [String]) -> [PHAsset]{
+        return localIdentifiers.map{self[$0]}.flatMap{$0}
     }
     
     func start(onComplete: @escaping () -> Void) -> Void {
@@ -47,10 +47,10 @@ final class ImageCache{
             
             self.fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
             
-            let assets = self.getAssets(self.fetchResult)
-            AssetTaskProcessor.instance.initTasks(tasks: assets)
+            self._assets = self.getAssets(self.fetchResult).toDictionary{$0.localIdentifier}
+            AssetTaskProcessor.instance.initTasks(tasks: self._assets.values.toArray())
         
-            self._actualImages  = assets.map(self.createImage).toDictionary{$0.localIdentifier}
+            self._actualImages  = self._assets.values.map(self.createImage).toDictionary{$0.localIdentifier}
             
             self.syncImages()
             
@@ -114,8 +114,33 @@ final class ImageCache{
         for localIdentifier in localIdentifiers {
             _ = _actualImages.removeValue(forKey: localIdentifier)
             _ = _taggedImages.removeValue(forKey: localIdentifier)
+            _ = _assets.removeValue(forKey: localIdentifier)
         }
         _imageRepository.remove(localIdentifiers: localIdentifiers)
+    }
+    
+    public func saveOrUpdate(entities: [ImageEntity]) -> Void {
+        
+        entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
+        let imageChanges = _imageRepository.saveOrUpdate(entities)
+        
+        imageChanges.add.forEach { item in
+            _taggedImages[item.localIdentifier] = item
+            _actualImages[item.localIdentifier] = item
+            //            _actualImages.removeValue(forKey: item.localIdentifier)
+        }
+        
+        imageChanges.remove.forEach{ item in
+            _taggedImages.removeValue(forKey: item.localIdentifier)
+            _actualImages[item.localIdentifier] = item
+        }
+        
+        for entity in entities {
+            let tagChanges = entity.tagChanges()
+            _imageRepository.remove(tagImages: tagChanges.removeIds)
+            let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: tagChanges.add)
+            entity.appendTagId(entities: tagImages)
+        }
     }
     
     private func addAssets(assets: [PHAsset]) -> Void {
@@ -125,6 +150,7 @@ final class ImageCache{
         for asset in assets {
             let imageEntity = createImage(asset: asset)
             _actualImages[imageEntity.localIdentifier] = imageEntity
+            _assets[imageEntity.localIdentifier] = asset
         }
     }
     
@@ -148,30 +174,6 @@ final class ImageCache{
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         
         return result
-    }
-    
-    func saveOrUpdate(entities: [ImageEntity]) -> Void {
-        
-        entities.forEach{_tagCache.saveOrUpdate(tags: $0.newTags)}
-        let imageChanges = _imageRepository.saveOrUpdate(entities)
-        
-        imageChanges.add.forEach { item in
-            _taggedImages[item.localIdentifier] = item
-            _actualImages[item.localIdentifier] = item
-//            _actualImages.removeValue(forKey: item.localIdentifier)
-        }
-        
-        imageChanges.remove.forEach{ item in
-            _taggedImages.removeValue(forKey: item.localIdentifier)
-            _actualImages[item.localIdentifier] = item
-        }
-        
-        for entity in entities {
-            let tagChanges = entity.tagChanges()
-            _imageRepository.remove(tagImages: tagChanges.removeIds)
-            let tagImages = _imageRepository.addTagImage(imageId: entity.id, entities: tagChanges.add)
-            entity.appendTagId(entities: tagImages)
-        }
     }
     
     private func syncImages() -> Void {
