@@ -161,10 +161,9 @@ final class ImageCache{
         if(tag.isAll){
             result = _actualImages.values.toArray()
         }
-        else if(tag.isUntagged){
-            result = _actualImages.values.toArray()
+        else if tag.isUntagged {
+            result = _actualImages.values.filter{$0.hasTags == false}
         }
-            
         else if(_taggedImages.isEmpty){
             result = [ImageEntity]()
         }
