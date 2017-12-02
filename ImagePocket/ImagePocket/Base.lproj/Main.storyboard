@@ -96,7 +96,7 @@
                                             <constraint firstItem="JtJ-50-alB" firstAttribute="top" secondItem="T8f-sv-VhT" secondAttribute="top" id="y0T-50-TyM"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="_image" destination="JtJ-50-alB" id="Kta-MQ-NWc"/>
+                                            <outlet property="_imageView" destination="JtJ-50-alB" id="AfV-mT-ldj"/>
                                             <outlet property="_overlay" destination="59O-KV-GA9" id="qMJ-Od-jKY"/>
                                         </connections>
                                     </collectionViewCell>
@@ -192,7 +192,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nqw-R5-Q71" id="ZGd-Ld-8Jl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLB-GF-D7b">
@@ -340,7 +340,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1oa-HG-fHE" id="UHu-tN-5KM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

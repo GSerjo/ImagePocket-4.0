@@ -9,8 +9,7 @@
 import UIKit
 
 class ImagePreviewCell: UICollectionViewCell {
-    
-    @IBOutlet weak var _image: UIImageView!
+    @IBOutlet weak var _imageView: UIImageView!
     @IBOutlet weak var _overlay: UIImageView!
     
     private static let _selected = #imageLiteral(resourceName: "selected")
@@ -19,7 +18,8 @@ class ImagePreviewCell: UICollectionViewCell {
     
     var thumbnailImage: UIImage! {
         didSet {
-            _image.image = thumbnailImage
+            _imageView.image = thumbnailImage
+            _imageView.contentMode = .scaleAspectFill
         }
     }
     
@@ -30,14 +30,14 @@ class ImagePreviewCell: UICollectionViewCell {
     }
     
     func selectCell() {
-        _image.alpha = 0.6
+        _imageView.alpha = 0.6
         _overlay.isHidden = false
         _overlay.image = ImagePreviewCell._selected
 
     }
     
     func deselectCell(){
-        _image.alpha = 1
+        _imageView.alpha = 1
         _overlay.isHidden = true
     }
 }

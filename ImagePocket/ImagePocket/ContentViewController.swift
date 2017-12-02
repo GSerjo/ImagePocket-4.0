@@ -50,29 +50,6 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
             self.filterImagesSync(by: self._selectedTag)
             
             DispatchQueue.main.sync { [unowned self] in
-//                if changes.hasIncrementalChanges {
-//                    guard let collectionView = self._collectionView else { fatalError() }
-//                    collectionView.performBatchUpdates({
-//                        // For indexes to make sense, updates must be in this order:
-//                        // delete, insert, reload, move
-//                        if let removed = changes.removedIndexes, !removed.isEmpty {
-//                            collectionView.deleteItems(at: removed.map({ IndexPath(item: $0, section: 0) }))
-//                        }
-//                        if let inserted = changes.insertedIndexes, !inserted.isEmpty {
-//                            collectionView.insertItems(at: inserted.map({ IndexPath(item: $0, section: 0) }))
-//                        }
-//                        if let changed = changes.changedIndexes, !changed.isEmpty {
-//                            collectionView.reloadItems(at: changed.map({ IndexPath(item: $0, section: 0) }))
-//                        }
-//                        changes.enumerateMoves { fromIndex, toIndex in
-//                            collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
-//                                                    to: IndexPath(item: toIndex, section: 0))
-//                        }
-//                    })
-////                    self.filterImagesAndReloadSync(by: self._selectedTag)
-//                } else {
-//                    self.reloadData()
-//                }
                 self.reloadData()
                 self.resetCachedAssets()
             }
@@ -80,12 +57,15 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
     }
 }
 
+struct AppTitle {
+    public static let root = "Image Pocket"
+    public static let selectImages = "Select Images"
+}
+
 class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
     private let _showImagePage = "showImagePage"
-    private let _selectImagesTitle = "Select Images"
-    private let _rootTitle = "Image Pocket"
     
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
@@ -119,10 +99,9 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = randomColor
         sideMenuController?.delegate = self
 
-        self.title = _rootTitle
+        self.title = AppTitle.root
         configureToolbar()
         setReadMode()
         hideKeyboardWhenTappedAround()
@@ -155,20 +134,6 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         super.viewWillLayoutSubviews()
         
         updateItemSize()
-    }
-    
-    @IBAction func presentAction() {
-        //present(ViewController.fromStoryboard, animated: true, completion: nil)
-    }
-    
-    var randomColor: UIColor {
-        let colors = [UIColor(hue:0.65, saturation:0.33, brightness:0.82, alpha:1.00),
-                      UIColor(hue:0.57, saturation:0.04, brightness:0.89, alpha:1.00),
-                      UIColor(hue:0.55, saturation:0.35, brightness:1.00, alpha:1.00),
-                      UIColor(hue:0.38, saturation:0.09, brightness:0.84, alpha:1.00)]
-        
-        let index = Int(arc4random_uniform(UInt32(colors.count)))
-        return colors[index]
     }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
@@ -302,12 +267,22 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
+    @objc fileprivate func onCancelSearch() -> Void {
+        _searchBar.text = nil
+        setReadMode()
+        
+        if _searchText.isEmpty() == false{
+            filterImagesAndReloadAsync(by: _selectedTag)
+            _searchText = String.empty
+        }
+    }
+    
     
     fileprivate func setReadMode() -> Void {
         _viewMode = .read
         
         navigationItem.titleView = nil
-        title = _rootTitle
+        title = AppTitle.root
         _selectedImages = [String: ImageEntity]()
         
         _btShare.isEnabled = false
@@ -320,7 +295,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     
     private func setSelectMode() -> Void {
         _viewMode = .select
-        self.title = _selectImagesTitle
+        self.title = AppTitle.selectImages
         
         navigationItem.leftBarButtonItems = [_btTag]
         navigationItem.leftBarButtonItem?.isEnabled = false
@@ -348,16 +323,6 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelSearch))
         navigationItem.rightBarButtonItem = cancelButton
-    }
-    
-    @objc fileprivate func onCancelSearch() -> Void {
-        _searchBar.text = nil
-        setReadMode()
-        
-        if _searchText.isEmpty() == false{
-            filterImagesAndReloadAsync(by: _selectedTag)
-            _searchText = String.empty
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){

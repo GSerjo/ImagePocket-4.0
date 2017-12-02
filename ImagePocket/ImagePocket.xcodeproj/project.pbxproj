@@ -249,6 +249,24 @@
 			path = ImagePocket;
 			sourceTree = "<group>";
 		};
+		B26714421FD301AD00AE0A16 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B23095171F4E6219002166A9 /* ImagePreviewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		B267144A1FD301BF00AE0A16 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */,
+				B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */,
+				B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		B27D65D01DBC17D3001E579A = {
 			isa = PBXGroup;
 			children = (
@@ -343,16 +361,14 @@
 		B27D66531DBD9E13001E579A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B267144A1FD301BF00AE0A16 /* Protocols */,
+				B26714421FD301AD00AE0A16 /* Cells */,
 				B27D66541DBD9E4C001E579A /* CustomSideMenuController.swift */,
 				B27D66561DBDAAB0001E579A /* ContentViewController.swift */,
 				B27D66581DBDAC69001E579A /* MenuController.swift */,
-				B23095171F4E6219002166A9 /* ImagePreviewCell.swift */,
 				B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */,
-				B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */,
-				B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */,
 				B2A295961F5E570100289F8A /* ImagePageViewController.swift */,
 				B2A2959F1F5E5EDB00289F8A /* PageContentViewController.swift */,
-				B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";

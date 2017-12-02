@@ -49,7 +49,7 @@ final class ImageCache{
             
             self._assets = self.getAssets(self.fetchResult).toDictionary{$0.localIdentifier}
             AssetTaskProcessor.instance.initTasks(tasks: self._assets.values.toArray())
-        
+            
             self._actualImages  = self._assets.values.map(self.createImage).toDictionary{$0.localIdentifier}
             
             self.syncImages()
@@ -72,7 +72,7 @@ final class ImageCache{
         addAssets(assets: changes.insertedObjects)
     }
     
-   public func search(text: String) -> [ImageEntity] {
+    public func search(text: String) -> [ImageEntity] {
         if text.isEmpty() {
             return getImages(tag: TagEntity.all)
         }
@@ -89,7 +89,7 @@ final class ImageCache{
                 }
             }
         }
-
+        
         let searchResult = _searchCache.search(terms)
         result.append(contentsOf: searchResult.flatMap{_actualImages[$0.localIdentifier]})
         
@@ -97,7 +97,7 @@ final class ImageCache{
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}
         return result
     }
-
+    
     public func getImagesAsync(tag: TagEntity, onComplete: @escaping(_ images: [ImageEntity]) -> Void) -> Void {
         DispatchQueue.global().async {[unowned self] in
             let result = self.getImages(tag: tag)
@@ -127,7 +127,6 @@ final class ImageCache{
         imageChanges.add.forEach { item in
             _taggedImages[item.localIdentifier] = item
             _actualImages[item.localIdentifier] = item
-            //            _actualImages.removeValue(forKey: item.localIdentifier)
         }
         
         imageChanges.remove.forEach{ item in
@@ -158,16 +157,16 @@ final class ImageCache{
         
         var result = [ImageEntity]()
         
-        if(tag.isAll){
+        if tag.isAll {
             result = _actualImages.values.toArray()
         }
         else if tag.isUntagged {
             result = _actualImages.values.filter{$0.hasTags == false}
         }
-        else if(_taggedImages.isEmpty){
+        else if _taggedImages.isEmpty {
             result = [ImageEntity]()
         }
-        else{
+        else {
             result = Array(_taggedImages.values.filter{$0.containsTag(tagId: tag.id)})
         }
         result.sort{$0.creationDate ?? Date() > $1.creationDate ?? Date()}

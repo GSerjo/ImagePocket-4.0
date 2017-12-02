@@ -138,8 +138,9 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
     
     private func updateImage(_ asset: PHAsset) -> Void {
         let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
+        options.deliveryMode = .fastFormat
         options.isNetworkAccessAllowed = true
+        options.resizeMode = .fast
         
         PHImageManager.default().requestImage(for: asset,
                                                 targetSize: targetSize,
@@ -153,7 +154,7 @@ final class PageContentViewController: UIViewController, UIScrollViewDelegate {
             self._imageView.image = image
             self._imageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
             self._scrollView.contentSize = image.size
-            self.setZoomScale()
+//            self.setZoomScale()
         })
     }
 }
