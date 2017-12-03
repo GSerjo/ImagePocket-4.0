@@ -42,8 +42,8 @@ public protocol NWSTokenDelegate
 // MARK: NWSTokenView Class
 open class NWSTokenView: UIView, UIScrollViewDelegate, UITextViewDelegate
 {
-    @IBInspectable open var dataSource: NWSTokenDataSource? = nil
-    @IBInspectable open var delegate: NWSTokenDelegate? = nil
+    open var dataSource: NWSTokenDataSource? = nil
+    open var delegate: NWSTokenDelegate? = nil
     
     // MARK: Private Vars
     fileprivate var shouldBecomeFirstResponder: Bool = false
