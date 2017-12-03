@@ -38,7 +38,7 @@ final class ImageCache{
         return localIdentifiers.map{self[$0]}.flatMap{$0}
     }
     
-    func start(onComplete: @escaping () -> Void) -> Void {
+    func startAsync(onComplete: @escaping () -> Void) -> Void {
         DispatchQueue.global().async {[unowned self] in
             self._taggedImages = self._imageRepository.getAll().toDictionary{$0.localIdentifier}
             

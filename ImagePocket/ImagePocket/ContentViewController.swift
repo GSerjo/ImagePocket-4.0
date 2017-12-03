@@ -57,11 +57,6 @@ extension ContentViewController: PHPhotoLibraryChangeObserver {
     }
 }
 
-struct AppTitle {
-    public static let root = "Image Pocket"
-    public static let selectImages = "Select Images"
-}
-
 class ContentViewController: UIViewController, SideMenuControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NotifiableOnCloseProtocol {
     
     private let _showTagSelectorSegue = "showTagSelector"
@@ -117,7 +112,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         super.viewWillAppear(animated)
         
 //        setReadMode()
-        updateItemSize()
+//        updateItemSize()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,7 +128,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        updateItemSize()
+//        updateItemSize()
     }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
@@ -167,6 +162,18 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         else{
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
+    }
+    
+    private func startAppCore(){
+        _selectedTag = _settings.getTag()
+        
+        _imageCache = ImageCache.instance
+        _imageCache.startAsync(onComplete: {
+            self.filterImagesAndReloadAsync(by: self._selectedTag)
+        })
+        
+        resetCachedAssets()
+        PHPhotoLibrary.shared().register(self)
     }
     
     fileprivate func filterImagesAndReloadAsync(by tag: TagEntity?) -> Void {
@@ -246,7 +253,7 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
     }
     
     @IBAction func onShareClicked(_ sender: Any) {
-        _sharedImageLoader.load(images: _selectedImages.values.toArray()) { (loadedImages) in
+        _sharedImageLoader.load(images: _selectedImages.values.toArray()) { [unowned self] (loadedImages) in
             let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
             self.present(controller, animated: true, completion: nil)
         }
@@ -362,11 +369,13 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         }
     }
     
+
+    
+    // CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return _filteredImages.count
     }
     
-    // CollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImagePreviewCell.self), for: indexPath) as? ImagePreviewCell
             else {
@@ -428,38 +437,32 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate, UICol
         _btShare.isEnabled = isAnySelected
     }
     
-    
-    private func updateItemSize() -> Void {
-        
-        let viewWidth = view.bounds.size.width
-        
-        let desiredItemWidth: CGFloat = 100
-        let columns: CGFloat = max(floor(viewWidth / desiredItemWidth), 4)
-        let padding: CGFloat = 1
-        let itemWidth = floor((viewWidth - (columns - 1) * padding) / columns)
-        let itemSize = CGSize(width: itemWidth, height: itemWidth)
-        
-        if let layout = _collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.itemSize = itemSize
-            layout.minimumInteritemSpacing = padding
-            layout.minimumLineSpacing = padding
-        }
-        
-        let scale = UIScreen.main.scale
-        _thumbnailSize = CGSize(width: itemSize.width * scale, height: itemSize.height * scale)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = collectionView.frame.width / 3 - 8
+        return CGSize(width: cellWidth, height: cellWidth)
     }
     
-    private func startAppCore(){
-        _selectedTag = _settings.getTag()
-        
-        _imageCache = ImageCache.instance
-        _imageCache.start(onComplete: {
-            self.filterImagesAndReloadAsync(by: self._selectedTag)
-        })
-
-        resetCachedAssets()
-        PHPhotoLibrary.shared().register(self)
-    }
+    
+//    private func updateItemSize() -> Void {
+//
+//        let viewWidth = view.bounds.size.width
+//
+//        let desiredItemWidth: CGFloat = 100
+//        let columns: CGFloat = max(floor(viewWidth / desiredItemWidth), 4)
+//        let padding: CGFloat = 1
+//        let itemWidth = floor((viewWidth - (columns - 1) * padding) / columns)
+//        let itemSize = CGSize(width: itemWidth, height: itemWidth)
+//
+//        if let layout = _collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+//            layout.itemSize = itemSize
+//            layout.minimumInteritemSpacing = padding
+//            layout.minimumLineSpacing = padding
+//        }
+//
+//        let scale = UIScreen.main.scale
+//        _thumbnailSize = CGSize(width: itemSize.width * scale, height: itemSize.height * scale)
+//    }
+    
     
     fileprivate func resetCachedAssets() {
         _imageManager.stopCachingImagesForAllAssets()

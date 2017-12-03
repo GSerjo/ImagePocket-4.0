@@ -16,10 +16,10 @@
 		B2558A801FC08FEC00293DE3 /* AssetTaskEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */; };
 		B2558A891FC1159D00293DE3 /* AssetTaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */; };
 		B25E4F851F8A816F00AE34C0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25E4F841F8A816F00AE34C0 /* Settings.swift */; };
+		B26714511FD30FCB00AE0A16 /* AppTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26714501FD30FCB00AE0A16 /* AppTitle.swift */; };
 		B26CEE961FCB4736008DE0E2 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */; };
 		B277463C1FC742EE003C6D28 /* AppStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B277463B1FC742EE003C6D28 /* AppStatus.swift */; };
 		B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DC1DBC17D3001E579A /* AppDelegate.swift */; };
-		B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DE1DBC17D3001E579A /* ViewController.swift */; };
 		B27D65E21DBC17D3001E579A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E01DBC17D3001E579A /* Main.storyboard */; };
 		B27D65E41DBC17D3001E579A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E31DBC17D3001E579A /* Assets.xcassets */; };
 		B27D65E71DBC17D3001E579A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E51DBC17D3001E579A /* LaunchScreen.storyboard */; };
@@ -49,6 +49,7 @@
 		B2AE26521F812D7F00CD0E6F /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AE26511F812D7F00CD0E6F /* SearchEntity.swift */; };
 		B2AE26541F812D9400CD0E6F /* SearchResultEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AE26531F812D9400CD0E6F /* SearchResultEntity.swift */; };
 		B2B7F5D91F60E29F00D5E81A /* NotifiableOnTapProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */; };
+		B2B951391FD32C9100144038 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B951381FD32C9100144038 /* MainViewController.swift */; };
 		B2BA67F71FC7A7B400C2C838 /* AsssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BA67F61FC7A7B400C2C838 /* AsssetRepository.swift */; };
 		B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BD76A81FA6BE9800024DF9 /* Locking.swift */; };
 		B2D21EB71FCF8FFF00CB1556 /* SharedImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D21EB61FCF8FFF00CB1556 /* SharedImageLoader.swift */; };
@@ -166,11 +167,11 @@
 		B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskEntity.swift; sourceTree = "<group>"; };
 		B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskRepository.swift; sourceTree = "<group>"; };
 		B25E4F841F8A816F00AE34C0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B26714501FD30FCB00AE0A16 /* AppTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitle.swift; sourceTree = "<group>"; };
 		B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		B277463B1FC742EE003C6D28 /* AppStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatus.swift; sourceTree = "<group>"; };
 		B27D65D91DBC17D3001E579A /* ImagePocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27D65DC1DBC17D3001E579A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B27D65DE1DBC17D3001E579A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B27D65E11DBC17D3001E579A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B27D65E31DBC17D3001E579A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B27D65E61DBC17D3001E579A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -199,6 +200,7 @@
 		B2AE26511F812D7F00CD0E6F /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		B2AE26531F812D9400CD0E6F /* SearchResultEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultEntity.swift; sourceTree = "<group>"; };
 		B2B7F5D81F60E29F00D5E81A /* NotifiableOnTapProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifiableOnTapProtocol.swift; sourceTree = "<group>"; };
+		B2B951381FD32C9100144038 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B2BA67F61FC7A7B400C2C838 /* AsssetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsssetRepository.swift; sourceTree = "<group>"; };
 		B2BD76A81FA6BE9800024DF9 /* Locking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locking.swift; sourceTree = "<group>"; };
 		B2D21EB61FCF8FFF00CB1556 /* SharedImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedImageLoader.swift; sourceTree = "<group>"; };
@@ -297,7 +299,6 @@
 				B27D66281DBC26F3001E579A /* Repositories */,
 				B27D66231DBC1CE6001E579A /* Core */,
 				B27D65DC1DBC17D3001E579A /* AppDelegate.swift */,
-				B27D65DE1DBC17D3001E579A /* ViewController.swift */,
 				B27D65E01DBC17D3001E579A /* Main.storyboard */,
 				B27D65E31DBC17D3001E579A /* Assets.xcassets */,
 				B27D65E51DBC17D3001E579A /* LaunchScreen.storyboard */,
@@ -369,6 +370,8 @@
 				B291812E1F531AB600DBBC86 /* TagSelectorViewController.swift */,
 				B2A295961F5E570100289F8A /* ImagePageViewController.swift */,
 				B2A2959F1F5E5EDB00289F8A /* PageContentViewController.swift */,
+				B26714501FD30FCB00AE0A16 /* AppTitle.swift */,
+				B2B951381FD32C9100144038 /* MainViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -581,13 +584,14 @@
 				B291812F1F531AB600DBBC86 /* TagSelectorViewController.swift in Sources */,
 				B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */,
 				B2AE26521F812D7F00CD0E6F /* SearchEntity.swift in Sources */,
+				B26714511FD30FCB00AE0A16 /* AppTitle.swift in Sources */,
 				B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */,
 				B23280FD1FBB7331007B7B36 /* GeoHashEntity.swift in Sources */,
 				B27D66251DBC1D10001E579A /* StringExtensions.swift in Sources */,
 				B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */,
 				B2086FD61DC5A29900A18E71 /* TagEntity.swift in Sources */,
-				B27D65DF1DBC17D3001E579A /* ViewController.swift in Sources */,
 				B27D66271DBC1E7E001E579A /* SequenceTypeExtensions.swift in Sources */,
+				B2B951391FD32C9100144038 /* MainViewController.swift in Sources */,
 				B27D66591DBDAC69001E579A /* MenuController.swift in Sources */,
 				B27D66301DBC3339001E579A /* ImageRepository.swift in Sources */,
 				B2A295971F5E570100289F8A /* ImagePageViewController.swift in Sources */,
