@@ -64,7 +64,6 @@
 		B2B951721FD4735F00144038 /* SKMesurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9515C1FD4735F00144038 /* SKMesurement.swift */; };
 		B2B951731FD4735F00144038 /* SKPagingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9515D1FD4735F00144038 /* SKPagingScrollView.swift */; };
 		B2B951741FD4735F00144038 /* SKPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9515E1FD4735F00144038 /* SKPhoto.swift */; };
-		B2B951751FD4735F00144038 /* SKPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B2B9515F1FD4735F00144038 /* SKPhotoBrowser.bundle */; };
 		B2B951761FD4735F00144038 /* SKPhotoBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B951611FD4735F00144038 /* SKPhotoBrowser.swift */; };
 		B2B951771FD4735F00144038 /* SKPhotoBrowserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B951621FD4735F00144038 /* SKPhotoBrowserDelegate.swift */; };
 		B2B951781FD4735F00144038 /* SKPhotoBrowserOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B951631FD4735F00144038 /* SKPhotoBrowserOptions.swift */; };
@@ -235,8 +234,6 @@
 		B2B9515C1FD4735F00144038 /* SKMesurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKMesurement.swift; sourceTree = "<group>"; };
 		B2B9515D1FD4735F00144038 /* SKPagingScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPagingScrollView.swift; sourceTree = "<group>"; };
 		B2B9515E1FD4735F00144038 /* SKPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhoto.swift; sourceTree = "<group>"; };
-		B2B9515F1FD4735F00144038 /* SKPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SKPhotoBrowser.bundle; sourceTree = "<group>"; };
-		B2B951601FD4735F00144038 /* SKPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKPhotoBrowser.h; sourceTree = "<group>"; };
 		B2B951611FD4735F00144038 /* SKPhotoBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowser.swift; sourceTree = "<group>"; };
 		B2B951621FD4735F00144038 /* SKPhotoBrowserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowserDelegate.swift; sourceTree = "<group>"; };
 		B2B951631FD4735F00144038 /* SKPhotoBrowserOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowserOptions.swift; sourceTree = "<group>"; };
@@ -461,8 +458,6 @@
 				B2B9515C1FD4735F00144038 /* SKMesurement.swift */,
 				B2B9515D1FD4735F00144038 /* SKPagingScrollView.swift */,
 				B2B9515E1FD4735F00144038 /* SKPhoto.swift */,
-				B2B9515F1FD4735F00144038 /* SKPhotoBrowser.bundle */,
-				B2B951601FD4735F00144038 /* SKPhotoBrowser.h */,
 				B2B951611FD4735F00144038 /* SKPhotoBrowser.swift */,
 				B2B951621FD4735F00144038 /* SKPhotoBrowserDelegate.swift */,
 				B2B951631FD4735F00144038 /* SKPhotoBrowserOptions.swift */,
@@ -633,7 +628,6 @@
 			files = (
 				B27D65E71DBC17D3001E579A /* LaunchScreen.storyboard in Resources */,
 				B26CEE961FCB4736008DE0E2 /* iTunesArtwork@2x.png in Resources */,
-				B2B951751FD4735F00144038 /* SKPhotoBrowser.bundle in Resources */,
 				B27D65E41DBC17D3001E579A /* Assets.xcassets in Resources */,
 				B29181601F538EB600DBBC86 /* NWSImageToken.xib in Resources */,
 				B27D65E21DBC17D3001E579A /* Main.storyboard in Resources */,

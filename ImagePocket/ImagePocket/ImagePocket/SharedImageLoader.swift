@@ -9,6 +9,28 @@
 import Foundation
 import Photos
 
+final class ImageLoader {
+    
+    private static var options: PHImageRequestOptions = {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = false
+        return options
+    }()
+    
+    public static func load(asset: PHAsset, onComplete: @escaping (UIImage?) -> Void) -> Void {
+        
+        PHImageManager.default().requestImage(for: asset,
+                                              targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+                                              contentMode: .aspectFit,
+                                              options: options,
+                                              resultHandler: { image, info in
+                                                onComplete(image)
+        })
+    }
+}
+
 final class SharedImageLoader {
     
     private let _imageCache = ImageCache.instance

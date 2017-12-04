@@ -117,8 +117,8 @@ open class SKPhotoBrowser: UIViewController {
         super.viewDidLoad()
         
         configureAppearance()
-        configureCloseButton()
-        configureDeleteButton()
+//        configureCloseButton()
+//        configureDeleteButton()
         configureToolbar()
         
         animator.willPresent(self)

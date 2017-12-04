@@ -28,7 +28,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBOutlet var _collectionView: UICollectionView!
     
     override func viewDidLoad() {
-        configureController()
+        configure()
         startApp()
         super.viewDidLoad()
     }
@@ -64,13 +64,65 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         return imagePreviewCellSize()
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let cell = collectionView.cellForItem(at: indexPath) as! ImagePreviewCell
+//        let image = _filteredImages[indexPath.item]
+        let photos = _imageCache[_filteredImages.map{$0.localIdentifier}].map{SKPhoto(asset: $0)}
+        let browser = SKPhotoBrowser(photos: photos)
+        browser.initializePageIndex(indexPath.item)
+        
+        ImageLoader.load(asset: photos[0]._asset, onComplete: {image in
+            if let image = image {
+                print(image)
+            } else {
+                print("Error")
+            }
+        })
+        
+        ImageLoader.load(asset: photos[0]._asset, onComplete: {image in
+            if let image = image {
+                print(image)
+            } else {
+                print("Error")
+            }
+        })
+        
+        present(browser, animated: true, completion: nil)
+    }
+    
+    public func loadUnderlyingImageAndNotify(_asset: PHAsset) -> Void {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = false
+        
+        PHImageManager.default().requestImage(for: _asset,
+                                              targetSize: CGSize(width: _asset.pixelWidth, height: _asset.pixelHeight),
+                                              contentMode: .aspectFit,
+                                              options: options,
+                                              resultHandler: { image, info in
+                                                if let image = image {
+                                                    print(image)
+                                                }
+                                                else {
+                                                    print(info!)
+                                                }
+                                                
+        })
+    }
+    
+    
     private func imagePreviewCellSize() -> CGSize {
         let cellWidth = _collectionView.frame.width / 3 - 8
         return CGSize(width: cellWidth, height: cellWidth)
     }
     
-    private func configureController() -> Void {
+    private func configure() -> Void {
         title = AppTitle.root
+        
+//        SKPhotoBrowserOptions.displayToolbar = false
+        SKPhotoBrowserOptions.displayCloseButton = false
+        SKPhotoBrowserOptions.displayDeleteButton  = false
     }
     
     private func startApp(){
