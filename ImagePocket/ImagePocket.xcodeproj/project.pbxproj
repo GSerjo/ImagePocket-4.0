@@ -71,7 +71,7 @@
 		B2B9517A1FD4735F00144038 /* SKZoomingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B951651FD4735F00144038 /* SKZoomingScrollView.swift */; };
 		B2BA67F71FC7A7B400C2C838 /* AsssetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BA67F61FC7A7B400C2C838 /* AsssetRepository.swift */; };
 		B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BD76A81FA6BE9800024DF9 /* Locking.swift */; };
-		B2D21EB71FCF8FFF00CB1556 /* SharedImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D21EB61FCF8FFF00CB1556 /* SharedImageLoader.swift */; };
+		B2D21EB71FCF8FFF00CB1556 /* ImageLoaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D21EB61FCF8FFF00CB1556 /* ImageLoaders.swift */; };
 		B2D661F51F5D9B8300AA16AB /* ContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */; };
 		B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */; };
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
@@ -241,7 +241,7 @@
 		B2B951651FD4735F00144038 /* SKZoomingScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKZoomingScrollView.swift; sourceTree = "<group>"; };
 		B2BA67F61FC7A7B400C2C838 /* AsssetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsssetRepository.swift; sourceTree = "<group>"; };
 		B2BD76A81FA6BE9800024DF9 /* Locking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locking.swift; sourceTree = "<group>"; };
-		B2D21EB61FCF8FFF00CB1556 /* SharedImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedImageLoader.swift; sourceTree = "<group>"; };
+		B2D21EB61FCF8FFF00CB1556 /* ImageLoaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaders.swift; sourceTree = "<group>"; };
 		B2D661F41F5D9B8300AA16AB /* ContentViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewProtocol.swift; sourceTree = "<group>"; };
 		B2D661FD1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifiableOnCloseProtocol.swift; sourceTree = "<group>"; };
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				B218000C1FC28C0200EE7924 /* AssetTaskProcessor.swift */,
-				B2D21EB61FCF8FFF00CB1556 /* SharedImageLoader.swift */,
+				B2D21EB61FCF8FFF00CB1556 /* ImageLoaders.swift */,
 			);
 			name = Processros;
 			path = ImagePocket;
@@ -658,7 +658,7 @@
 				B2B951791FD4735F00144038 /* SKToolbar.swift in Sources */,
 				B2D661F51F5D9B8300AA16AB /* ContentViewProtocol.swift in Sources */,
 				B21E09261F5CA178002C2B41 /* TagImageEntity.swift in Sources */,
-				B2D21EB71FCF8FFF00CB1556 /* SharedImageLoader.swift in Sources */,
+				B2D21EB71FCF8FFF00CB1556 /* ImageLoaders.swift in Sources */,
 				B25E4F851F8A816F00AE34C0 /* Settings.swift in Sources */,
 				B2B9516F1FD4735F00144038 /* SKDetectingView.swift in Sources */,
 				B2AE26541F812D9400CD0E6F /* SearchResultEntity.swift in Sources */,

@@ -70,23 +70,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let photos = _imageCache[_filteredImages.map{$0.localIdentifier}].map{SKPhoto(asset: $0)}
         let browser = SKPhotoBrowser(photos: photos)
         browser.initializePageIndex(indexPath.item)
-        
-        ImageLoader.load(asset: photos[0]._asset, onComplete: {image in
-            if let image = image {
-                print(image)
-            } else {
-                print("Error")
-            }
-        })
-        
-        ImageLoader.load(asset: photos[0]._asset, onComplete: {image in
-            if let image = image {
-                print(image)
-            } else {
-                print("Error")
-            }
-        })
-        
         present(browser, animated: true, completion: nil)
     }
     

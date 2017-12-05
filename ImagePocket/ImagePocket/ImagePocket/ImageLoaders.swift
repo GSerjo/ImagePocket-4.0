@@ -20,7 +20,6 @@ final class ImageLoader {
     }()
     
     public static func load(asset: PHAsset, onComplete: @escaping (UIImage?) -> Void) -> Void {
-        
         PHImageManager.default().requestImage(for: asset,
                                               targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
                                               contentMode: .aspectFit,
