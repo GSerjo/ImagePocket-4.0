@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource {
 
     private var _imageCache: ImageCache!
     private var _selectedTag = TagEntity.all
@@ -67,10 +67,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let cell = collectionView.cellForItem(at: indexPath) as! ImagePreviewCell
 //        let image = _filteredImages[indexPath.item]
-        let photos = _imageCache[_filteredImages.map{$0.localIdentifier}].map{SKPhoto(asset: $0)}
-        let browser = SKPhotoBrowser(photos: photos)
-        browser.initializePageIndex(indexPath.item)
-        present(browser, animated: true, completion: nil)
+//        let photos = _imageCache[_filteredImages.map{$0.localIdentifier}].map{SKPhoto(asset: $0)}
+        
+        let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, configuration: galleryConfiguration())
+        
+        present(galleryViewController, animated: false, completion: nil)
     }
     
     public func loadUnderlyingImageAndNotify(_asset: PHAsset) -> Void {
@@ -94,6 +95,73 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         })
     }
     
+    // Gallery
+    func itemCount() -> Int {
+        return _filteredImages.count
+    }
+    
+    func provideGalleryItem(_ index: Int) -> GalleryItem {
+        let image = _filteredImages[index]
+        
+        let result = GalleryItem.image { onComplete in
+            ImageLoader.load(asset: self._imageCache[image.localIdentifier]!) { image in
+                onComplete(image)
+            }
+        }
+        return result
+    }
+    
+    func galleryConfiguration() -> GalleryConfiguration {
+        
+        return [
+            
+            GalleryConfigurationItem.closeButtonMode(.builtIn),
+            
+            GalleryConfigurationItem.pagingMode(.standard),
+            GalleryConfigurationItem.presentationStyle(.displacement),
+            GalleryConfigurationItem.hideDecorationViewsOnLaunch(false),
+            
+            GalleryConfigurationItem.swipeToDismissMode(.vertical),
+            GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
+            GalleryConfigurationItem.activityViewByLongPress(false),
+            
+            GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
+            GalleryConfigurationItem.overlayColorOpacity(1),
+            GalleryConfigurationItem.overlayBlurOpacity(1),
+            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
+            
+            GalleryConfigurationItem.videoControlsColor(.white),
+            
+            GalleryConfigurationItem.maximumZoomScale(8),
+            GalleryConfigurationItem.swipeToDismissThresholdVelocity(100),
+            
+            GalleryConfigurationItem.doubleTapToZoomDuration(0.15),
+            
+            GalleryConfigurationItem.blurPresentDuration(0.5),
+            GalleryConfigurationItem.blurPresentDelay(0),
+            GalleryConfigurationItem.colorPresentDuration(0.25),
+            GalleryConfigurationItem.colorPresentDelay(0),
+            
+            GalleryConfigurationItem.blurDismissDuration(0.1),
+            GalleryConfigurationItem.blurDismissDelay(0.4),
+            GalleryConfigurationItem.colorDismissDuration(0.45),
+            GalleryConfigurationItem.colorDismissDelay(0),
+            
+            GalleryConfigurationItem.itemFadeDuration(0.3),
+            GalleryConfigurationItem.decorationViewsFadeDuration(0.15),
+            GalleryConfigurationItem.rotationDuration(0.15),
+            
+            GalleryConfigurationItem.displacementDuration(0.55),
+            GalleryConfigurationItem.reverseDisplacementDuration(0.25),
+            GalleryConfigurationItem.displacementTransitionStyle(.springBounce(0.7)),
+            GalleryConfigurationItem.displacementTimingCurve(.linear),
+            
+            GalleryConfigurationItem.statusBarHidden(true),
+            GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
+            GalleryConfigurationItem.displacementInsetMargin(50)
+        ]
+    }
+    
     
     private func imagePreviewCellSize() -> CGSize {
         let cellWidth = _collectionView.frame.width / 3 - 8
@@ -102,10 +170,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     private func configure() -> Void {
         title = AppTitle.root
-        
-//        SKPhotoBrowserOptions.displayToolbar = false
-        SKPhotoBrowserOptions.displayCloseButton = false
-        SKPhotoBrowserOptions.displayDeleteButton  = false
     }
     
     private func startApp(){

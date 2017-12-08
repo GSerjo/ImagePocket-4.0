@@ -11,6 +11,9 @@ import Photos
 
 final class ImageLoader {
     
+    private init(){
+    }
+    
     private static var options: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
