@@ -96,6 +96,9 @@
 		B2DDD4C01DCC3C5400749A82 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4BF1DCC3C5400749A82 /* Entity.swift */; };
 		B2DDD4C31DCD705C00749A82 /* TagCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C21DCD705C00749A82 /* TagCache.swift */; };
 		B2DDD4C51DCD7E9B00749A82 /* MutableCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DDD4C41DCD7E9B00749A82 /* MutableCollectionExtensions.swift */; };
+		B2E5F9281FDB5DD500ACF28C /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E5F9251FDB5DD400ACF28C /* AppCenter.framework */; };
+		B2E5F9291FDB5DD500ACF28C /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E5F9261FDB5DD400ACF28C /* AppCenterAnalytics.framework */; };
+		B2E5F92A1FDB5DD500ACF28C /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E5F9271FDB5DD500ACF28C /* AppCenterCrashes.framework */; };
 		B2EDC42C1FB4BFA0007D8B56 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */; };
 		B2EDC4421FB62249007D8B56 /* GeoHashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */; };
 /* End PBXBuildFile section */
@@ -285,6 +288,9 @@
 		B2DDD4BF1DCC3C5400749A82 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B2DDD4C21DCD705C00749A82 /* TagCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCache.swift; sourceTree = "<group>"; };
 		B2DDD4C41DCD7E9B00749A82 /* MutableCollectionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableCollectionExtensions.swift; sourceTree = "<group>"; };
+		B2E5F9251FDB5DD400ACF28C /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenter.framework; sourceTree = "<group>"; };
+		B2E5F9261FDB5DD400ACF28C /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterAnalytics.framework; sourceTree = "<group>"; };
+		B2E5F9271FDB5DD500ACF28C /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterCrashes.framework; sourceTree = "<group>"; };
 		B2EDC42B1FB4BFA0007D8B56 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geohash.swift; sourceTree = "<group>"; };
 		B2EDC4411FB62249007D8B56 /* GeoHashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -295,7 +301,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B27D664F1DBD1C6C001E579A /* SideMenuController.framework in Frameworks */,
+				B2E5F9281FDB5DD500ACF28C /* AppCenter.framework in Frameworks */,
+				B2E5F9291FDB5DD500ACF28C /* AppCenterAnalytics.framework in Frameworks */,
 				B27D661E1DBC1C39001E579A /* SQLite.framework in Frameworks */,
+				B2E5F92A1FDB5DD500ACF28C /* AppCenterCrashes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +357,9 @@
 		B27D65D01DBC17D3001E579A = {
 			isa = PBXGroup;
 			children = (
+				B2E5F9251FDB5DD400ACF28C /* AppCenter.framework */,
+				B2E5F9261FDB5DD400ACF28C /* AppCenterAnalytics.framework */,
+				B2E5F9271FDB5DD500ACF28C /* AppCenterCrashes.framework */,
 				B27D65DB1DBC17D3001E579A /* ImagePocket */,
 				B27D65DA1DBC17D3001E579A /* Products */,
 				B27D66461DBD1BE2001E579A /* SideMenuController.xcodeproj */,
@@ -588,7 +600,7 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NAXXC43K8R;
 						LastSwiftMigration = 0910;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -940,11 +952,19 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NAXXC43K8R;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ImagePocket/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.tinynote.ImagePocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c507e5cd-c6d4-43dc-bb57-f16851c1af93";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution ImagePocket";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
@@ -955,11 +975,19 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NAXXC43K8R;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ImagePocket/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.tinynote.ImagePocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c507e5cd-c6d4-43dc-bb57-f16851c1af93";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution ImagePocket";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
