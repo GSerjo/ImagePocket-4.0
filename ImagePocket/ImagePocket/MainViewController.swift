@@ -10,7 +10,7 @@ import UIKit
 import Photos
 
 
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate {
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol {
 
     private var _imageCache: ImageCache!
     private var _selectedTag = TagEntity.all
@@ -73,6 +73,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
+        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
@@ -91,6 +92,21 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onShareClicked(_ sender: Any) {
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == _showTagSelectorSegue {
+            let controller = segue.destination as! TagSelectorViewController
+            controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
+        }
+    }
+    
+    func notifyOnClose() {
+        let anyImagesSelected = isAnyImagesSelected
+        setReadMode()
+        if anyImagesSelected {
+            reloadData()
+        }
     }
     
     // CollectionView
