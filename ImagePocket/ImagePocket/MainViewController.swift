@@ -9,6 +9,13 @@
 import UIKit
 import Photos
 
+private extension UICollectionView {
+    func indexPathsForElements(in rect: CGRect) -> [IndexPath] {
+        let allLayoutAttributes = collectionViewLayout.layoutAttributesForElements(in: rect)!
+        return allLayoutAttributes.map { $0.indexPath }
+    }
+}
+
 
 class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol {
 
@@ -22,6 +29,9 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _searchText = String.empty
     private var _pendingSearchRequest: DispatchWorkItem?
     private let _showTagSelectorSegue = "showTagSelector"
+    private var _previousPreheatRect = CGRect.zero
+    private let _thumbnailContentMode: PHImageContentMode = .aspectFill
+    private var _thumbnailSize: CGSize!
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -31,6 +41,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBOutlet weak var _btShare: UIBarButtonItem!
     @IBOutlet var _btMenu: UIBarButtonItem!
     private var _searchBar = UISearchBar()
+    @IBOutlet var _collectionView: UICollectionView!
     
     private var isAnyImagesSelected: Bool {
         return _selectedImages.isEmpty == false
@@ -43,13 +54,15 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         return result
     }()
     
-    
-    @IBOutlet var _collectionView: UICollectionView!
-    
     override func viewDidLoad() {
         configure()
         startApp()
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateCachedAssets()
     }
 
     override func didReceiveMemoryWarning() {
@@ -129,8 +142,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         }else {
             cell.deselectCell()
         }
-        
-        _imageManager.requestImage(for: asset, targetSize: imagePreviewCellSize(), contentMode: .aspectFill, options: _requestPreviewImageOptions, resultHandler: { image, _ in
+
+        _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: _requestPreviewImageOptions, resultHandler: { image, _ in
             if let image = image, cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image
             }
@@ -179,7 +192,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         PHImageManager.default().requestImage(for: _asset,
                                               targetSize: CGSize(width: _asset.pixelWidth, height: _asset.pixelHeight),
-                                              contentMode: .aspectFit,
+                                              contentMode: _thumbnailContentMode,
                                               options: options,
                                               resultHandler: { image, info in
                                                 if let image = image {
@@ -269,6 +282,9 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _searchBar.returnKeyType = UIReturnKeyType.done
         
         onSelectedImageChanged()
+        
+        let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
+        _thumbnailSize = CGSize(width: dummySize, height: dummySize)
     }
     
     private func reloadDataAsync() {
@@ -297,6 +313,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _imageCache.startAsync(onComplete: {
             self.filterImagesAsync(by: self._selectedTag, onComplete: self.reloadDataAsync)
         })
+        resetCachedAssets()
     }
     
    
@@ -419,10 +436,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             
             GalleryConfigurationItem.videoControlsColor(.white),
             
-            GalleryConfigurationItem.maximumZoomScale(8),
+            GalleryConfigurationItem.maximumZoomScale(10),
             GalleryConfigurationItem.swipeToDismissThresholdVelocity(100),
             
-            GalleryConfigurationItem.doubleTapToZoomDuration(0.15),
+            GalleryConfigurationItem.doubleTapToZoomDuration(0.30),
             
             GalleryConfigurationItem.blurPresentDuration(0.5),
             GalleryConfigurationItem.blurPresentDelay(0),
@@ -447,5 +464,70 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50)
         ]
+    }
+    
+    private func resetCachedAssets() {
+        _imageManager.stopCachingImagesForAllAssets()
+        _previousPreheatRect = .zero
+    }
+    
+    private func updateCachedAssets() {
+        // Update only if the view is visible.
+        guard isViewLoaded && view.window != nil else { return }
+        
+        // The preheat window is twice the height of the visible rect.
+        let visibleRect = CGRect(origin: _collectionView.contentOffset, size: _collectionView.bounds.size)
+        let preheatRect = visibleRect.insetBy(dx: 0, dy: -0.5 * visibleRect.height)
+        
+        // Update only if the visible area is significantly different from the last preheated area.
+        let delta = abs(preheatRect.midY - _previousPreheatRect.midY)
+        guard delta > view.bounds.height / 3 else { return }
+        
+        // Compute the assets to start caching and to stop caching.
+        let (addedRects, removedRects) = differencesBetweenRects(_previousPreheatRect, preheatRect)
+        let addedAssets = addedRects
+            .flatMap { rect in _collectionView.indexPathsForElements(in: rect) }
+            .map { indexPath in _filteredImages[indexPath.item] }
+            .map {entity in _imageCache[entity.localIdentifier]! }
+        
+        let removedAssets = removedRects
+            .flatMap { rect in _collectionView.indexPathsForElements(in: rect) }
+            .map { indexPath in _filteredImages[indexPath.item] }
+            .map {entity in _imageCache[entity.localIdentifier]! }
+        
+        // Update the assets the PHCachingImageManager is caching.
+        _imageManager.startCachingImages(for: addedAssets,
+                                         targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: nil)
+        _imageManager.stopCachingImages(for: removedAssets,
+                                        targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: nil)
+        
+        // Store the preheat rect to compare against in the future.
+        _previousPreheatRect = preheatRect
+    }
+    
+    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
+        if old.intersects(new) {
+            var added = [CGRect]()
+            if new.maxY > old.maxY {
+                added += [CGRect(x: new.origin.x, y: old.maxY,
+                                 width: new.width, height: new.maxY - old.maxY)]
+            }
+            if old.minY > new.minY {
+                added += [CGRect(x: new.origin.x, y: new.minY,
+                                 width: new.width, height: old.minY - new.minY)]
+            }
+            var removed = [CGRect]()
+            if new.maxY < old.maxY {
+                removed += [CGRect(x: new.origin.x, y: new.maxY,
+                                   width: new.width, height: old.maxY - new.maxY)]
+            }
+            if old.minY < new.minY {
+                removed += [CGRect(x: new.origin.x, y: old.minY,
+                                   width: new.width, height: new.minY - old.minY)]
+            }
+            return (added, removed)
+        } else {
+            return ([new], [old])
+        }
     }
 }

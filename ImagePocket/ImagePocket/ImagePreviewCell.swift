@@ -10,8 +10,7 @@ import UIKit
 
 class ImagePreviewCell: UICollectionViewCell {
     @IBOutlet weak var _imageView: UIImageView!
-    //    @IBOutlet weak var _imageView: UIImageView!
-//    @IBOutlet weak var _overlay: UIImageView!
+    @IBOutlet weak var _overlay: UIImageView!
     
     private static let _selected = #imageLiteral(resourceName: "selected")
     
@@ -27,18 +26,18 @@ class ImagePreviewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         thumbnailImage = nil
-//        _overlay.image = nil
+        _overlay.image = nil
     }
     
     func selectCell() {
         _imageView.alpha = 0.6
-//        _overlay.isHidden = false
-//        _overlay.image = ImagePreviewCell._selected
+        _overlay.isHidden = false
+        _overlay.image = ImagePreviewCell._selected
 
     }
     
     func deselectCell(){
         _imageView.alpha = 1
-//        _overlay.isHidden = true
+        _overlay.isHidden = true
     }
 }
