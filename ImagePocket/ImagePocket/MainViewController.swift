@@ -16,6 +16,14 @@ private extension UICollectionView {
     }
 }
 
+struct SegueSelector {
+    private init() {
+    }
+    
+    static let showTagSelector = "showTagSelector"
+    static let showTags = "showTags"
+}
+
 
 class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol {
 
@@ -28,7 +36,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _selectedImages = [String: ImageEntity]()
     private var _searchText = String.empty
     private var _pendingSearchRequest: DispatchWorkItem?
-    private let _showTagSelectorSegue = "showTagSelector"
     private var _previousPreheatRect = CGRect.zero
     private let _thumbnailContentMode: PHImageContentMode = .aspectFill
     private var _thumbnailSize: CGSize!
@@ -86,7 +93,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
-        performSegue(withIdentifier: _showTagSelectorSegue, sender: nil)
+        performSegue(withIdentifier: SegueSelector.showTagSelector, sender: nil)
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
@@ -104,14 +111,23 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         }
     }
     
+    @IBAction func onMenuClicked(_ sender: Any) {
+        performSegue(withIdentifier: SegueSelector.showTags, sender: nil)
+    }
+    
     @IBAction func onShareClicked(_ sender: Any) {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-        if segue.identifier == _showTagSelectorSegue {
+        if segue.identifier == SegueSelector.showTagSelector {
             let controller = segue.destination as! TagSelectorViewController
             controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
         }
+//        else if segue.identifier == SegueSelector.showTags {
+//            let controller = segue.destination as! TagsViewController
+//
+//        }
+        
     }
     
     func notifyOnClose() {
