@@ -66,6 +66,7 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="pWr-C4-0ZT">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="beh-do-bEy"/>
                         <rightBarButtonItems>
                             <barButtonItem title="Select" id="BTM-Mv-tqs">
                                 <connections>
@@ -82,6 +83,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="_btCancel" destination="rJO-sR-AKc" id="MeL-7e-2LA"/>
+                        <outlet property="_btMenu" destination="beh-do-bEy" id="vzs-NK-sf8"/>
                         <outlet property="_btSearch" destination="Bvc-eY-0pb" id="uAD-5O-Ocv"/>
                         <outlet property="_btSelect" destination="BTM-Mv-tqs" id="8FJ-zv-u2V"/>
                         <outlet property="_btShare" destination="V6e-hn-oGB" id="8w3-gd-Wqy"/>
@@ -127,4 +129,7 @@
             <point key="canvasLocation" x="92" y="304"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="menu" width="42" height="42"/>
+    </resources>
 </document>

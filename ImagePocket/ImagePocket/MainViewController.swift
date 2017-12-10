@@ -21,6 +21,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _selectedImages = [String: ImageEntity]()
     private var _searchText = String.empty
     private var _pendingSearchRequest: DispatchWorkItem?
+    private let _showTagSelectorSegue = "showTagSelector"
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -28,6 +29,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBOutlet var _btTag: UIBarButtonItem!
     @IBOutlet weak var _btTrash: UIBarButtonItem!
     @IBOutlet weak var _btShare: UIBarButtonItem!
+    @IBOutlet var _btMenu: UIBarButtonItem!
     private var _searchBar = UISearchBar()
     
     private var isAnyImagesSelected: Bool {
@@ -183,7 +185,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _viewMode = .select
         title = AppTitle.selectImages
         
-         navigationItem.rightBarButtonItems?.removeAll()
+        navigationItem.leftBarButtonItem = _btTag
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        
+        navigationItem.rightBarButtonItems?.removeAll()
         navigationItem.rightBarButtonItems?.append(_btCancel)
     }
     
@@ -195,7 +200,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _selectedImages = [String: ImageEntity]()
         onSelectedImageChanged()
 
-        
+        navigationItem.leftBarButtonItem = _btMenu
         navigationItem.rightBarButtonItems?.removeAll()
         
         if navigationItem.rightBarButtonItems == nil {
@@ -209,6 +214,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private func onSelectedImageChanged() -> Void {
         _btTrash.isEnabled = isAnyImagesSelected
         _btShare.isEnabled = isAnyImagesSelected
+        _btTag.isEnabled = isAnyImagesSelected
     }
     
     private func setSearchMode() -> Void {
