@@ -12,7 +12,8 @@ class ImagePreviewCell: UICollectionViewCell {
     @IBOutlet weak var _imageView: UIImageView!
     @IBOutlet weak var _overlay: UIImageView!
     
-    private static let _selected = #imageLiteral(resourceName: "selected")
+    private static let _selected = #imageLiteral(resourceName: "selected2")
+    
     
     var representedAssetIdentifier: String!
     
@@ -30,7 +31,7 @@ class ImagePreviewCell: UICollectionViewCell {
     }
     
     func selectCell() {
-        _imageView.alpha = 0.6
+        _imageView.alpha = 0.7
         _overlay.isHidden = false
         _overlay.image = ImagePreviewCell._selected
 

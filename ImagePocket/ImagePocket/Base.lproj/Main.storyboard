@@ -35,19 +35,16 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zbs-3L-uyg">
                                             <rect key="frame" x="0.0" y="0.0" width="121" height="104"/>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mi7-tv-rrg" userLabel="Overlay">
-                                            <rect key="frame" x="0.0" y="0.0" width="121" height="104"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mi7-tv-rrg" userLabel="Overlay">
+                                            <rect key="frame" x="90" y="73" width="31" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                         </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="Mi7-tv-rrg" firstAttribute="leading" secondItem="zbs-3L-uyg" secondAttribute="leading" id="8fs-bk-mnF"/>
                                     <constraint firstAttribute="bottom" secondItem="zbs-3L-uyg" secondAttribute="bottom" id="Jsm-xk-bvJ"/>
                                     <constraint firstAttribute="trailing" secondItem="zbs-3L-uyg" secondAttribute="trailing" id="NbS-0Y-wzW"/>
                                     <constraint firstItem="zbs-3L-uyg" firstAttribute="top" secondItem="l7z-OZ-cA8" secondAttribute="top" id="OnI-Pj-U6o"/>
-                                    <constraint firstItem="Mi7-tv-rrg" firstAttribute="top" secondItem="zbs-3L-uyg" secondAttribute="top" id="Sx0-VZ-tvc"/>
-                                    <constraint firstItem="Mi7-tv-rrg" firstAttribute="bottom" secondItem="zbs-3L-uyg" secondAttribute="bottom" id="Unz-x9-kKX"/>
-                                    <constraint firstItem="Mi7-tv-rrg" firstAttribute="trailing" secondItem="zbs-3L-uyg" secondAttribute="trailing" id="X9x-uS-cOR"/>
                                     <constraint firstItem="zbs-3L-uyg" firstAttribute="leading" secondItem="l7z-OZ-cA8" secondAttribute="leading" id="sUP-KS-kpc"/>
                                 </constraints>
                                 <connections>
