@@ -39,6 +39,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _previousPreheatRect = CGRect.zero
     private let _thumbnailContentMode: PHImageContentMode = .aspectFill
     private var _thumbnailSize: CGSize!
+    private let _sharedImageLoader = SharedImageLoader()
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -62,10 +63,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }()
     
     override func viewDidLoad() {
-        try! DataStore.instance.create()
-        configure()
-        startApp()
         super.viewDidLoad()
+        configure()
+        
+        try! DataStore.instance.create()
+        startApp()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -117,6 +119,12 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onShareClicked(_ sender: Any) {
+        _sharedImageLoader.load(images: _selectedImages.values.toArray()) { [unowned self] (loadedImages) in
+            let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
+            self.present(controller, animated: true, completion: {
+                    self.setReadMode()
+                })
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -291,8 +299,9 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func configure() -> Void {
+        configureTheme()
         title = AppTitle.root
-        
+
         _searchBar.showsCancelButton = true
         _searchBar.delegate = self
         _searchBar.placeholder = "Search Photos"
@@ -302,6 +311,12 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
         _thumbnailSize = CGSize(width: dummySize, height: dummySize)
+    }
+    
+    private func configureTheme() -> Void {
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.199973762, green: 0.2000150383, blue: 0.1999712288, alpha: 1)
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5671468377, green: 0.6942085624, blue: 0.8048953414, alpha: 1)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.9998915792, green: 1, blue: 0.9998809695, alpha: 1)]
     }
     
     private func reloadDataAsync() {
@@ -441,7 +456,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         return [
             
-            GalleryConfigurationItem.closeButtonMode(.builtIn),
+            GalleryConfigurationItem.closeButtonMode(.none),
+            GalleryConfigurationItem.deleteButtonMode(.none),
+            GalleryConfigurationItem.thumbnailsButtonMode(.none),
+            GalleryConfigurationItem.seeAllCloseButtonMode(.none),
             
             GalleryConfigurationItem.pagingMode(.standard),
             GalleryConfigurationItem.presentationStyle(.displacement),

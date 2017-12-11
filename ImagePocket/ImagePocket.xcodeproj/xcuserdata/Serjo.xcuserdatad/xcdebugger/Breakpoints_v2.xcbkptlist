@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/MainViewController.swift"
-            timestampString = "534648475.476696"
+            timestampString = "534663101.053773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
             landmarkName = "onCancelSearch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/MainViewController.swift"
-            timestampString = "534648475.47677"
+            timestampString = "534663101.053856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "setReadMode()"
             landmarkType = "7">
          </BreakpointContent>

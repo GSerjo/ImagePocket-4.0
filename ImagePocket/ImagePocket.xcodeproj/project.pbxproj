@@ -207,6 +207,7 @@
 		B23095171F4E6219002166A9 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
 		B23280FC1FBB7331007B7B36 /* GeoHashEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHashEntity.swift; sourceTree = "<group>"; };
 		B24D23A31FDDF55F0096C8A9 /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
+		B24D23A51FDE2F850096C8A9 /* ImagePocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ImagePocket.entitlements; sourceTree = "<group>"; };
 		B2558A7F1FC08FEC00293DE3 /* AssetTaskEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskEntity.swift; sourceTree = "<group>"; };
 		B2558A881FC1159D00293DE3 /* AssetTaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTaskRepository.swift; sourceTree = "<group>"; };
 		B25E4F841F8A816F00AE34C0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -380,6 +381,7 @@
 		B27D65DB1DBC17D3001E579A /* ImagePocket */ = {
 			isa = PBXGroup;
 			children = (
+				B24D23A51FDE2F850096C8A9 /* ImagePocket.entitlements */,
 				B2D755DA1FD7A7600065405B /* ImageViewer */,
 				B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */,
 				B21800041FC28B9D00EE7924 /* Processros */,
@@ -604,6 +606,11 @@
 						DevelopmentTeam = NAXXC43K8R;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -956,6 +963,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ImagePocket/ImagePocket.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NAXXC43K8R;
@@ -979,6 +987,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ImagePocket/ImagePocket.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NAXXC43K8R;

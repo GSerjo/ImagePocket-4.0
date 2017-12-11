@@ -79,6 +79,7 @@
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem title="Select" id="BTM-Mv-tqs">
+                                <color key="tintColor" red="0.49803921568627452" green="0.63137254901960782" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="onSelectClicked:" destination="3Va-f4-vbE" id="Hxj-cz-U1v"/>
                                 </connections>
