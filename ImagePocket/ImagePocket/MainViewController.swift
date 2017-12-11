@@ -25,8 +25,8 @@ struct SegueSelector {
 }
 
 
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol {
-
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol, TagsProtocol {
+    
     private var _imageCache: ImageCache!
     private var _selectedTag = TagEntity.all
     private let _settings = Settings.instance
@@ -62,6 +62,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }()
     
     override func viewDidLoad() {
+        try! DataStore.instance.create()
         configure()
         startApp()
         super.viewDidLoad()
@@ -71,7 +72,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         super.viewDidAppear(animated)
         updateCachedAssets()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -123,11 +124,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             let controller = segue.destination as! TagSelectorViewController
             controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
         }
-//        else if segue.identifier == SegueSelector.showTags {
-//            let controller = segue.destination as! TagsViewController
-//
-//        }
-        
+        else if segue.identifier == SegueSelector.showTags {
+            let navigation = segue.destination as! UINavigationController
+            let controller = navigation.viewControllers[0] as! TagsViewController
+            controller.setup(tags: TagCache.instance.allTags, tagsProtocol: self)
+        }
     }
     
     func notifyOnClose() {
@@ -142,13 +143,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return _filteredImages.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = _collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImagePreviewCell.self), for: indexPath) as! ImagePreviewCell
         
         let image = _filteredImages[indexPath.item]
         guard let asset = _imageCache[image.localIdentifier] else {
-                fatalError("unexpected image")
+            fatalError("unexpected image")
         }
         
         cell.representedAssetIdentifier = asset.localIdentifier
@@ -158,7 +159,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         }else {
             cell.deselectCell()
         }
-
+        
         _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: _requestPreviewImageOptions, resultHandler: { image, _ in
             if let image = image, cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image
@@ -244,7 +245,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         _selectedImages = [String: ImageEntity]()
         onSelectedImageChanged()
-
+        
         navigationItem.leftBarButtonItem = _btMenu
         navigationItem.rightBarButtonItems?.removeAll()
         
@@ -283,7 +284,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelSearch))
         navigationItem.rightBarButtonItem = cancelButton
     }
-
+    
     private func imagePreviewCellSize() -> CGSize {
         let cellWidth = _collectionView.frame.width / 3 - 8
         return CGSize(width: cellWidth, height: cellWidth)
@@ -332,7 +333,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         resetCachedAssets()
     }
     
-   
+    
     private func filterImagesAsync(by tag: TagEntity?, onComplete: @escaping () -> Void = {}) -> Void {
         if let tagEntity = tag {
             _selectedTag = tagEntity
@@ -348,7 +349,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             filterImagesAsync(by: tagEntity, onComplete: reloadDataAsync)
         }
     }
-       
+    
     private func requestAuthorizationHandler(_ status: PHAuthorizationStatus){
         DispatchQueue.main.sync {
             if(status == .authorized){
@@ -414,7 +415,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(200), execute: searchRequest)
     }
     
-   
+    
     // Gallery
     func itemCount() -> Int {
         return _filteredImages.count
@@ -429,6 +430,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             }
         }
         return result
+    }
+    
+    //Tags
+    func onSelectTag(tag: TagEntity) -> Void {
+        filterImagesAndReloadAsync(by: tag)
     }
     
     func galleryConfiguration() -> GalleryConfiguration {
