@@ -117,6 +117,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBAction func onShareClicked(_ sender: Any) {
         _sharedImageLoader.load(images: _selectedImages.values.map{$0.image}) { [unowned self] (loadedImages) in
             let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
+            controller.popoverPresentationController?.barButtonItem = (sender as! UIBarButtonItem)
             self.present(controller, animated: true, completion: {
                     self.unselectCells()
                 })
