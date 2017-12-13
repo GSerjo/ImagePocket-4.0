@@ -65,6 +65,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureTheme()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -80,6 +81,12 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.reloadData()
     }
     
+    private func configureTheme() -> Void {
+        let theme = Settings.instance.theme
+        navigationController?.navigationBar.barTintColor = theme.barTintColor
+        navigationController?.navigationBar.tintColor = theme.tintColor
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
+    }
     
     @IBAction func onCancelClicked(_ sender: Any) {
         _notifiableOnCloseProtocol?.notifyOnClose()

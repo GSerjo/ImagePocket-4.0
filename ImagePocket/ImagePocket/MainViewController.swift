@@ -314,9 +314,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func configureTheme() -> Void {
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.199973762, green: 0.2000150383, blue: 0.1999712288, alpha: 1)
-        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5671468377, green: 0.6942085624, blue: 0.8048953414, alpha: 1)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.9998915792, green: 1, blue: 0.9998809695, alpha: 1)]
+        let theme = Settings.instance.theme
+        navigationController?.navigationBar.barTintColor = theme.barTintColor
+        navigationController?.navigationBar.tintColor = theme.tintColor
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
     }
     
     private func reloadDataAsync() {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class Settings {
     
@@ -29,6 +30,10 @@ final class Settings {
             UserDefaults.standard.set(valueValue.rawValue, forKey: Key.AppStatus)
             _appStatus = valueValue
         }
+    }
+    
+    var theme: Theme {
+        return Theme()
     }
     
     public func save(_ tag: TagEntity) -> Void {
@@ -57,4 +62,12 @@ final class Settings {
         private init(){
         }
     }
+    
+    struct Theme {
+        let barTintColor = #colorLiteral(red: 0.199973762, green: 0.2000150383, blue: 0.1999712288, alpha: 1)
+        let tintColor = #colorLiteral(red: 0.5671468377, green: 0.6942085624, blue: 0.8048953414, alpha: 1)
+        let titleTextColor = #colorLiteral(red: 0.9998915792, green: 1, blue: 0.9998809695, alpha: 1)
+    }
 }
+
+
