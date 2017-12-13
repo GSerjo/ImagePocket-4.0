@@ -90,6 +90,7 @@ open class NWSTokenView: UIView, UIScrollViewDelegate, UITextViewDelegate
         self.label.textColor = UIColor.black
         
         // Set default text view properties
+        self.textView.keyboardAppearance = .dark
         self.textView.backgroundColor = UIColor.clear
         self.textView.textColor = UIColor.black
         self.textView.font = UIFont(name: "HelveticaNeue", size: 14)
@@ -195,6 +196,7 @@ open class NWSTokenView: UIView, UIScrollViewDelegate, UITextViewDelegate
         // Check if text view should become first responder (i.e. new token added)
         if self.shouldBecomeFirstResponder
         {
+            self.textView.keyboardAppearance = .dark
             self.textView.becomeFirstResponder()
             self.shouldBecomeFirstResponder = false
         }
@@ -364,6 +366,7 @@ open class NWSTokenView: UIView, UIScrollViewDelegate, UITextViewDelegate
         if token.isSelected
         {
             token.hiddenTextView.delegate = self
+            token.hiddenTextView.keyboardAppearance = .dark
             token.hiddenTextView.becomeFirstResponder()
             self.selectedToken = token
             self.delegate?.tokenView(self, didSelectTokenAtIndex: token.tag)

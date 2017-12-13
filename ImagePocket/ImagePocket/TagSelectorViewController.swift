@@ -86,29 +86,30 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         navigationController?.navigationBar.barTintColor = theme.barTintColor
         navigationController?.navigationBar.tintColor = theme.tintColor
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
+        
     }
-    
+
     @IBAction func onCancelClicked(_ sender: Any) {
         _notifiableOnCloseProtocol?.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func onDoneClicked(_ sender: Any) {
-        
+
         let resultTags = _selectedTags.map{$0.toTagEntity()}
-        
+
         for entity in _images {
-            
+
             var currentTags = Set(entity.tags)
             currentTags.subtract(_initialCommonTags)
-            
+
             var newTags = Array(currentTags)
             newTags.append(contentsOf: resultTags)
             entity.replaceTags(tags: newTags)
         }
-        
+
         _imageCache.saveOrUpdate(entities: _images)
-        
+
         _notifiableOnCloseProtocol?.notifyOnClose()
         dismiss(animated: true, completion: nil)
     }
@@ -237,6 +238,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         reloadAndSortTagSource()
         
         tokenView.layoutIfNeeded()
+        tokenView.textView.keyboardAppearance = .dark
         tokenView.textView.becomeFirstResponder()
     }
     

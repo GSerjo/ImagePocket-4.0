@@ -123,13 +123,15 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
             self.present(controller, animated: true, completion: {
                     self.setReadMode()
+                    self.reloadDataAsync()
                 })
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == SegueSelector.showTagSelector {
-            let controller = segue.destination as! TagSelectorViewController
+            let navigation = segue.destination as! UINavigationController
+            let controller = navigation.viewControllers[0] as! TagSelectorViewController
             controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
         }
         else if segue.identifier == SegueSelector.showTags {
@@ -306,6 +308,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _searchBar.delegate = self
         _searchBar.placeholder = "Search Photos"
         _searchBar.returnKeyType = UIReturnKeyType.done
+        _searchBar.keyboardAppearance = .dark
         
         onSelectedImageChanged()
         
