@@ -33,7 +33,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _filteredImages = [ImageEntity]()
     private let _imageManager = PHCachingImageManager()
     private var _viewMode = ViewMode.read
-    private var _selectedImages = [String: ImageEntity]()
+    private var _selectedImages = [String: (image: ImageEntity, index: IndexPath)]()
     private var _searchText = String.empty
     private var _pendingSearchRequest: DispatchWorkItem?
     private var _previousPreheatRect = CGRect.zero
@@ -88,11 +88,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onCancelClicked(_ sender: Any) {
-        let anyImagesSelected = isAnyImagesSelected
-        setReadMode()
-        if anyImagesSelected {
-            reloadData()
-        }
+        unselectCells()
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
@@ -119,11 +115,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onShareClicked(_ sender: Any) {
-        _sharedImageLoader.load(images: _selectedImages.values.toArray()) { [unowned self] (loadedImages) in
+        _sharedImageLoader.load(images: _selectedImages.values.map{$0.image}) { [unowned self] (loadedImages) in
             let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
             self.present(controller, animated: true, completion: {
-                    self.setReadMode()
-                    self.reloadDataAsync()
+                    self.unselectCells()
                 })
         }
     }
@@ -132,7 +127,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         if segue.identifier == SegueSelector.showTagSelector {
             let navigation = segue.destination as! UINavigationController
             let controller = navigation.viewControllers[0] as! TagSelectorViewController
-            controller.setup(entities: _selectedImages.values.toArray(), notifiableOnCloseProtocol: self)
+            controller.setup(entities: _selectedImages.values.map{$0.image}, notifiableOnCloseProtocol: self)
         }
         else if segue.identifier == SegueSelector.showTags {
             let navigation = segue.destination as! UINavigationController
@@ -195,7 +190,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                 cell.deselectCell()
             }
             else {
-                _selectedImages[image.localIdentifier] = image
+                _selectedImages[image.localIdentifier] = (image, indexPath)
                 cell.selectCell()
             }
             
@@ -253,7 +248,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         navigationItem.titleView = nil
         title = AppTitle.root
         
-        _selectedImages = [String: ImageEntity]()
+        _selectedImages = [String: (image: ImageEntity, index: IndexPath)]()
         onSelectedImageChanged()
         
         navigationItem.leftBarButtonItem = _btMenu
@@ -264,6 +259,14 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         } else{
             navigationItem.rightBarButtonItems!.append(_btSelect)
             navigationItem.rightBarButtonItems!.append(_btSearch)
+        }
+    }
+    
+    private func unselectCells() -> Void {
+        let selected = _selectedImages.values.map{$0.index}
+        setReadMode()
+        if selected.isEmpty == false {
+            _collectionView.reloadItems(at: selected)
         }
     }
     
