@@ -318,9 +318,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     private func configureTheme() -> Void {
         let theme = Settings.instance.theme
+        
         navigationController?.navigationBar.barTintColor = theme.barTintColor
         navigationController?.navigationBar.tintColor = theme.tintColor
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
+        
+        _btTrash.tintColor = theme.tintColor
+        _btShare.tintColor = theme.tintColor
     }
     
     private func reloadDataAsync() {
