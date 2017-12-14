@@ -18,9 +18,11 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private var _tags = [TagEntity]()
     private var _settings = [SettingsItem]()
     private var _tagsProtocol: TagsProtocol!
+    private var _deletedTags = [TagEntity]()
     
     @IBOutlet weak var _btCancel: UIBarButtonItem!
     @IBOutlet weak var _btDone: UIBarButtonItem!
+    @IBOutlet weak var _tableView: UITableView!
     
     enum TableSection: Int {
         case tags = 0, settings
@@ -97,6 +99,27 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
             _tagsProtocol.onSelectTag(tag: _tags[indexPath.item])
         }
     }
+
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let trashAction = UIContextualAction(style: .destructive, title: "Trash") { [unowned self] (action, view, completionHandler) in
+
+            self._deletedTags.append(self._tags[indexPath.item])
+            self._tags.remove(at: indexPath.item)
+
+            self._tableView.beginUpdates()
+            self._tableView.deleteRows(at: [indexPath], with: .automatic)
+            self._tableView.endUpdates()
+            completionHandler(true)
+        }
+        trashAction.backgroundColor = .red
+        let configuration = UISwipeActionsConfiguration(actions: [trashAction])
+        return configuration
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }    
 }
 
 private class SettingsItem {
@@ -110,5 +133,6 @@ private class SettingsItem {
 final class TagCell: UITableViewCell {
     
     @IBOutlet weak var _text: UILabel!
+    //    @IBOutlet weak var _text: UILabel!
 }
 
