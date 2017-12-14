@@ -43,7 +43,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTheme()
-        _btDone.isEnabled = false
+        enableOrDisableDone()
     }
     
     override func didReceiveMemoryWarning() {
@@ -116,16 +116,39 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self._tableView.deleteRows(at: [indexPath], with: .automatic)
             self._tableView.endUpdates()
             completionHandler(true)
-            self._btDone.isEnabled = true
+            self.enableOrDisableDone()
         }
         trashAction.backgroundColor = .red
         
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { [unowned self] (action, view, completionHandler) in
             
-
+             let tag = self._tags[indexPath.item]
+            
+            let controller = UIAlertController(title: "Rename Tag", message: "Enter", preferredStyle: .alert)
+            controller.addTextField {
+                $0.text = tag.name
+            }
+           
+            let submitAction = UIAlertAction(title: "Ok", style: .default) { [unowned controller] _ in
+                let field = controller.textFields![0]
+                if let name = field.text, name != String.empty, name != tag.name {
+                    tag.name = name
+                    self._editedTags[tag.id] = tag
+                    
+                    self._tableView.beginUpdates()
+                    self._tableView.reloadRows(at: [indexPath], with: .fade)
+                    self._tableView.endUpdates()
+                    self.enableOrDisableDone()
+                }
+            }
+            controller.addAction(submitAction)
+            
+            controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(controller, animated: true, completion: nil)
+            
             completionHandler(true)
-            self._btDone.isEnabled = true
+            
         }
         editAction.backgroundColor = #colorLiteral(red: 0.9898452163, green: 0.4851491451, blue: 0.2580373287, alpha: 1)
         
@@ -134,8 +157,40 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }    
+        
+        if let tableSection = TableSection(rawValue: indexPath.section) {
+            switch tableSection {
+            case .tags:
+                let tag = _tags[indexPath.row]
+                 return tag.isUser
+                
+            case .settings:
+                return false
+            }
+        }
+        return false
+    }
+    
+    private func enableOrDisableDone() -> Void {
+//        if _editedTags.isEmpty == false {
+//            let tags: [Int64: TagEntity] = _tags.toDictionary{$0.id}
+//            var remove = [TagEntity]()
+//            for item in _editedTags.values {
+//                if tags[item.id]?.name == item.name {
+//                    remove.append(item)
+//                }
+//            }
+//            remove.forEach {
+//                _editedTags.removeValue(forKey: $0.id)
+//            }
+//        }
+        
+        if _deletedTags.isEmpty == false || _editedTags.isEmpty == false {
+            _btDone.isEnabled = true
+        } else {
+            _btDone.isEnabled = false
+        }
+    }
 }
 
 private class SettingsItem {
