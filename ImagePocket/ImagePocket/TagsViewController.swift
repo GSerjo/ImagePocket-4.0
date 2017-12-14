@@ -18,7 +18,8 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private var _tags = [TagEntity]()
     private var _settings = [SettingsItem]()
     private var _tagsProtocol: TagsProtocol!
-    private var _deletedTags = [TagEntity]()
+    private var _deletedTags = [Int64: TagEntity]()
+    private var _editedTags = [Int64: TagEntity]()
     
     @IBOutlet weak var _btCancel: UIBarButtonItem!
     @IBOutlet weak var _btDone: UIBarButtonItem!
@@ -42,6 +43,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTheme()
+        _btDone.isEnabled = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,16 +106,30 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let trashAction = UIContextualAction(style: .destructive, title: "Trash") { [unowned self] (action, view, completionHandler) in
 
-            self._deletedTags.append(self._tags[indexPath.item])
+            let tag = self._tags[indexPath.item]
+            
+            self._deletedTags[tag.id] = tag
+            self._editedTags.removeValue(forKey: tag.id)
             self._tags.remove(at: indexPath.item)
 
             self._tableView.beginUpdates()
             self._tableView.deleteRows(at: [indexPath], with: .automatic)
             self._tableView.endUpdates()
             completionHandler(true)
+            self._btDone.isEnabled = true
         }
         trashAction.backgroundColor = .red
-        let configuration = UISwipeActionsConfiguration(actions: [trashAction])
+        
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { [unowned self] (action, view, completionHandler) in
+            
+
+            completionHandler(true)
+            self._btDone.isEnabled = true
+        }
+        editAction.backgroundColor = #colorLiteral(red: 0.9898452163, green: 0.4851491451, blue: 0.2580373287, alpha: 1)
+        
+        let configuration = UISwipeActionsConfiguration(actions: [trashAction, editAction])
         return configuration
     }
 
