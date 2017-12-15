@@ -125,7 +125,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
              let tag = self._tags[indexPath.item]
             
-            let controller = UIAlertController(title: "Rename Tag", message: "Enter", preferredStyle: .alert)
+            let controller = UIAlertController(title: "Rename Tag", message: "", preferredStyle: .alert)
             controller.addTextField {
                 $0.text = tag.name
             }

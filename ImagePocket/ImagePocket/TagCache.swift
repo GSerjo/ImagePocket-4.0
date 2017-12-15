@@ -33,6 +33,13 @@ final class TagCache {
         return _tags.keys.contains(tagId)
     }
     
+    func remove(tags: [TagEntity]) -> Void {
+        _tagRepository.remove(tags)
+        for tag in tags {
+            _tags.removeValue(forKey: tag.id)
+        }
+    }
+    
     func getById(tagId: Int64) -> TagEntity? {
         return _tags[tagId]
     }

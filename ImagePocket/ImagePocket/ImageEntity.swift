@@ -47,7 +47,7 @@ final class ImageEntity: Entity {
     }
 
     var tags: [TagEntity] {
-        let tags = _tagIds.values.toArray().map{self._tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
+        let tags = _tagIds.values.map{self._tagCache.getById(tagId: $0.tagId)}.flatMap{$0}
         return tags
     }
     

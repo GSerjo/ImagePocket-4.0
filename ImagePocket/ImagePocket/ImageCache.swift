@@ -142,6 +142,10 @@ final class ImageCache{
         }
     }
     
+    public func removeTagFromImages(tags: [TagEntity]) -> Void {
+        
+    }
+    
     private func addAssets(assets: [PHAsset]) -> Void {
         if assets.isEmpty {
             return
