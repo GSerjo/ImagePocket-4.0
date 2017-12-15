@@ -18,7 +18,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private var _tags = [TagEntity]()
     private var _settings = [SettingsItem]()
     private var _tagsProtocol: TagsProtocol!
-    private var _deletedTags = [Int64: TagEntity]()
+    private var _removedTags = [Int64: TagEntity]()
     private var _editedTags = [Int64: TagEntity]()
     
     @IBOutlet weak var _btCancel: UIBarButtonItem!
@@ -60,6 +60,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     @IBAction func onDoneClicked(_ sender: Any) {
+        ImageCache.instance.removeTagFromImages(tags: _removedTags.values.toArray())
         dismiss(animated: true, completion: nil)
     }
     
@@ -108,7 +109,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             let tag = self._tags[indexPath.item]
             
-            self._deletedTags[tag.id] = tag
+            self._removedTags[tag.id] = tag
             self._editedTags.removeValue(forKey: tag.id)
             self._tags.remove(at: indexPath.item)
 
@@ -185,7 +186,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //            }
 //        }
         
-        if _deletedTags.isEmpty == false || _editedTags.isEmpty == false {
+        if _removedTags.isEmpty == false || _editedTags.isEmpty == false {
             _btDone.isEnabled = true
         } else {
             _btDone.isEnabled = false

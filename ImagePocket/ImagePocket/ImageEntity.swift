@@ -89,6 +89,12 @@ final class ImageEntity: Entity {
         }
     }
     
+    func removeTagId(entities: [TagImageEntity]) -> Void {
+        for entity in entities {
+            _tagIds.removeValue(forKey: entity.id)
+        }
+    }
+    
     func searchText() -> String {
         return ""
     }

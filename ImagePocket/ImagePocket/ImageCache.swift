@@ -143,7 +143,12 @@ final class ImageCache{
     }
     
     public func removeTagFromImages(tags: [TagEntity]) -> Void {
-        
+        let removedTagImages = _imageRepository.remove(tags: tags)
+        _tagCache.remove(tags: tags)
+        let updatedImages = _imageRepository.getBy(ids: removedTagImages.map{$0.imageId})
+        for image in updatedImages {
+            _taggedImages[image.localIdentifier]?.removeTagId(entities: removedTagImages)
+        }
     }
     
     private func addAssets(assets: [PHAsset]) -> Void {

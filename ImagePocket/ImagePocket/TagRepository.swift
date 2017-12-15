@@ -61,7 +61,9 @@ final class TagRepository {
     }
     
     func remove(_ tags: [TagEntity]) -> Void {
-        _ = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
+        if tags.isEmpty == false {
+            _ = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
+        }
     }
     
     private struct Columns {

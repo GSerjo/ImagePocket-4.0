@@ -75,6 +75,20 @@ final class ImageRepository {
         return result.values.toArray()
     }
     
+    public func getBy(ids: [Int64]) -> [ImageEntity] {
+        var result = [ImageEntity]()
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            let query = self._table.filter(ids.contains(Columns.id))
+            if let rows = try? DataStore.instance.db.prepare(query) {
+                for row in rows {
+                    let item = ImageEntity(id: row[Columns.id], localIdentifier: row[Columns.localIdentifier], creationDate: row[Columns.creationDate])
+                    result.append(item)
+                }
+            }
+        }
+        return result
+    }
+    
     public func addTagImage(imageId: Int64, entities: [TagEntity]) -> [TagImageEntity] {
         if entities.isEmpty {
             return []
@@ -94,6 +108,24 @@ final class ImageRepository {
             return
         }
         _ = _tagImageTable.filter(tagImages.map {$0.id}.contains(Columns.id)).delete()
+    }
+    
+    public func remove(tags: [TagEntity]) -> [TagImageEntity] {
+        if tags.isEmpty {
+            return []
+        }
+        var removed = [TagImageEntity]()
+        _ = try? DataStore.instance.db.transaction {[unowned self] in
+            let query = self._tagImageTable.filter(tags.map{$0.id}.contains(TagImageColumns.tagId))
+            if let rows = try? DataStore.instance.db.prepare(query) {
+                for row in rows {
+                    let entity = TagImageEntity(id: row[TagImageColumns.id], tagId: row[TagImageColumns.tagId], imageId: row[TagImageColumns.imageId])
+                    removed.append(entity)
+                }
+            }
+            self.remove(tagImages: removed)
+        }
+        return removed
     }
     
     public func saveOrUpdate(_ entities: [ImageEntity]) -> (remove: [ImageEntity], add: [ImageEntity]) {
