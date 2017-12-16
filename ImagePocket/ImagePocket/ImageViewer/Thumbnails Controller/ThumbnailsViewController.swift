@@ -135,6 +135,8 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
                     cell.imageView.image = image
                 }
             }
+        case .video1(_, _):
+            print("collectionView Video 1")
         }
 
         return cell

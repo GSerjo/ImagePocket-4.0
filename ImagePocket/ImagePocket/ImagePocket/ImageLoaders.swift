@@ -14,7 +14,7 @@ final class ImageLoader {
     private init(){
     }
     
-    private static var options: PHImageRequestOptions = {
+    private static var optionsForImage: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
@@ -22,13 +22,26 @@ final class ImageLoader {
         return options
     }()
     
+    private static var optionsForVideo: PHVideoRequestOptions = {
+        let options = PHVideoRequestOptions()
+        options.deliveryMode = .automatic
+        options.isNetworkAccessAllowed = true
+        return options
+    }()
+    
     public static func load(asset: PHAsset, onComplete: @escaping (UIImage?) -> Void) -> Void {
         PHImageManager.default().requestImage(for: asset,
                                               targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
                                               contentMode: .aspectFit,
-                                              options: options,
+                                              options: optionsForImage,
                                               resultHandler: { image, info in
                                                 onComplete(image)
+        })
+    }
+    
+    public static func load(asset: PHAsset, onComplete: @escaping (AVPlayerItem?) -> Void) -> Void {
+        PHImageManager.default().requestPlayerItem(forVideo: asset, options: optionsForVideo, resultHandler: { playerItem, _ in
+            onComplete(playerItem)
         })
     }
 }

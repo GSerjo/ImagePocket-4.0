@@ -459,13 +459,24 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     func provideGalleryItem(_ index: Int) -> GalleryItem {
         let image = _filteredImages[index]
+        let asset = _imageCache[image.localIdentifier]!
         
-        let result = GalleryItem.image { onComplete in
-            ImageLoader.load(asset: self._imageCache[image.localIdentifier]!) { image in
+        if asset.playbackStyle == .video {
+            var playerItem: AVPlayerItem?
+            
+            ImageLoader.load(asset: asset, onComplete: {(item: AVPlayerItem?) in
+                playerItem = item
+            })
+            
+            return GalleryItem.video(fetchPreviewImageBlock: { onComplete in
+                ImageLoader.load(asset: asset) { image in onComplete(image) }}, playerItem: playerItem )
+        }
+        
+        return GalleryItem.image { onComplete in
+            ImageLoader.load(asset: asset) { image in
                 onComplete(image)
             }
         }
-        return result
     }
     
     //Tags

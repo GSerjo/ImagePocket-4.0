@@ -16,9 +16,10 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
-    let videoURL: URL
+    let playerItem: AVPlayerItem?
     let player: AVPlayer
     unowned let scrubber: VideoScrubber
+    private var fetchPlayerItemBlock: FetchPlayerItemBlock?
 
     let fullHDScreenSizeLandscape = CGSize(width: 1920, height: 1080)
     let fullHDScreenSizePortrait = CGSize(width: 1080, height: 1920)
@@ -27,11 +28,11 @@ class VideoViewController: ItemBaseController<VideoView> {
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, playerItem: AVPlayerItem?, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
-        self.videoURL = videoURL
+        self.playerItem = playerItem
         self.scrubber = scrubber
-        self.player = AVPlayer(url: self.videoURL)
+        self.player = AVPlayer(playerItem: self.playerItem)
         
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
@@ -46,6 +47,50 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
 
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+    }
+    
+    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, fetchBlock: @escaping FetchPlayerItemBlock, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+        
+        fetchPlayerItemBlock = fetchBlock
+        self.playerItem = nil
+        self.scrubber = scrubber
+        self.player = AVPlayer(playerItem: self.playerItem)
+        
+        ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
+        for item in configuration {
+            
+            switch item {
+                
+            case .videoAutoPlay(let enabled):
+                autoPlayEnabled = enabled
+                
+            default: break
+            }
+        }
+        
+        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+    }
+    
+    private func fetchPlayerItem() {
+        
+        fetchImageBlock { [weak self] image in
+            
+            if let image = image {
+                
+                DispatchQueue.main.async {
+                    self?.activityIndicatorView.stopAnimating()
+                    
+                    var itemView = self?.itemView
+                    itemView?.image = image
+                    itemView?.isAccessibilityElement = image.isAccessibilityElement
+                    itemView?.accessibilityLabel = image.accessibilityLabel
+                    itemView?.accessibilityTraits = image.accessibilityTraits
+                    
+                    self?.view.setNeedsLayout()
+                    self?.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     override func viewDidLoad() {
