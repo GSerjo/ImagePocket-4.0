@@ -61,6 +61,7 @@ class TagsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBAction func onDoneClicked(_ sender: Any) {
         ImageCache.instance.removeTagFromImages(tags: _removedTags.values.toArray())
+        ImageCache.instance.updateTagFromImages(tags: _editedTags.values.toArray())
         dismiss(animated: true, completion: nil)
     }
     
