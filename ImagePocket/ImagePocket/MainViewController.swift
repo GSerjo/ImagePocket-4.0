@@ -314,6 +314,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _searchBar.returnKeyType = UIReturnKeyType.done
         _searchBar.keyboardAppearance = .dark
         
+        if #available(iOS 11.0, *) {
+            _searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        }
+        
         onSelectedImageChanged()
         
         let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
@@ -443,7 +447,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                                   animations: { self.reloadData()})
             }
         }
-        
         _pendingSearchRequest = searchRequest
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(200), execute: searchRequest)
     }
@@ -468,6 +471,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     //Tags
     func onSelectTag(tag: TagEntity) -> Void {
         filterImagesAndReloadAsync(by: tag)
+        _searchText = String.empty
+        _searchBar.text = nil
     }
     
     func galleryConfiguration() -> GalleryConfiguration {
