@@ -435,7 +435,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         _pendingSearchRequest?.cancel()
         let searchRequest = DispatchWorkItem{ [unowned self] in
             self._filteredImages = self._imageCache.search(text: self._searchText)
-            self.reloadDataAsync()
+            
+            DispatchQueue.main.sync {
+                UIView.transition(with: self._collectionView,
+                                  duration: 0.50,
+                                  options: .transitionCrossDissolve,
+                                  animations: { self.reloadData()})
+            }
         }
         
         _pendingSearchRequest = searchRequest
