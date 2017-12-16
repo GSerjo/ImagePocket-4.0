@@ -62,7 +62,8 @@ final class TagRepository {
     
     func remove(_ tags: [TagEntity]) -> Void {
         if tags.isEmpty == false {
-            _ = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
+            let query = _table.filter(tags.map{ $0.id }.contains(Columns.id)).delete()
+            _ = try? DataStore.instance.db.run(query)
         }
     }
     

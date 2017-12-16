@@ -107,7 +107,8 @@ final class ImageRepository {
         if tagImages.isEmpty {
             return
         }
-        _ = _tagImageTable.filter(tagImages.map {$0.id}.contains(Columns.id)).delete()
+        let query = _tagImageTable.filter(tagImages.map {$0.id}.contains(Columns.id)).delete()
+        _  = try? DataStore.instance.db.run(query)
     }
     
     public func remove(tags: [TagEntity]) -> [TagImageEntity] {
@@ -139,7 +140,8 @@ final class ImageRepository {
         _ = try? DataStore.instance.db.transaction {[unowned self] in
             
             if forRemove.isEmpty == false {
-                _ = self._table.filter(forRemove.map {$0.id}.contains(Columns.id)).delete()
+                let query = self._table.filter(forRemove.map {$0.id}.contains(Columns.id)).delete()
+                _  = try? DataStore.instance.db.run(query)
             }
             
             
@@ -174,8 +176,11 @@ final class ImageRepository {
                 }
             }
             if forRemove.isEmpty == false {
-                _ = self._table.filter(forRemove.contains(Columns.id)).delete()
-                _ = self._tagImageTable.filter(forRemove.contains(TagImageColumns.imageId)).delete()
+                let removeImages = self._table.filter(forRemove.contains(Columns.id)).delete()
+                _  = try? DataStore.instance.db.run(removeImages)
+                
+                let removeTagImages = self._tagImageTable.filter(forRemove.contains(TagImageColumns.imageId)).delete()
+                _  = try? DataStore.instance.db.run(removeTagImages)
             }
         }
         SearchRepository.instance.remove(localIdentifiers)

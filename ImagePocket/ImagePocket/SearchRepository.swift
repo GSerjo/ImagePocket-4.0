@@ -50,7 +50,8 @@ final class SearchRepository {
         }
         
         for id in localIdentifiers {
-            _ = _table.filter(Columns.localIdentifier.match(id)).delete()
+            let query = _table.filter(Columns.localIdentifier.match(id)).delete()
+            _ = try? DataStore.instance.db.run(query)
         }
     }
     
