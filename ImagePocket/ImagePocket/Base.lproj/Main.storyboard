@@ -44,6 +44,10 @@
                                             <rect key="frame" x="90" y="73" width="31" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="buS-ty-rFs" userLabel="PlayVideo">
+                                            <rect key="frame" x="45" y="37" width="31" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
@@ -55,6 +59,7 @@
                                 <connections>
                                     <outlet property="_imageView" destination="zbs-3L-uyg" id="Egt-hS-yR0"/>
                                     <outlet property="_overlay" destination="Mi7-tv-rrg" id="zJn-Na-zvI"/>
+                                    <outlet property="_playVideo" destination="buS-ty-rFs" id="HLS-b2-3uP"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -122,7 +127,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="932" y="303"/>
+            <point key="canvasLocation" x="932" y="302.6986506746627"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cCW-2M-qWR">

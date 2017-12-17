@@ -162,8 +162,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         if _selectedImages.isEmpty == false && _selectedImages.keys.contains(cell.representedAssetIdentifier) {
             cell.selectCell()
-        }else {
+        }
+        else {
             cell.deselectCell()
+        }
+        
+        if asset.mediaType == .video {
+            cell.markAsVideo()
         }
         
         _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: _requestPreviewImageOptions, resultHandler: { image, _ in
