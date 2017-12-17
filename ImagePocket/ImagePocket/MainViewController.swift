@@ -462,14 +462,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let asset = _imageCache[image.localIdentifier]!
         
         if asset.playbackStyle == .video {
-            var playerItem: AVPlayerItem?
             
-            ImageLoader.load(asset: asset, onComplete: {(item: AVPlayerItem?) in
-                playerItem = item
-            })
-            
-            return GalleryItem.video(fetchPreviewImageBlock: { onComplete in
-                ImageLoader.load(asset: asset) { image in onComplete(image) }}, playerItem: playerItem )
+            return GalleryItem.video1(fetchPreviewImageBlock: { onComplete in
+                ImageLoader.load(asset: asset) { image in onComplete(image) }},
+                                      fetchBlock: { onComplete in
+                                        ImageLoader.load(asset: asset) { playerItem in onComplete(playerItem) }} )
         }
         
         return GalleryItem.image { onComplete in

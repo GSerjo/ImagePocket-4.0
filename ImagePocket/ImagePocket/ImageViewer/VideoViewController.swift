@@ -16,10 +16,10 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
-    let playerItem: AVPlayerItem?
-    let player: AVPlayer
+//    let playerItem: AVPlayerItem?
+    var player: AVPlayer?
     unowned let scrubber: VideoScrubber
-    private var fetchPlayerItemBlock: FetchPlayerItemBlock?
+    private let fetchPlayerItemBlock: FetchPlayerItemBlock
 
     let fullHDScreenSizeLandscape = CGSize(width: 1920, height: 1080)
     let fullHDScreenSizePortrait = CGSize(width: 1080, height: 1920)
@@ -28,33 +28,33 @@ class VideoViewController: ItemBaseController<VideoView> {
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, playerItem: AVPlayerItem?, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
-
-        self.playerItem = playerItem
-        self.scrubber = scrubber
-        self.player = AVPlayer(playerItem: self.playerItem)
-        
-        ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
-        for item in configuration {
-            
-            switch item {
-                
-            case .videoAutoPlay(let enabled):
-                autoPlayEnabled = enabled
-                
-            default: break
-            }
-        }
-
-        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
-    }
+//    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, playerItem: AVPlayerItem?, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+//
+//        self.playerItem = playerItem
+//        self.scrubber = scrubber
+//        self.player = AVPlayer(playerItem: self.playerItem)
+//        
+//        ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
+//        for item in configuration {
+//            
+//            switch item {
+//                
+//            case .videoAutoPlay(let enabled):
+//                autoPlayEnabled = enabled
+//                
+//            default: break
+//            }
+//        }
+//
+//        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+//    }
     
     init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, fetchBlock: @escaping FetchPlayerItemBlock, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
         
         fetchPlayerItemBlock = fetchBlock
-        self.playerItem = nil
+//        self.playerItem = nil
         self.scrubber = scrubber
-        self.player = AVPlayer(playerItem: self.playerItem)
+//        self.player = AVPlayer(playerItem: self.playerItem)
         
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
@@ -69,25 +69,18 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
         
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+        
+        self.fetchPlayerItem()
     }
     
     private func fetchPlayerItem() {
-        
-        fetchImageBlock { [weak self] image in
-            
-            if let image = image {
-                
+        fetchPlayerItemBlock { [unowned self] playerItem in
+            if let playerItem = playerItem {
                 DispatchQueue.main.async {
-                    self?.activityIndicatorView.stopAnimating()
-                    
-                    var itemView = self?.itemView
-                    itemView?.image = image
-                    itemView?.isAccessibilityElement = image.isAccessibilityElement
-                    itemView?.accessibilityLabel = image.accessibilityLabel
-                    itemView?.accessibilityTraits = image.accessibilityTraits
-                    
-                    self?.view.setNeedsLayout()
-                    self?.view.layoutIfNeeded()
+                    self.player = AVPlayer(playerItem: playerItem)
+                    self.itemView.player = self.player
+                    self.player!.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+                    self.player!.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
                 }
             }
         }
@@ -104,14 +97,14 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), for: UIControlEvents.touchUpInside)
 
-        self.itemView.player = player
+//        self.itemView.player = player
         self.itemView.contentMode = .scaleAspectFill
     }
 
     override func viewWillAppear(_ animated: Bool) {
 
-        self.player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-        self.player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
+        self.player?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+        self.player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
 
         UIApplication.shared.beginReceivingRemoteControlEvents()
 
@@ -120,8 +113,8 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func viewWillDisappear(_ animated: Bool) {
 
-        self.player.removeObserver(self, forKeyPath: "status")
-        self.player.removeObserver(self, forKeyPath: "rate")
+        self.player?.removeObserver(self, forKeyPath: "status")
+        self.player?.removeObserver(self, forKeyPath: "rate")
 
         UIApplication.shared.endReceivingRemoteControlEvents()
 
@@ -137,7 +130,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        self.player.pause()
+        self.player?.pause()
     }
 
     override func viewDidLayoutSubviews() {
@@ -150,7 +143,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     @objc func playVideoInitially() {
 
-        self.player.play()
+        self.player?.play()
 
 
         UIView.animate(withDuration: 0.25, animations: { [weak self] in
@@ -217,13 +210,14 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     func fadeOutEmbeddedPlayButton() {
+        if let player = player {
+            if player.isPlaying() && embeddedPlayButton.alpha != 0  {
 
-        if player.isPlaying() && embeddedPlayButton.alpha != 0  {
+                UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
-            UIView.animate(withDuration: 0.3, animations: { [weak self] in
-
-                self?.embeddedPlayButton.alpha = 0
-            })
+                    self?.embeddedPlayButton.alpha = 0
+                })
+            }
         }
     }
 
@@ -237,28 +231,27 @@ class VideoViewController: ItemBaseController<VideoView> {
 
                 case .remoteControlTogglePlayPause:
 
-                    if self.player.isPlaying()  {
-
-                        self.player.pause()
+                    if let player = self.player, player.isPlaying()  {
+                        player.pause()
                     }
                     else {
 
-                        self.player.play()
+                        self.player?.play()
                     }
 
                 case .remoteControlPause:
 
-                    self.player.pause()
+                    self.player?.pause()
 
                 case .remoteControlPlay:
 
-                    self.player.play()
+                    self.player?.play()
 
                 case .remoteControlPreviousTrack:
 
-                    self.player.pause()
-                    self.player.seek(to: CMTime(value: 0, timescale: 1))
-                    self.player.play()
+                    self.player?.pause()
+                    self.player?.seek(to: CMTime(value: 0, timescale: 1))
+                    self.player?.play()
 
                 default:
 
