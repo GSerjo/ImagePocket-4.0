@@ -336,8 +336,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func reloadDataAsync() {
-        DispatchQueue.main.async { [unowned self] in
-            self.reloadData()
+        DispatchQueue.main.async {
+            UIView.transition(with: self._collectionView,
+                              duration: 0.50,
+                              options: .transitionCrossDissolve,
+                              animations: { self.reloadData()})
         }
     }
     
