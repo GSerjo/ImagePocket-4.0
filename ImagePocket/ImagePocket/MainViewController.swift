@@ -506,7 +506,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             
             GalleryConfigurationItem.swipeToDismissMode(.vertical),
             GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
-            GalleryConfigurationItem.activityViewByLongPress(false),
+            GalleryConfigurationItem.activityViewByLongPress(true),
             
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.overlayColorOpacity(1),
