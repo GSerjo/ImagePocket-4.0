@@ -40,6 +40,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private let _thumbnailContentMode: PHImageContentMode = .aspectFill
     private var _thumbnailSize: CGSize!
     private let _sharedImageLoader = SharedImageLoader()
+//    private let _swipeRightGesture = UISwipeGestureRecognizer()
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -113,6 +114,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBAction func onMenuClicked(_ sender: Any) {
         performSegue(withIdentifier: SegueSelector.showTags, sender: nil)
     }
+    
+//    @objc private func onSwipeRight() -> Void {
+//        performSegue(withIdentifier: SegueSelector.showTags, sender: nil)
+//    }
     
     @IBAction func onShareClicked(_ sender: Any) {
         _sharedImageLoader.load(images: _selectedImages.values.map{$0.image}) { [unowned self] (loadedImages) in
@@ -327,6 +332,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
         _thumbnailSize = CGSize(width: dummySize, height: dummySize)
+        
+//        _swipeRightGesture.direction = .right
+//        _swipeRightGesture.addTarget(self, action: #selector(onSwipeRight))
+//        view.addGestureRecognizer(_swipeRightGesture)
     }
     
     private func configureTheme() -> Void {

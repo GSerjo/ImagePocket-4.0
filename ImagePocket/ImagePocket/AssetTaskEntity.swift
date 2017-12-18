@@ -20,6 +20,7 @@ protocol AssetTaskable {
     var creationDate: Date? { get }
     var latitude: Double? { get }
     var longitude: Double? { get }
+    var context: String? { get }
 }
 
 extension AssetTaskable {
@@ -62,10 +63,12 @@ final class AssetTaskEntity : Entity {
     private(set) var status: AssetTaskStatus
     private(set) var address: String?
     private(set) var creationDate: String?
+    let context: String?
     
     init?(task: AssetTaskable) {
+        context = task.context
         let hasLocation = task.latitude != nil && task.longitude != nil
-        if hasLocation && task.creationDate == nil {
+        if hasLocation == false && task.creationDate == nil && task.context == nil {
             return nil
         }
         self.localIdentifier = task.localIdentifier
@@ -87,7 +90,7 @@ final class AssetTaskEntity : Entity {
         }
     }
     
-    init(id: Int64, creationDate: String?, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, address: String?, status: AssetTaskStatus) {
+    init(id: Int64, creationDate: String?, localIdentifier: String, geoHash: String?, latitude: Double?, longitude: Double?, address: String?, status: AssetTaskStatus, context: String?) {
         self.creationDate = creationDate
         self.id = id
         self.localIdentifier = localIdentifier
@@ -96,19 +99,22 @@ final class AssetTaskEntity : Entity {
         self.longitude = longitude
         self.address = address
         self.status = status
+        self.context = context
     }
     
     var text: String {
-        if address == nil && creationDate == nil {
-            return String.empty
+        var result = String.empty
+        
+        if context != nil {
+            result = context!
         }
-        if address != nil && creationDate != nil {
-            return address! + " " + creationDate!
+        if address != nil {
+            result = result + " " + address!
         }
-        if address == nil {
-            return creationDate!
+        if creationDate != nil {
+            result = result + " " + creationDate!
         }
-        return address!
+        return result
     }
     
     var isForReady: Bool {

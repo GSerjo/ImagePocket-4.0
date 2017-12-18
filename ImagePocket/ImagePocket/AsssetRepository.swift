@@ -25,6 +25,7 @@ final class AssetRespository {
             t.column(Columns.localIdentifier)
             t.column(Columns.latitude)
             t.column(Columns.longitude)
+            t.column(Columns.context)
         }
         
         let indexQuery = _table.createIndex([Columns.localIdentifier], unique: true, ifNotExists: true)
@@ -38,7 +39,8 @@ final class AssetRespository {
             Columns.creationDate <- entity.creationDate,
             Columns.localIdentifier <- entity.localIdentifier,
             Columns.latitude <- entity.latitude,
-            Columns.longitude <- entity.longitude)
+            Columns.longitude <- entity.longitude,
+            Columns.context <- entity.context)
         
         _ = try? DataStore.instance.db.run(query)
     }
@@ -74,7 +76,8 @@ final class AssetRespository {
                                               Columns.creationDate <- item.creationDateText,
                                               Columns.localIdentifier <- item.localIdentifier,
                                               Columns.latitude <- item.latitude,
-                                              Columns.longitude <- item.longitude)
+                                              Columns.longitude <- item.longitude,
+                                              Columns.context <- item.context)
                     
                     _ = try? DataStore.instance.db.run(query)
                     
@@ -92,6 +95,7 @@ final class AssetRespository {
         static let latitude = Expression<Double?>("latitude")
         static let longitude = Expression<Double?>("longitude")
         static let creationDate = Expression<String?>("creationDate")
+        static let context = Expression<String?>("context")
     }
     
     private class AssetInternal: Hashable, AssetTaskable {
@@ -100,12 +104,14 @@ final class AssetRespository {
         private(set) var creationDate: Date?
         private(set) var latitude: Double?
         private(set) var longitude: Double?
+        private(set) var context: String?
         
         init(task: AssetTaskable) {
             localIdentifier = task.localIdentifier
             creationDate = task.creationDate
             latitude = task.latitude
             longitude = task.longitude
+            context = task.context
         }
         
         init(localIdentifier: String) {

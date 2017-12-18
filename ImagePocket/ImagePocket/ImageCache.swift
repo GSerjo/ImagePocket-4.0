@@ -10,6 +10,14 @@ import Foundation
 import Photos
 
 extension PHAsset: AssetTaskable {
+    
+    var context: String? {
+        if mediaType == .video {
+            return "video"
+        }
+        return nil
+    }
+    
     var latitude: Double? {
         return self.location?.coordinate.latitude
     }

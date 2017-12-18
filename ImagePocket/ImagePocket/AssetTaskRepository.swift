@@ -12,7 +12,7 @@ import SQLite
 final class AssetTaskResitory {
     private let _table = Table("AssetTask")
     static let instance = AssetTaskResitory()
-    private let _forGeoSearchChunkSize = 35
+    private let _forGeoSearchChunkSize = 40
     
     private init(){
     }
@@ -28,6 +28,7 @@ final class AssetTaskResitory {
             t.column(Columns.latitude)
             t.column(Columns.longitude)
             t.column(Columns.status)
+            t.column(Columns.context)
         }
         
         let indexQuery = _table.createIndex([Columns.localIdentifier, Columns.geoHash], unique: true, ifNotExists: true)
@@ -57,7 +58,8 @@ final class AssetTaskResitory {
                     Columns.latitude <- entity.latitude,
                     Columns.longitude <- entity.longitude,
                     Columns.address <- entity.address,
-                    Columns.status <- entity.status.rawValue)
+                    Columns.status <- entity.status.rawValue,
+                    Columns.context <- entity.context)
                 
                 _ = try? DataStore.instance.db.run(query)
                 AssetRespository.instance.save(entity)
@@ -73,7 +75,8 @@ final class AssetTaskResitory {
             Columns.latitude <- entity.latitude,
             Columns.longitude <- entity.longitude,
             Columns.address <- entity.address,
-            Columns.status <- entity.status.rawValue)
+            Columns.status <- entity.status.rawValue,
+            Columns.context <- entity.context)
     
         _ = try? DataStore.instance.db.run(query)
     }
@@ -145,7 +148,8 @@ final class AssetTaskResitory {
                     latitude: row[Columns.latitude],
                     longitude: row[Columns.longitude],
                     address: row[Columns.address],
-                    status: AssetTaskStatus(rawValue: row[Columns.status])!)
+                    status: AssetTaskStatus(rawValue: row[Columns.status])!,
+                    context: row[Columns.context])
                 
                 result.append(item)
             }
@@ -172,7 +176,8 @@ final class AssetTaskResitory {
                     latitude: row[Columns.latitude],
                     longitude: row[Columns.longitude],
                     address: row[Columns.address],
-                    status: AssetTaskStatus(rawValue: row[Columns.status])!)
+                    status: AssetTaskStatus(rawValue: row[Columns.status])!,
+                    context: row[Columns.context])
                 
                 result.append(item)
             }
@@ -189,5 +194,6 @@ final class AssetTaskResitory {
         static let address = Expression<String?>("address")
         static let creationDate = Expression<String?>("creationDate")
         static let status = Expression<Int>("status")
+        static let context = Expression<String?>("context")
     }
 }
