@@ -33,6 +33,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private var _filteredImages = [ImageEntity]()
     private let _imageManager = PHCachingImageManager()
     private var _viewMode = ViewMode.read
+    
     private var _selectedImages = [String: (image: ImageEntity, index: IndexPath)]()
     private var _searchText = String.empty
     private var _pendingSearchRequest: DispatchWorkItem?
@@ -40,7 +41,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private let _thumbnailContentMode: PHImageContentMode = .aspectFill
     private var _thumbnailSize: CGSize!
     private let _sharedImageLoader = SharedImageLoader()
-//    private let _swipeRightGesture = UISwipeGestureRecognizer()
+//    private var _panGestureRecognizer: UIPanGestureRecognizer?
+    private var _lastAccessedCell: IndexPath?
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -114,10 +116,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     @IBAction func onMenuClicked(_ sender: Any) {
         performSegue(withIdentifier: SegueSelector.showTags, sender: nil)
     }
-    
-//    @objc private func onSwipeRight() -> Void {
-//        performSegue(withIdentifier: SegueSelector.showTags, sender: nil)
-//    }
     
     @IBAction func onShareClicked(_ sender: Any) {
         _sharedImageLoader.load(images: _selectedImages.values.map{$0.image}) { [unowned self] (loadedImages) in
@@ -193,7 +191,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         if _viewMode == .select {
             let cell = collectionView.cellForItem(at: indexPath) as! ImagePreviewCell
             let image = _filteredImages[indexPath.item]
-            
             
             if _selectedImages.keys.contains(image.localIdentifier) {
                 
@@ -333,10 +330,52 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
         _thumbnailSize = CGSize(width: dummySize, height: dummySize)
         
-//        _swipeRightGesture.direction = .right
-//        _swipeRightGesture.addTarget(self, action: #selector(onSwipeRight))
-//        view.addGestureRecognizer(_swipeRightGesture)
+//        configureSwipeToSeleGesture()
     }
+    
+//    private func configureSwipeToSeleGesture() -> Void {
+//        _panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToSelect))
+//        _panGestureRecognizer!.maximumNumberOfTouches = 1
+//        _panGestureRecognizer!.minimumNumberOfTouches = 1
+//        _collectionView.addGestureRecognizer(_panGestureRecognizer!)
+//    }
+//
+//    @objc private func swipeToSelect(gestureRecognizer: UIPanGestureRecognizer) -> Void {
+//        let pointerX = gestureRecognizer.location(in: _collectionView).x
+//        let pointerY = gestureRecognizer.location(in: _collectionView).y
+//
+//        for cell in _collectionView.visibleCells {
+//            let cellSX = cell.frame.origin.x
+//            let cellEX = cell.frame.origin.x + cell.frame.size.width
+//            let cellSY = cell.frame.origin.y
+//            let cellEY = cell.frame.origin.y + cell.frame.size.height
+//
+//            if pointerX >= cellSX && pointerX <= cellEX && pointerY >= cellSY && pointerY <= cellEY {
+//                let touchOver = _collectionView.indexPath(for: cell)
+//                if touchOver != _lastAccessedCell {
+//
+//                    let image = _filteredImages[touchOver!.item]
+//                    if _selectedImages.keys.contains(image.localIdentifier) {
+//
+//                        _selectedImages.removeValue(forKey: image.localIdentifier)
+//                        (cell as! ImagePreviewCell).deselectCell()
+//                    }
+//                    else {
+//                        _selectedImages[image.localIdentifier] = (image, touchOver!)
+//                        (cell as! ImagePreviewCell).selectCell()
+//                    }
+//
+//                    onSelectedImageChanged()
+//
+//                }
+//                _lastAccessedCell = touchOver
+//            }
+//        }
+//        if gestureRecognizer.state == .ended {
+//            _lastAccessedCell = nil
+//            _collectionView.isScrollEnabled = true
+//        }
+//    }
 
     private func configureTheme() -> Void {
         let theme = Settings.instance.theme
