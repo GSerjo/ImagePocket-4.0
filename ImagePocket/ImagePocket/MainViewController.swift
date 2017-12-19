@@ -337,7 +337,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
 //        _swipeRightGesture.addTarget(self, action: #selector(onSwipeRight))
 //        view.addGestureRecognizer(_swipeRightGesture)
     }
-    
+
     private func configureTheme() -> Void {
         let theme = Settings.instance.theme
         
@@ -430,12 +430,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         searchImages(by: searchText)
     }
     
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
     @objc func dismissKeyboard() {
         _searchBar.text = nil
         _searchBar.endEditing(false)
@@ -515,7 +509,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             
             GalleryConfigurationItem.swipeToDismissMode(.vertical),
             GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
-            GalleryConfigurationItem.activityViewByLongPress(true),
+            GalleryConfigurationItem.activityViewByLongPress(false),
             
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.overlayColorOpacity(1),
