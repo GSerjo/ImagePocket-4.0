@@ -41,7 +41,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     private let _thumbnailContentMode: PHImageContentMode = .aspectFill
     private var _thumbnailSize: CGSize!
     private let _sharedImageLoader = SharedImageLoader()
-//    private var _panGestureRecognizer: UIPanGestureRecognizer?
+    private var _cellsPerRow = 3
+    private let _minimumInteritemSpacing: CGFloat = 5
     private var _lastAccessedCell: IndexPath?
     
     @IBOutlet var _btSelect: UIBarButtonItem!
@@ -71,6 +72,28 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         try! DataStore.instance.create()
         startApp()
+    }
+    
+    
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if(velocity.y > 0) {
+            
+            UIView.animate(withDuration: 10, delay: 0, options: UIViewAnimationOptions(), animations: {
+                UIApplication.applicationWindow.windowLevel = UIWindowLevelStatusBar + 1
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+                self.navigationController?.setToolbarHidden(true, animated: true)
+                self.setNeedsStatusBarAppearanceUpdate()
+            }, completion: nil)
+            
+        } else {
+            
+            UIView.animate(withDuration: 10, delay: 0, options: UIViewAnimationOptions(), animations: {
+                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+                self.navigationController?.setToolbarHidden(false, animated: true)
+                self.setNeedsStatusBarAppearanceUpdate()
+            }, completion: nil)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -183,8 +206,34 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         return cell
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return imagePreviewCellSize()
+        let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let marginsAndInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right + flowLayout.minimumInteritemSpacing * CGFloat(_cellsPerRow - 1)
+        let itemWidth = ((collectionView.bounds.size.width - marginsAndInsets) / CGFloat(_cellsPerRow)).rounded(.down)
+        return CGSize(width: itemWidth, height: itemWidth)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView?.collectionViewLayout.invalidateLayout()
+        
+        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+            _cellsPerRow = 3
+        }
+        else {
+            _cellsPerRow = 6
+        }
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        
+        var contentInset = _collectionView.contentInset;
+        contentInset.left = self.view.safeAreaInsets.left;
+        contentInset.right = self.view.safeAreaInsets.right;
+        _collectionView.contentInset = contentInset;
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -210,9 +259,26 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             }
             
             let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, configuration: galleryConfiguration())
+            
+//            let theme = Settings.instance.theme
+//            let toolBar = UIToolbar()
+//            var items = [UIBarButtonItem]()
+//            toolBar.barTintColor = theme.barTintColor
+//            let share = UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
+//            share.tintColor = theme.tintColor
+//            items.append(share)
+//            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+//            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
+//            trash.tintColor = theme.tintColor
+//            items.append(trash)
+//            
+//            galleryViewController.footerView = toolBar
+//            toolBar.setItems(items, animated: false)
+            
             present(galleryViewController, animated: false, completion: nil)
         }
     }
+    
     
     public func loadUnderlyingImageAndNotify(_asset: PHAsset) -> Void {
         let options = PHImageRequestOptions()
@@ -330,53 +396,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let dummySize = imagePreviewCellSize().width * UIScreen.main.scale
         _thumbnailSize = CGSize(width: dummySize, height: dummySize)
         
-//        configureSwipeToSeleGesture()
+        if let flowLayout = _collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.minimumInteritemSpacing = _minimumInteritemSpacing
+            flowLayout.minimumLineSpacing = _minimumInteritemSpacing
+            flowLayout.sectionInset = UIEdgeInsets(top: _minimumInteritemSpacing, left: _minimumInteritemSpacing, bottom: _minimumInteritemSpacing, right: _minimumInteritemSpacing)
+        }
     }
     
-//    private func configureSwipeToSeleGesture() -> Void {
-//        _panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipeToSelect))
-//        _panGestureRecognizer!.maximumNumberOfTouches = 1
-//        _panGestureRecognizer!.minimumNumberOfTouches = 1
-//        _collectionView.addGestureRecognizer(_panGestureRecognizer!)
-//    }
-//
-//    @objc private func swipeToSelect(gestureRecognizer: UIPanGestureRecognizer) -> Void {
-//        let pointerX = gestureRecognizer.location(in: _collectionView).x
-//        let pointerY = gestureRecognizer.location(in: _collectionView).y
-//
-//        for cell in _collectionView.visibleCells {
-//            let cellSX = cell.frame.origin.x
-//            let cellEX = cell.frame.origin.x + cell.frame.size.width
-//            let cellSY = cell.frame.origin.y
-//            let cellEY = cell.frame.origin.y + cell.frame.size.height
-//
-//            if pointerX >= cellSX && pointerX <= cellEX && pointerY >= cellSY && pointerY <= cellEY {
-//                let touchOver = _collectionView.indexPath(for: cell)
-//                if touchOver != _lastAccessedCell {
-//
-//                    let image = _filteredImages[touchOver!.item]
-//                    if _selectedImages.keys.contains(image.localIdentifier) {
-//
-//                        _selectedImages.removeValue(forKey: image.localIdentifier)
-//                        (cell as! ImagePreviewCell).deselectCell()
-//                    }
-//                    else {
-//                        _selectedImages[image.localIdentifier] = (image, touchOver!)
-//                        (cell as! ImagePreviewCell).selectCell()
-//                    }
-//
-//                    onSelectedImageChanged()
-//
-//                }
-//                _lastAccessedCell = touchOver
-//            }
-//        }
-//        if gestureRecognizer.state == .ended {
-//            _lastAccessedCell = nil
-//            _collectionView.isScrollEnabled = true
-//        }
-//    }
-
     private func configureTheme() -> Void {
         let theme = Settings.instance.theme
         
@@ -535,10 +561,18 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     func galleryConfiguration() -> GalleryConfiguration {
         
+        let t = UIButton(type: .custom)
+        t.setImage(#imageLiteral(resourceName: "trash"), for: .normal)
+        t.bounds = CGRect(x: 0, y: 0, width: 50, height: 50)
+        t.tintColor = Settings.instance.theme.tintColor
+//        t.center = CGPoint(x: 200, y: 200)
+        
         return [
             
             GalleryConfigurationItem.closeButtonMode(.none),
-            GalleryConfigurationItem.deleteButtonMode(.none),
+            GalleryConfigurationItem.deleteButtonMode(.custom(t)),
+            GalleryConfigurationItem.deleteLayout(.pinRight(100, 200)),
+            
             GalleryConfigurationItem.thumbnailsButtonMode(.none),
             GalleryConfigurationItem.seeAllCloseButtonMode(.none),
             

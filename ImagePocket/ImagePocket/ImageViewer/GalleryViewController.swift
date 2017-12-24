@@ -71,6 +71,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
+        
         self.currentIndex = startIndex
         self.itemsDelegate = itemsDelegate
         self.itemsDataSource = itemsDataSource
@@ -149,7 +150,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
 
         pagingDataSource = GalleryPagingDataSource(itemsDataSource: itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
-
+        
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.scroll,
                    navigationOrientation: UIPageViewControllerNavigationOrientation.horizontal,
                    options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(value: spineDividerWidth as Float)])
@@ -258,9 +259,9 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
-        configureThumbnailsButton()
+//        configureThumbnailsButton()
         configureDeleteButton()
-        configureScrubber()
+//        configureScrubber()
 
         self.view.clipsToBounds = false
     }

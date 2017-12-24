@@ -142,7 +142,8 @@
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="faV-bt-4ia">
                         <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.199973762" green="0.2000150383" blue="0.19997122880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.18824771046638489" green="0.18825316429138184" blue="0.17192444205284119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.18822944164276123" green="0.18825146555900574" blue="0.18007361888885498" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </toolbar>
                     <connections>
                         <segue destination="3Va-f4-vbE" kind="relationship" relationship="rootViewController" id="Kn2-qo-I5w"/>
