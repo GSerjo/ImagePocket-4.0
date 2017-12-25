@@ -260,20 +260,21 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             
             let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, configuration: galleryConfiguration())
             
-//            let theme = Settings.instance.theme
-//            let toolBar = UIToolbar()
-//            var items = [UIBarButtonItem]()
-//            toolBar.barTintColor = theme.barTintColor
-//            let share = UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
-//            share.tintColor = theme.tintColor
-//            items.append(share)
-//            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-//            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
-//            trash.tintColor = theme.tintColor
-//            items.append(trash)
-//            
-//            galleryViewController.footerView = toolBar
-//            toolBar.setItems(items, animated: false)
+            let theme = Settings.instance.theme
+            let toolBar = UIToolbar()
+            var items = [UIBarButtonItem]()
+            toolBar.barTintColor = theme.barTintColor
+            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+            share.tintColor = theme.tintColor
+            
+            items.append(share)
+            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
+            trash.tintColor = theme.tintColor
+            items.append(trash)
+            
+            galleryViewController.footerView = toolBar
+            toolBar.setItems(items, animated: false)
             
             present(galleryViewController, animated: false, completion: nil)
         }
@@ -560,17 +561,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func galleryConfiguration() -> GalleryConfiguration {
-        
-        let t = UIButton(type: .custom)
-        t.setImage(#imageLiteral(resourceName: "trash"), for: .normal)
-        t.bounds = CGRect(x: 0, y: 0, width: 50, height: 50)
-        t.tintColor = Settings.instance.theme.tintColor
-//        t.center = CGPoint(x: 200, y: 200)
-        
         return [
             
             GalleryConfigurationItem.closeButtonMode(.none),
-            GalleryConfigurationItem.deleteButtonMode(.custom(t)),
+            GalleryConfigurationItem.deleteButtonMode(.none),
             GalleryConfigurationItem.deleteLayout(.pinRight(100, 200)),
             
             GalleryConfigurationItem.thumbnailsButtonMode(.none),

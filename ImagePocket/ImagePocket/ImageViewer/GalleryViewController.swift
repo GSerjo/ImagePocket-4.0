@@ -258,7 +258,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         configureHeaderView()
         configureFooterView()
-        configureCloseButton()
+//        configureCloseButton()
 //        configureThumbnailsButton()
         configureDeleteButton()
 //        configureScrubber()
@@ -319,9 +319,9 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
 
-        layoutButton(closeButton, layout: closeLayout)
-        layoutButton(thumbnailsButton, layout: thumbnailsLayout)
-        layoutButton(deleteButton, layout: deleteLayout)
+//        layoutButton(closeButton, layout: closeLayout)
+//        layoutButton(thumbnailsButton, layout: thumbnailsLayout)
+//        layoutButton(deleteButton, layout: deleteLayout)
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
@@ -390,31 +390,42 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         guard let footer = footerView else { return }
 
-        switch footerLayout {
+        footer.translatesAutoresizingMaskIntoConstraints = false
 
-        case .center(let marginBottom):
 
-            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
-            footer.center = self.view.boundsCenter
-            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom
-
-        case .pinBoth(let marginBottom, let marginLeft,let marginRight):
-
-            footer.autoresizingMask = [.flexibleTopMargin, .flexibleWidth]
-            footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
-            footer.sizeToFit()
-            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
-
-        case .pinLeft(let marginBottom, let marginLeft):
-
-            footer.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
-
-        case .pinRight(let marginBottom, let marginRight):
-
-            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
-            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
+        if #available(iOS 11.0, *) {           
+            let guide = self.view.safeAreaLayoutGuide
+            footer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            footer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+            footer.heightAnchor.constraint(equalToConstant: 44).isActive = true
         }
+        
+//        switch footerLayout {
+//
+//        case .center(let marginBottom):
+//
+//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
+//            footer.center = self.view.boundsCenter
+//            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom
+//
+//        case .pinBoth(let marginBottom, let marginLeft,let marginRight):
+//
+//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleWidth]
+//            footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
+//            footer.sizeToFit()
+//            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
+//
+//        case .pinLeft(let marginBottom, let marginLeft):
+//
+//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+//            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
+//
+//        case .pinRight(let marginBottom, let marginRight):
+//
+//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
+//            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
+//        }
     }
 
     fileprivate func layoutScrubber() {
