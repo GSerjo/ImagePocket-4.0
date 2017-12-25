@@ -260,7 +260,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureFooterView()
 //        configureCloseButton()
 //        configureThumbnailsButton()
-        configureDeleteButton()
+//        configureDeleteButton()
 //        configureScrubber()
 
         self.view.clipsToBounds = false
@@ -324,7 +324,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 //        layoutButton(deleteButton, layout: deleteLayout)
         layoutHeaderView()
         layoutFooterView()
-        layoutScrubber()
+//        layoutScrubber()
     }
 
     private var defaultInsets: UIEdgeInsets {
@@ -359,31 +359,47 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         guard let header = headerView else { return }
 
-        switch headerLayout {
+        header.translatesAutoresizingMaskIntoConstraints = false
 
-        case .center(let marginTop):
-
-            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
-            header.center = self.view.boundsCenter
-            header.frame.origin.y = defaultInsets.top + marginTop
-
-        case .pinBoth(let marginTop, let marginLeft,let marginRight):
-
-            header.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
-            header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
-            header.sizeToFit()
-            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
-
-        case .pinLeft(let marginTop, let marginLeft):
-
-            header.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
-
-        case .pinRight(let marginTop, let marginRight):
-
-            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: defaultInsets.top + marginTop)
+        if #available(iOS 11.0, *) {
+//            let guide = self.view.safeAreaLayoutGuide
+            
+            NSLayoutConstraint.activate([
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                header.topAnchor.constraint(equalTo: view.topAnchor)
+                ])
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//            header.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
+            header.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+//            header.heightAnchor.constraint(equalToConstant: 88).isActive = true
         }
+//        switch headerLayout {
+//
+//        case .center(let marginTop):
+//
+//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
+//            header.center = self.view.boundsCenter
+//            header.frame.origin.y = defaultInsets.top + marginTop
+//
+//        case .pinBoth(let marginTop, let marginLeft,let marginRight):
+//
+//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
+//            header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
+//            header.sizeToFit()
+//            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
+//
+//        case .pinLeft(let marginTop, let marginLeft):
+//
+//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
+//            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
+//
+//        case .pinRight(let marginTop, let marginRight):
+//
+//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
+//            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: defaultInsets.top + marginTop)
+//        }
     }
 
     fileprivate func layoutFooterView() {
@@ -392,13 +408,18 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         footer.translatesAutoresizingMaskIntoConstraints = false
 
-
         if #available(iOS 11.0, *) {           
             let guide = self.view.safeAreaLayoutGuide
-            footer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            footer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-            footer.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            NSLayoutConstraint.activate([
+                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                footer.heightAnchor.constraint(equalToConstant: 44)
+                ])
+//            footer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//            footer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//            footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+//            footer.heightAnchor.constraint(equalToConstant: 44).isActive = true
         }
         
 //        switch footerLayout {

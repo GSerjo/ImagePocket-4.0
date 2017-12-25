@@ -266,15 +266,23 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             toolBar.barTintColor = theme.barTintColor
             let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
             share.tintColor = theme.tintColor
-            
             items.append(share)
             items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
             let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
             trash.tintColor = theme.tintColor
             items.append(trash)
+            toolBar.setItems(items, animated: false)
             
             galleryViewController.footerView = toolBar
-            toolBar.setItems(items, animated: false)
+
+            
+            let navigationBar = UINavigationBar()
+            let navItem = UINavigationItem(title: "")
+            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
+            navItem.rightBarButtonItem = doneItem
+            navigationBar.setItems([navItem], animated: false)
+            
+            galleryViewController.headerView = navigationBar
             
             present(galleryViewController, animated: false, completion: nil)
         }
@@ -565,7 +573,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             
             GalleryConfigurationItem.closeButtonMode(.none),
             GalleryConfigurationItem.deleteButtonMode(.none),
-            GalleryConfigurationItem.deleteLayout(.pinRight(100, 200)),
             
             GalleryConfigurationItem.thumbnailsButtonMode(.none),
             GalleryConfigurationItem.seeAllCloseButtonMode(.none),
@@ -575,7 +582,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             GalleryConfigurationItem.hideDecorationViewsOnLaunch(false),
             
             GalleryConfigurationItem.swipeToDismissMode(.vertical),
-            GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
+            GalleryConfigurationItem.toggleDecorationViewsBySingleTap(true),
             GalleryConfigurationItem.activityViewByLongPress(false),
             
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
@@ -609,7 +616,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             GalleryConfigurationItem.displacementTransitionStyle(.springBounce(0.7)),
             GalleryConfigurationItem.displacementTimingCurve(.linear),
             
-            GalleryConfigurationItem.statusBarHidden(true),
+            GalleryConfigurationItem.statusBarHidden(false),
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50)
         ]
