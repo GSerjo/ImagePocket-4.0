@@ -10,5 +10,5 @@ import Foundation
 
 public protocol GalleryItemsDelegate: class {
 
-    func removeGalleryItem(at index: Int)
+    func removeGalleryItem(at index: Int, onRemoved: @escaping () -> Void)
 }

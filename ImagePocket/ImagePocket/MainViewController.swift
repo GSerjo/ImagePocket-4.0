@@ -25,7 +25,13 @@ struct SegueSelector {
 }
 
 
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, GalleryItemsDataSource, UISearchBarDelegate, NotifiableOnCloseProtocol, TagsProtocol {
+class MainViewController: UICollectionViewController,
+                            UICollectionViewDelegateFlowLayout,
+                            GalleryItemsDataSource,
+                            GalleryItemsDelegate,
+                            UISearchBarDelegate,
+                            NotifiableOnCloseProtocol,
+TagsProtocol {
     
     private var _imageCache: ImageCache!
     private var _selectedTag = TagEntity.all
@@ -122,12 +128,15 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
-        let ids = Array(_selectedImages.keys)
+        removeAssests(localIdentifiers: Array(_selectedImages.keys))
+    }
+    
+    private func removeAssests(localIdentifiers: [String]) -> Void {
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.deleteAssets(self._imageCache[ids] as NSArray)
+            PHAssetChangeRequest.deleteAssets(self._imageCache[localIdentifiers] as NSArray)
         }) { (completed, _) in
             if completed {
-                self._imageCache.remove(localIdentifiers: ids)
+                self._imageCache.remove(localIdentifiers: localIdentifiers)
             }
             DispatchQueue.main.sync {
                 self.setReadMode()
@@ -205,9 +214,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         return cell
     }
-    
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         let marginsAndInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right + flowLayout.minimumInteritemSpacing * CGFloat(_cellsPerRow - 1)
@@ -258,31 +265,41 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                 setReadMode()
             }
             
-            let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, configuration: galleryConfiguration())
-            
-            let theme = Settings.instance.theme
-            let toolBar = UIToolbar()
-            var items = [UIBarButtonItem]()
-            toolBar.barTintColor = theme.barTintColor
-            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
-            share.tintColor = theme.tintColor
-            items.append(share)
-            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
-            trash.tintColor = theme.tintColor
-            items.append(trash)
-            toolBar.setItems(items, animated: false)
-            
-            galleryViewController.footerView = toolBar
+//            let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, itemsDelegate: self, configuration: galleryConfiguration())
+//
+//            let theme = Settings.instance.theme
+//            let toolBar = UIToolbar()
+//            var items = [UIBarButtonItem]()
+//            toolBar.barTintColor = theme.barTintColor
+//
+//
+//            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+//            share.tintColor = theme.tintColor
+////            items.append(share)
+//            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+//            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: #selector(galleryViewController.deleteItem))
+//            trash.tintColor = theme.tintColor
+//            items.append(trash)
+//            toolBar.setItems(items, animated: false)
+//
+//            galleryViewController.footerView = toolBar
 
+
+//            let navigationBar = UINavigationBar()
+//            let navItem = UINavigationItem(title: "")
+//            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
+//            navItem.rightBarButtonItem = doneItem
+//            navigationBar.setItems([navItem], animated: false)
+//
+//            galleryViewController.headerView = navigationBar
             
-            let navigationBar = UINavigationBar()
-            let navItem = UINavigationItem(title: "")
-            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
-            navItem.rightBarButtonItem = doneItem
-            navigationBar.setItems([navItem], animated: false)
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController")
             
-            galleryViewController.headerView = navigationBar
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "GalleryViewController")
+
             
             present(galleryViewController, animated: false, completion: nil)
         }
@@ -561,6 +578,30 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         }
     }
     
+    func removeGalleryItem(at index: Int, onRemoved: @escaping () -> Void) {
+        removeAssest(at: index, onRemoved: onRemoved)
+    }
+    
+    private func removeAssest(at index: Int, onRemoved: @escaping () -> Void) -> Void {
+        let ids = [_filteredImages[index].localIdentifier]
+        
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.deleteAssets(self._imageCache[ids] as NSArray)
+        }) { (completed, _) in
+            if completed {
+                self._imageCache.remove(localIdentifiers: ids)
+                self._filteredImages.remove(at: index)
+                DispatchQueue.main.sync {
+                    onRemoved()
+                }
+            }
+            DispatchQueue.main.sync {
+                self.setReadMode()
+                self.filterImagesAndReloadAsync(by: self._selectedTag)
+            }
+        }
+    }
+    
     //Tags
     func onSelectTag(tag: TagEntity) -> Void {
         filterImagesAndReloadAsync(by: tag)
@@ -608,7 +649,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             GalleryConfigurationItem.colorDismissDelay(0),
             
             GalleryConfigurationItem.itemFadeDuration(0.3),
-            GalleryConfigurationItem.decorationViewsFadeDuration(0.15),
+            GalleryConfigurationItem.decorationViewsFadeDuration(0.4),
             GalleryConfigurationItem.rotationDuration(0.15),
             
             GalleryConfigurationItem.displacementDuration(0.55),
@@ -616,7 +657,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             GalleryConfigurationItem.displacementTransitionStyle(.springBounce(0.7)),
             GalleryConfigurationItem.displacementTimingCurve(.linear),
             
-            GalleryConfigurationItem.statusBarHidden(false),
+            GalleryConfigurationItem.statusBarHidden(true),
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50)
         ]

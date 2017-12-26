@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImagePocket/MainViewController.swift"
-            timestampString = "535857975.803591"
+            filePath = "ImagePocket/ImageViewer/ItemBaseController.swift"
+            timestampString = "535958026.950161"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
-            landmarkName = "collectionView(_:layout:sizeForItemAt:)"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "scrollViewDidSingleTap()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,29 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImagePocket/MainViewController.swift"
-            timestampString = "535857975.803919"
+            filePath = "ImagePocket/ImageViewer/GalleryViewController.swift"
+            timestampString = "535962105.122574"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "viewWillTransition(to:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ImagePocket/MainViewController.swift"
-            timestampString = "535857975.804005"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "572"
-            endingLineNumber = "572"
-            landmarkName = "galleryConfiguration()"
+            startingLineNumber = "699"
+            endingLineNumber = "699"
+            landmarkName = "itemControllerDidSingleTap(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

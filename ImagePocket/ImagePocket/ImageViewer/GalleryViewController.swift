@@ -217,7 +217,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureCloseButton() {
 
         if let closeButton = closeButton {
-            closeButton.addTarget(self, action: #selector(GalleryViewController.closeInteractively), for: .touchUpInside)
+            closeButton.addTarget(self, action: #selector(closeInteractively), for: .touchUpInside)
             closeButton.alpha = 0
             self.view.addSubview(closeButton)
         }
@@ -226,7 +226,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureThumbnailsButton() {
 
         if let thumbnailsButton = thumbnailsButton {
-            thumbnailsButton.addTarget(self, action: #selector(GalleryViewController.showThumbnails), for: .touchUpInside)
+            thumbnailsButton.addTarget(self, action: #selector(showThumbnails), for: .touchUpInside)
             thumbnailsButton.alpha = 0
             self.view.addSubview(thumbnailsButton)
         }
@@ -235,7 +235,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureDeleteButton() {
 
         if let deleteButton = deleteButton {
-            deleteButton.addTarget(self, action: #selector(GalleryViewController.deleteItem), for: .touchUpInside)
+            deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
             deleteButton.alpha = 0
             self.view.addSubview(deleteButton)
         }
@@ -261,7 +261,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 //        configureCloseButton()
 //        configureThumbnailsButton()
 //        configureDeleteButton()
-//        configureScrubber()
+        configureScrubber()
 
         self.view.clipsToBounds = false
     }
@@ -324,7 +324,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 //        layoutButton(deleteButton, layout: deleteLayout)
         layoutHeaderView()
         layoutFooterView()
-//        layoutScrubber()
+        layoutScrubber()
     }
 
     private var defaultInsets: UIEdgeInsets {
@@ -410,16 +410,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         if #available(iOS 11.0, *) {           
             let guide = self.view.safeAreaLayoutGuide
+//            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
+            
             NSLayoutConstraint.activate([
-                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footer.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
                 footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                footer.heightAnchor.constraint(equalToConstant: 44)
+//                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
                 ])
-//            footer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//            footer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//            footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-//            footer.heightAnchor.constraint(equalToConstant: 44).isActive = true
         }
         
 //        switch footerLayout {
@@ -456,17 +454,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
 
-    @objc fileprivate func deleteItem() {
+    @objc public func deleteItem() {
 
         deleteButton?.isEnabled = false
         view.isUserInteractionEnabled = false
 
-        itemsDelegate?.removeGalleryItem(at: currentIndex)
-        removePage(atIndex: currentIndex) {
-
-            [weak self] in
-            self?.deleteButton?.isEnabled = true
-            self?.view.isUserInteractionEnabled = true
+        itemsDelegate?.removeGalleryItem(at: currentIndex){
+            self.removePage(atIndex: self.currentIndex) {
+                [weak self] in
+                self?.deleteButton?.isEnabled = true
+                self?.view.isUserInteractionEnabled = true
+            }
         }
     }
 

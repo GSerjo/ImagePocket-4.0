@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ko5-gf-a2P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ko5-gf-a2P">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -139,11 +140,11 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="faV-bt-4ia">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Pij-Op-KSz">
                         <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.18824771046638489" green="0.18825316429138184" blue="0.17192444205284119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.18822944164276123" green="0.18825146555900574" blue="0.18007361888885498" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="ajt-B9-PY7"/>
+                        <color key="barTintColor" red="0.18822944159999999" green="0.1882514656" blue="0.18007361890000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </toolbar>
                     <connections>
                         <segue destination="3Va-f4-vbE" kind="relationship" relationship="rootViewController" id="Kn2-qo-I5w"/>
@@ -157,10 +158,6 @@
         <scene sceneID="15B-05-BM2">
             <objects>
                 <viewController id="bMF-y3-Lfn" customClass="TagSelectorViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LTe-2S-ft5"/>
-                        <viewControllerLayoutGuide type="bottom" id="XOK-Zr-XuL"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="HgP-81-ZZ3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -235,13 +232,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="BpH-5o-zdc" firstAttribute="trailing" secondItem="WwT-Fy-ECA" secondAttribute="trailing" id="9cI-Zw-aAf"/>
-                            <constraint firstAttribute="trailing" secondItem="BpH-5o-zdc" secondAttribute="trailing" id="IiF-f6-lwf"/>
-                            <constraint firstItem="WwT-Fy-ECA" firstAttribute="bottom" secondItem="XOK-Zr-XuL" secondAttribute="top" id="PHS-V1-enj"/>
-                            <constraint firstItem="BpH-5o-zdc" firstAttribute="leading" secondItem="HgP-81-ZZ3" secondAttribute="leading" id="WO7-Xk-khT"/>
+                            <constraint firstItem="w8h-Ox-mZg" firstAttribute="trailing" secondItem="BpH-5o-zdc" secondAttribute="trailing" id="IiF-f6-lwf"/>
+                            <constraint firstItem="WwT-Fy-ECA" firstAttribute="bottom" secondItem="w8h-Ox-mZg" secondAttribute="bottom" id="PHS-V1-enj"/>
+                            <constraint firstItem="BpH-5o-zdc" firstAttribute="leading" secondItem="w8h-Ox-mZg" secondAttribute="leading" id="WO7-Xk-khT"/>
                             <constraint firstItem="BpH-5o-zdc" firstAttribute="leading" secondItem="WwT-Fy-ECA" secondAttribute="leading" id="dCJ-0c-BST"/>
-                            <constraint firstItem="BpH-5o-zdc" firstAttribute="top" secondItem="LTe-2S-ft5" secondAttribute="bottom" id="sil-8z-DqY"/>
+                            <constraint firstItem="BpH-5o-zdc" firstAttribute="top" secondItem="w8h-Ox-mZg" secondAttribute="top" id="sil-8z-DqY"/>
                             <constraint firstItem="WwT-Fy-ECA" firstAttribute="top" secondItem="BpH-5o-zdc" secondAttribute="bottom" constant="8" symbolic="YES" id="xRE-6p-RRj"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="w8h-Ox-mZg"/>
                     </view>
                     <navigationItem key="navigationItem" id="IYm-mR-UPD">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="sIz-vn-q8Z">
@@ -288,10 +286,6 @@
         <scene sceneID="m2n-Jg-MVg">
             <objects>
                 <viewController id="7W0-ml-0EN" customClass="TagsViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="71u-e2-bgQ"/>
-                        <viewControllerLayoutGuide type="bottom" id="EkD-jt-gyS"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pGf-qV-Sgu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -336,11 +330,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="frw-Ix-cBs" firstAttribute="leading" secondItem="pGf-qV-Sgu" secondAttribute="leading" id="Biu-hP-uoz"/>
-                            <constraint firstAttribute="trailing" secondItem="frw-Ix-cBs" secondAttribute="trailing" id="YR6-dN-imP"/>
-                            <constraint firstItem="frw-Ix-cBs" firstAttribute="top" secondItem="71u-e2-bgQ" secondAttribute="bottom" id="hEE-nz-kyP"/>
-                            <constraint firstItem="frw-Ix-cBs" firstAttribute="bottom" secondItem="EkD-jt-gyS" secondAttribute="top" id="rBz-JJ-tlX"/>
+                            <constraint firstItem="frw-Ix-cBs" firstAttribute="leading" secondItem="QGX-ZD-kPM" secondAttribute="leading" id="Biu-hP-uoz"/>
+                            <constraint firstItem="QGX-ZD-kPM" firstAttribute="trailing" secondItem="frw-Ix-cBs" secondAttribute="trailing" id="YR6-dN-imP"/>
+                            <constraint firstItem="frw-Ix-cBs" firstAttribute="top" secondItem="QGX-ZD-kPM" secondAttribute="top" id="hEE-nz-kyP"/>
+                            <constraint firstItem="frw-Ix-cBs" firstAttribute="bottom" secondItem="QGX-ZD-kPM" secondAttribute="bottom" id="rBz-JJ-tlX"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="QGX-ZD-kPM"/>
                     </view>
                     <navigationItem key="navigationItem" title="Tags" id="el2-CK-R8y">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="XC2-K1-MWu">
@@ -364,6 +359,21 @@
             </objects>
             <point key="canvasLocation" x="1912.8" y="1068.215892053973"/>
         </scene>
+        <!--Test View Controller-->
+        <scene sceneID="IfH-h3-OvJ">
+            <objects>
+                <viewController storyboardIdentifier="TestViewController" id="Sy9-gA-VLx" customClass="TestViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MBZ-1k-85n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.9898452163" green="0.48514914510000001" blue="0.25803732870000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="Fda-Hy-aEz"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eO7-kq-QH9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2682" y="1067"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="cet-dP-JWN">
             <objects>
@@ -381,6 +391,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="937-Ou-GBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="932" y="1069"/>
+        </scene>
+        <!--Gallery View Controller-->
+        <scene sceneID="XUn-Nd-SOE">
+            <objects>
+                <pageViewController storyboardIdentifier="GalleryViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="gVs-e6-mgL" customClass="GalleryViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="wGY-y4-fZ6"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qfh-BL-izw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1296.8" y="1727.5862068965519"/>
         </scene>
     </scenes>
     <resources>
