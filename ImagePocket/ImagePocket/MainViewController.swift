@@ -265,24 +265,24 @@ TagsProtocol {
                 setReadMode()
             }
             
-//            let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, itemsDelegate: self, configuration: galleryConfiguration())
-//
-//            let theme = Settings.instance.theme
-//            let toolBar = UIToolbar()
-//            var items = [UIBarButtonItem]()
-//            toolBar.barTintColor = theme.barTintColor
-//
-//
-//            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
-//            share.tintColor = theme.tintColor
-////            items.append(share)
-//            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-//            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: #selector(galleryViewController.deleteItem))
-//            trash.tintColor = theme.tintColor
-//            items.append(trash)
-//            toolBar.setItems(items, animated: false)
-//
-//            galleryViewController.footerView = toolBar
+            let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, itemsDelegate: self, configuration: galleryConfiguration())
+
+            let theme = Settings.instance.theme
+            let toolBar = UIToolbar()
+            var items = [UIBarButtonItem]()
+            toolBar.barTintColor = theme.barTintColor
+
+
+            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+            share.tintColor = theme.tintColor
+            items.append(share)
+            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: #selector(galleryViewController.deleteItem))
+            trash.tintColor = theme.tintColor
+            items.append(trash)
+            toolBar.setItems(items, animated: false)
+
+            galleryViewController.footerView = toolBar
 
 
 //            let navigationBar = UINavigationBar()
@@ -297,8 +297,8 @@ TagsProtocol {
 //            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController")
             
             
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "GalleryViewController")
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "GalleryViewController")
 
             
             present(galleryViewController, animated: false, completion: nil)

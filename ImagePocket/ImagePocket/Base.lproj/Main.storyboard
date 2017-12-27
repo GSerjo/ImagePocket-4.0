@@ -392,16 +392,6 @@
             </objects>
             <point key="canvasLocation" x="932" y="1069"/>
         </scene>
-        <!--Gallery View Controller-->
-        <scene sceneID="XUn-Nd-SOE">
-            <objects>
-                <pageViewController storyboardIdentifier="GalleryViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="gVs-e6-mgL" customClass="GalleryViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="wGY-y4-fZ6"/>
-                </pageViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qfh-BL-izw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1296.8" y="1727.5862068965519"/>
-        </scene>
     </scenes>
     <resources>
         <image name="menu" width="42" height="42"/>
