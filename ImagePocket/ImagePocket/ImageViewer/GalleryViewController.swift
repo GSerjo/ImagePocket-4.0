@@ -11,12 +11,37 @@ import AVFoundation
 
 open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
+    private var _toolBarHeightLandscape: NSLayoutConstraint?
+    private var _toolBarHeightPortrait: NSLayoutConstraint?
+    
     // UI
     fileprivate let overlayView = BlurView()
     /// A custom view on the top of the gallery with layout using default (or custom) pinning settings for header.
     open var headerView: UIView?
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settings for footer.
-    open var footerView: UIView?
+    open var footerView: UIView? {
+        didSet {
+            _toolBarHeightLandscape = NSLayoutConstraint(
+                item: footerView!,
+                attribute: .height,
+                relatedBy: .equal,
+                toItem: nil,
+                attribute: .notAnAttribute,
+                multiplier: 1,
+                constant: 32)
+            
+            let heightPortrait: CGFloat = UIScreen.hasNotch ? 49 : 44
+            
+            _toolBarHeightPortrait = NSLayoutConstraint(
+                item: footerView!,
+                attribute: .height,
+                relatedBy: .equal,
+                toItem: nil,
+                attribute: .notAnAttribute,
+                multiplier: 1,
+                constant: heightPortrait)
+        }
+    }
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
     fileprivate var seeAllCloseButton: UIButton? = nil
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
@@ -354,6 +379,38 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             button.frame.origin.y = defaultInsets.top + marginTop
         }
     }
+    
+    override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        guard let footer = footerView else { return }
+        let guide = self.view.safeAreaLayoutGuide
+
+        if UIDevice.current.orientation.isLandscape {
+            NSLayoutConstraint.deactivate([_toolBarHeightPortrait!])
+            
+            NSLayoutConstraint.activate([
+                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                _toolBarHeightLandscape!
+                ])
+        }
+        else {
+            NSLayoutConstraint.deactivate([_toolBarHeightLandscape!])
+            
+            NSLayoutConstraint.activate([
+                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                _toolBarHeightPortrait!
+                ])
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
 
     fileprivate func layoutHeaderView() {
 
@@ -369,8 +426,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 header.topAnchor.constraint(equalTo: view.topAnchor)
                 ])
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
 //            header.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
             header.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 //            header.heightAnchor.constraint(equalToConstant: 88).isActive = true
@@ -410,13 +465,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         if #available(iOS 11.0, *) {           
             let guide = self.view.safeAreaLayoutGuide
-//            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
+            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
             
             NSLayoutConstraint.activate([
-                footer.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                footer.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-//                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
+                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
                 ])
         }
         
@@ -457,19 +512,40 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @objc public func deleteItem() {
 
         deleteButton?.isEnabled = false
-        view.isUserInteractionEnabled = false
-
-        itemsDelegate?.removeGalleryItem(at: currentIndex){
-            self.removePage(atIndex: self.currentIndex) {
-                [weak self] in
-                self?.deleteButton?.isEnabled = true
-                self?.view.isUserInteractionEnabled = true
+        itemsDelegate?.removeGalleryItem(at: currentIndex, onRemoved: removePage)
+    }
+    
+    @objc public func shareItem() -> Void {
+        if let itemController = self.viewControllers?.first as? ItemController {
+            var sharedItem: Any?
+            switch itemController {
+                case let imageController as ImageViewController:
+                    sharedItem = imageController.itemView.image
+                case let videoController as VideoViewController:
+                    let item = videoController.itemView
+                    sharedItem = ((item.player?.currentItem?.asset) as? AVURLAsset)?.url
+                default:
+                    return
             }
+            if let sharedItem = sharedItem {
+                let activityVC = UIActivityViewController(activityItems: [sharedItem], applicationActivities: nil)
+                let shareButton =  (footerView as! UIToolbar).items![0]
+                activityVC.popoverPresentationController?.barButtonItem = shareButton
+                self.present(activityVC, animated: true)
+            }
+        }
+    }
+    
+    private func removePage() -> Void {
+        view.isUserInteractionEnabled = false
+        self.removePage(atIndex: self.currentIndex) {
+            [weak self] in
+            self?.deleteButton?.isEnabled = true
+            self?.view.isUserInteractionEnabled = true
         }
     }
 
     //ThumbnailsimageBlock
-
     @objc fileprivate func showThumbnails() {
 
         let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
@@ -695,7 +771,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     }
 
     open func itemControllerDidSingleTap(_ controller: ItemController) {
-
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }

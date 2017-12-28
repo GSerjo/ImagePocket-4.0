@@ -48,7 +48,7 @@ TagsProtocol {
     private var _thumbnailSize: CGSize!
     private let _sharedImageLoader = SharedImageLoader()
     private var _cellsPerRow = 3
-    private let _minimumInteritemSpacing: CGFloat = 5
+    private let _minimumInteritemSpacing: CGFloat = 3
     private var _lastAccessedCell: IndexPath?
     
     @IBOutlet var _btSelect: UIBarButtonItem!
@@ -65,7 +65,7 @@ TagsProtocol {
         return _selectedImages.isEmpty == false
     }
     
-    private lazy var _requestPreviewImageOptions: PHImageRequestOptions = {
+    private static var _requestPreviewImageOptions: PHImageRequestOptions = {
         let result = PHImageRequestOptions()
         result.deliveryMode = .highQualityFormat
         result.isNetworkAccessAllowed = true
@@ -137,11 +137,12 @@ TagsProtocol {
         }) { (completed, _) in
             if completed {
                 self._imageCache.remove(localIdentifiers: localIdentifiers)
+                DispatchQueue.main.sync {
+                    self.setReadMode()
+                    self.reloadData()
+                }
             }
-            DispatchQueue.main.sync {
-                self.setReadMode()
-                self.filterImagesAndReloadAsync(by: self._selectedTag)
-            }
+
         }
     }
     
@@ -206,7 +207,7 @@ TagsProtocol {
             cell.markAsVideo()
         }
         
-        _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: _requestPreviewImageOptions, resultHandler: { image, _ in
+        _imageManager.requestImage(for: asset, targetSize: _thumbnailSize, contentMode: _thumbnailContentMode, options: MainViewController._requestPreviewImageOptions, resultHandler: { image, _ in
             if let image = image, cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image
             }
@@ -224,14 +225,15 @@ TagsProtocol {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        collectionView?.collectionViewLayout.invalidateLayout()
         
-        if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
-            _cellsPerRow = 3
-        }
-        else {
+        if UIDevice.current.orientation.isLandscape {
             _cellsPerRow = 6
         }
+        else {
+            _cellsPerRow = 3
+        }
+        
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -273,7 +275,7 @@ TagsProtocol {
             toolBar.barTintColor = theme.barTintColor
 
 
-            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+            let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: #selector(galleryViewController.shareItem))
             share.tintColor = theme.tintColor
             items.append(share)
             items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
@@ -283,48 +285,8 @@ TagsProtocol {
             toolBar.setItems(items, animated: false)
 
             galleryViewController.footerView = toolBar
-
-
-//            let navigationBar = UINavigationBar()
-//            let navItem = UINavigationItem(title: "")
-//            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
-//            navItem.rightBarButtonItem = doneItem
-//            navigationBar.setItems([navItem], animated: false)
-//
-//            galleryViewController.headerView = navigationBar
-            
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController")
-            
-            
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let galleryViewController = storyboard.instantiateViewController(withIdentifier: "GalleryViewController")
-
-            
             present(galleryViewController, animated: false, completion: nil)
         }
-    }
-    
-    
-    public func loadUnderlyingImageAndNotify(_asset: PHAsset) -> Void {
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
-        options.isNetworkAccessAllowed = true
-        options.isSynchronous = false
-        
-        PHImageManager.default().requestImage(for: _asset,
-                                              targetSize: CGSize(width: _asset.pixelWidth, height: _asset.pixelHeight),
-                                              contentMode: _thumbnailContentMode,
-                                              options: options,
-                                              resultHandler: { image, info in
-                                                if let image = image {
-                                                    print(image)
-                                                }
-                                                else {
-                                                    print(info!)
-                                                }
-                                                
-        })
     }
     
     // Switch Mode
@@ -445,12 +407,15 @@ TagsProtocol {
             UIView.transition(with: self._collectionView,
                               duration: 0.50,
                               options: .transitionCrossDissolve,
-                              animations: { self.reloadData()})
+                              animations: { self._collectionView.reloadData()})
         }
     }
     
-    private func reloadData() {
-        _collectionView.reloadData()
+    private func reloadData(duration: Double = 0.50) {
+        UIView.transition(with: self._collectionView,
+                          duration: duration,
+                          options: .transitionCrossDissolve,
+                          animations: { self._collectionView.reloadData()})
     }
     
     private func startApp(){
@@ -541,12 +506,8 @@ TagsProtocol {
         _pendingSearchRequest?.cancel()
         let searchRequest = DispatchWorkItem{ [unowned self] in
             self._filteredImages = self._imageCache.search(text: self._searchText)
-            
             DispatchQueue.main.sync {
-                UIView.transition(with: self._collectionView,
-                                  duration: 0.50,
-                                  options: .transitionCrossDissolve,
-                                  animations: { self.reloadData()})
+                self.reloadData()
             }
         }
         _pendingSearchRequest = searchRequest
@@ -594,10 +555,6 @@ TagsProtocol {
                 DispatchQueue.main.sync {
                     onRemoved()
                 }
-            }
-            DispatchQueue.main.sync {
-                self.setReadMode()
-                self.filterImagesAndReloadAsync(by: self._selectedTag)
             }
         }
     }

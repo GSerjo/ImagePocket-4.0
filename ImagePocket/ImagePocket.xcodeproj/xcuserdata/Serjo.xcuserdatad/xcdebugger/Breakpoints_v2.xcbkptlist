@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImagePocket/ImageViewer/ItemBaseController.swift"
-            timestampString = "535958026.950161"
+            timestampString = "536129682.16613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "269"
             endingLineNumber = "269"
             landmarkName = "scrollViewDidSingleTap()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ImagePocket/ImageViewer/GalleryViewController.swift"
-            timestampString = "536110977.907195"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "699"
-            endingLineNumber = "699"
-            landmarkName = "itemControllerDidSingleTap(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
