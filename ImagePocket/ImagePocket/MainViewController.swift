@@ -50,6 +50,7 @@ TagsProtocol {
     private var _cellsPerRow = 3
     private let _minimumInteritemSpacing: CGFloat = 3
     private var _lastAccessedCell: IndexPath?
+    private var _isInavalidateView = false
     
     @IBOutlet var _btSelect: UIBarButtonItem!
     @IBOutlet var _btSearch: UIBarButtonItem!
@@ -270,7 +271,8 @@ TagsProtocol {
             }
             
             let galleryViewController = GalleryViewController(startIndex: indexPath.item, itemsDataSource: self, itemsDelegate: self, configuration: galleryConfiguration())
-
+            galleryViewController.swipedToDismissCompletion = onDismissGalleryViewController
+            
             let theme = Settings.instance.theme
             let toolBar = UIToolbar()
             var items = [UIBarButtonItem]()
@@ -288,6 +290,13 @@ TagsProtocol {
 
             galleryViewController.footerView = toolBar
             present(galleryViewController, animated: false, completion: nil)
+        }
+    }
+    
+    private func onDismissGalleryViewController() -> Void {
+        if _isInavalidateView {
+           reloadData()
+           _isInavalidateView = false
         }
     }
     
@@ -552,6 +561,7 @@ TagsProtocol {
             PHAssetChangeRequest.deleteAssets(self._imageCache[ids] as NSArray)
         }) { (completed, _) in
             if completed {
+                self._isInavalidateView = true
                 self._imageCache.remove(localIdentifiers: ids)
                 self._filteredImages.remove(at: index)
                 DispatchQueue.main.sync {
