@@ -128,15 +128,17 @@ TagsProtocol {
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
-        removeAssests(localIdentifiers: Array(_selectedImages.keys))
+        let indexes = _selectedImages.values.map{$0.index.item}
+        removeAssests(localIdentifiers: Array(_selectedImages.keys), indexes: indexes)
     }
     
-    private func removeAssests(localIdentifiers: [String]) -> Void {
+    private func removeAssests(localIdentifiers: [String], indexes: [Int]) -> Void {
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.deleteAssets(self._imageCache[localIdentifiers] as NSArray)
         }) { (completed, _) in
             if completed {
                 self._imageCache.remove(localIdentifiers: localIdentifiers)
+                indexes.forEach{self._filteredImages.remove(at: $0)}
                 DispatchQueue.main.sync {
                     self.setReadMode()
                     self.reloadData()
