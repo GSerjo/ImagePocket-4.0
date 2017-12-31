@@ -19,6 +19,7 @@ open class VideoScrubber: UIControl {
     let timeLabel = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 20)))
     var duration: TimeInterval?
     fileprivate var periodicObserver: AnyObject?
+    fileprivate var periodicObserver2: AnyObject?
     fileprivate var stoppedSlidingTimeStamp = Date()
 
     weak var player: AVPlayer? {
@@ -39,6 +40,12 @@ open class VideoScrubber: UIControl {
                     player.removeTimeObserver(periodicObserver)
                     self.periodicObserver = nil
                 }
+                
+                if let periodicObserver2 = self.periodicObserver2 {
+                    
+                    player.removeTimeObserver(periodicObserver2)
+                    self.periodicObserver2 = nil
+                }
             }
         }
 
@@ -54,6 +61,10 @@ open class VideoScrubber: UIControl {
                 NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
 
                 ///TIMER
+                periodicObserver2 = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 10), queue: nil, using: { [weak self] time in
+                    self?.updateScrubber()
+                }) as AnyObject?
+                
                 periodicObserver = player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil, using: { [weak self] time in
                     self?.update()
                 }) as AnyObject?
@@ -86,6 +97,12 @@ open class VideoScrubber: UIControl {
             player?.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
+        
+        if let periodicObserver2 = self.periodicObserver2 {
+            
+            player?.removeTimeObserver(periodicObserver2)
+            self.periodicObserver2 = nil
+        }
     }
 
     @objc func didEndPlaying() {
@@ -113,7 +130,7 @@ open class VideoScrubber: UIControl {
         pauseButton.addTarget(self, action: #selector(pause), for: UIControlEvents.touchUpInside)
         replayButton.addTarget(self, action: #selector(replay), for: UIControlEvents.touchUpInside)
         scrubber.addTarget(self, action: #selector(updateCurrentTime), for: UIControlEvents.valueChanged)
-        scrubber.addTarget(self, action: #selector(seekToTime), for: [UIControlEvents.touchUpInside, UIControlEvents.touchUpOutside])
+        scrubber.addTarget(self, action: #selector(seekToTime), for: [UIControlEvents.valueChanged])
 
         self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
 
@@ -176,6 +193,7 @@ open class VideoScrubber: UIControl {
         if let player = self.player, let currentItem =  player.currentItem {
 
             let time = currentItem.duration.seconds * Double(progress)
+            print(time)
             player.seek(to: CMTime(seconds: time, preferredTimescale: 1))
         }
     }
@@ -210,7 +228,7 @@ open class VideoScrubber: UIControl {
 
         guard scrubber.isSliding == false else { return }
 
-        let timeElapsed = Date().timeIntervalSince( stoppedSlidingTimeStamp)
+        let timeElapsed = Date().timeIntervalSince(stoppedSlidingTimeStamp)
         guard timeElapsed > 1 else {
             return
         }
@@ -218,14 +236,13 @@ open class VideoScrubber: UIControl {
         if let player = self.player, let duration = self.duration {
 
             let progress = player.currentTime().seconds / duration
-
-            UIView.animate(withDuration: 0.9, animations: { [weak self] in
-
-                if let strongSelf = self {
-
-                    strongSelf.scrubber.value = Float(progress) * strongSelf.scrubber.maximumValue
-                }
-            })
+            scrubber.value = Float(progress) * scrubber.maximumValue
+//            UIView.animate(withDuration: 0.9, animations: { [weak self] in
+//
+//                if let strongSelf = self {
+//                    strongSelf.scrubber.value = Float(progress) * strongSelf.scrubber.maximumValue
+//                }
+//            })
         }
     }
 

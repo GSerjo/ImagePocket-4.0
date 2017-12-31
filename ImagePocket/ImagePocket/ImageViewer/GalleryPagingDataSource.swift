@@ -103,10 +103,10 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
 
             return vc
         case .video1(let fetchImageBlock, let fetchBlock):
-            let videoController = VideoViewController2(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, fetchBlock: fetchBlock, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
+            let videoController = VideoViewController(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, fetchBlock: fetchBlock, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
             
-//            videoController.delegate = itemControllerDelegate
-//            videoController.displacedViewsDataSource = displacedViewsDataSource
+            videoController.controllerDelegate = itemControllerDelegate
+            videoController.displacedViewsDataSource = displacedViewsDataSource
             
             return videoController
         }
