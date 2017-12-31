@@ -21,7 +21,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
     //DELEGATE / DATASOURCE
-    weak public var delegate:                 ItemControllerDelegate?
+    weak public var controllerDelegate:                 ItemControllerDelegate?
     weak public var displacedViewsDataSource: GalleryDisplacedViewsDataSource?
 
     //STATE
@@ -220,19 +220,19 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.delegate?.itemControllerWillAppear(self)
+        self.controllerDelegate?.itemControllerWillAppear(self)
     }
 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.delegate?.itemControllerDidAppear(self)
+        self.controllerDelegate?.itemControllerDidAppear(self)
     }
 
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        self.delegate?.itemControllerWillDisappear(self)
+        self.controllerDelegate?.itemControllerWillDisappear(self)
     }
 
     override open func viewDidLayoutSubviews() {
@@ -266,12 +266,12 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     @objc func scrollViewDidSingleTap() {
 
-        self.delegate?.itemControllerDidSingleTap(self)
+        self.controllerDelegate?.itemControllerDidSingleTap(self)
     }
 
     @objc func scrollViewDidLongPress() {
 
-        self.delegate?.itemControllerDidLongPress(self, in: itemView)
+        self.controllerDelegate?.itemControllerDidLongPress(self, in: itemView)
     }
 
     @objc func scrollViewDidDoubleTap(_ recognizer: UITapGestureRecognizer) {
@@ -358,7 +358,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
             self?.swipingToDismiss = nil
-            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
+            self?.controllerDelegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
         }
 
         switch (swipeOrientation, index) {
@@ -625,7 +625,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
         }
 
-        if let delegate = self.delegate {
+        if let delegate = self.controllerDelegate {
             delegate.itemController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
         }
     }

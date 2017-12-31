@@ -80,7 +80,7 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
         case .image(let fetchImageBlock):
 
             let imageController = ImageViewController(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
-            imageController.delegate = itemControllerDelegate
+            imageController.controllerDelegate = itemControllerDelegate
             imageController.displacedViewsDataSource = displacedViewsDataSource
 
             return imageController
@@ -98,15 +98,15 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
 
             guard let itemController = itemViewControllerBlock(itemIndex, itemsDataSource.itemCount(), fetchImageBlock, configuration, isInitial) as? ItemController, let vc = itemController as? UIViewController else { return UIViewController() }
 
-            itemController.delegate = itemControllerDelegate
+            itemController.controllerDelegate = itemControllerDelegate
             itemController.displacedViewsDataSource = displacedViewsDataSource
 
             return vc
         case .video1(let fetchImageBlock, let fetchBlock):
-            let videoController = VideoViewController(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, fetchBlock: fetchBlock, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
+            let videoController = VideoViewController2(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, fetchBlock: fetchBlock, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
             
-            videoController.delegate = itemControllerDelegate
-            videoController.displacedViewsDataSource = displacedViewsDataSource
+//            videoController.delegate = itemControllerDelegate
+//            videoController.displacedViewsDataSource = displacedViewsDataSource
             
             return videoController
         }

@@ -20,6 +20,7 @@
 		B26714511FD30FCB00AE0A16 /* AppTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26714501FD30FCB00AE0A16 /* AppTitle.swift */; };
 		B26CEE961FCB4736008DE0E2 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */; };
 		B277463C1FC742EE003C6D28 /* AppStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B277463B1FC742EE003C6D28 /* AppStatus.swift */; };
+		B27A55041FF8A73A00EA4B8E /* VideoViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27A55031FF8A73A00EA4B8E /* VideoViewController2.swift */; };
 		B27D65DD1DBC17D3001E579A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D65DC1DBC17D3001E579A /* AppDelegate.swift */; };
 		B27D65E21DBC17D3001E579A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E01DBC17D3001E579A /* Main.storyboard */; };
 		B27D65E41DBC17D3001E579A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B27D65E31DBC17D3001E579A /* Assets.xcassets */; };
@@ -215,6 +216,7 @@
 		B26714501FD30FCB00AE0A16 /* AppTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitle.swift; sourceTree = "<group>"; };
 		B26CEE8E1FCB4736008DE0E2 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		B277463B1FC742EE003C6D28 /* AppStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatus.swift; sourceTree = "<group>"; };
+		B27A55031FF8A73A00EA4B8E /* VideoViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController2.swift; sourceTree = "<group>"; };
 		B27D65D91DBC17D3001E579A /* ImagePocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27D65DC1DBC17D3001E579A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B27D65E11DBC17D3001E579A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 				B2D756001FD7A7600065405B /* VideoScrubber.swift */,
 				B2D756011FD7A7600065405B /* VideoView.swift */,
 				B2D756021FD7A7600065405B /* VideoViewController.swift */,
+				B27A55031FF8A73A00EA4B8E /* VideoViewController2.swift */,
 			);
 			path = ImageViewer;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				B2DDD4C51DCD7E9B00749A82 /* MutableCollectionExtensions.swift in Sources */,
 				B2D661FE1F5DC43C00AA16AB /* NotifiableOnCloseProtocol.swift in Sources */,
 				B2D7561E1FD7A7600065405B /* GalleryItemsDataSource.swift in Sources */,
+				B27A55041FF8A73A00EA4B8E /* VideoViewController2.swift in Sources */,
 				B2D756211FD7A7600065405B /* GallerySwipeToDismissTransition.swift in Sources */,
 				B2BD76A91FA6BE9800024DF9 /* Locking.swift in Sources */,
 				B2D756171FD7A7600065405B /* UIScreen.swift in Sources */,
