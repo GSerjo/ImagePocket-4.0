@@ -274,10 +274,28 @@ TagsProtocol {
             galleryViewController.swipedToDismissCompletion = onDismissGalleryViewController
             
             let theme = Settings.instance.theme
+            
+            let navigationBarHeight = 44 + UIApplication.shared.statusBarFrame.size.height
+            let frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: navigationBarHeight);
+            
+//            let frame = CGRect(x: 50, y: 50, width: 50, height: 50)
+            let blueSquare = UIView(frame: frame)
+            blueSquare.backgroundColor = UIColor.blue
+            
+            
+//            let navigationBar = UINavigationBar(frame: frame)
+//            let navItem = UINavigationItem(title: "")
+//            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
+//            navItem.rightBarButtonItem = doneItem
+//            navigationBar.setItems([navItem], animated: false)
+           
+//            galleryViewController.headerView = navigationBar
+            galleryViewController.headerView = blueSquare
+
+            
             let toolBar = UIToolbar()
             var items = [UIBarButtonItem]()
             toolBar.barTintColor = theme.barTintColor
-
 
             let share = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: #selector(galleryViewController.shareItem))
             share.tintColor = theme.tintColor
@@ -289,6 +307,7 @@ TagsProtocol {
             toolBar.setItems(items, animated: false)
 
             galleryViewController.footerView = toolBar
+            
             present(galleryViewController, animated: false, completion: nil)
         }
     }

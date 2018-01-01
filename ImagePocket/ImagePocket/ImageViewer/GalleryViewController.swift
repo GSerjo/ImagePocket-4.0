@@ -226,6 +226,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureHeaderView() {
 
         if let header = headerView {
+            
+            let tagButton = UIButton(type: .system)
+            let xPostion:CGFloat = 50
+            let yPostion:CGFloat = 100
+            let buttonWidth:CGFloat = 150
+            let buttonHeight:CGFloat = 45
+            tagButton.frame = CGRect(x:xPostion, y:yPostion, width:buttonWidth, height:buttonHeight)
+            tagButton.setTitle("Tag", for: .normal)
+            
+            header.addSubview(tagButton)
             header.alpha = 0
             self.view.addSubview(header)
         }
@@ -274,7 +284,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-
+       
         if #available(iOS 11.0, *) {
             if (statusBarHidden || UIScreen.hasNotch) {
                 additionalSafeAreaInsets = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
@@ -424,10 +434,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             NSLayoutConstraint.activate([
                 header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                header.topAnchor.constraint(equalTo: view.topAnchor)
+                header.topAnchor.constraint(equalTo: view.topAnchor),
+                header.heightAnchor.constraint(equalToConstant: 88)
                 ])
 //            header.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
-            header.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+//            header.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 //            header.heightAnchor.constraint(equalToConstant: 88).isActive = true
         }
 //        switch headerLayout {

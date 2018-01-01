@@ -359,21 +359,6 @@
             </objects>
             <point key="canvasLocation" x="1912.8" y="1068.215892053973"/>
         </scene>
-        <!--Test View Controller-->
-        <scene sceneID="IfH-h3-OvJ">
-            <objects>
-                <viewController storyboardIdentifier="TestViewController" id="Sy9-gA-VLx" customClass="TestViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="MBZ-1k-85n">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.9898452163" green="0.48514914510000001" blue="0.25803732870000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="Fda-Hy-aEz"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eO7-kq-QH9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2682" y="1067"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="cet-dP-JWN">
             <objects>
