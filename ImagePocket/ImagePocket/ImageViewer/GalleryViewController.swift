@@ -13,7 +13,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     private var _toolBarHeightLandscape: NSLayoutConstraint!
     private var _toolBarHeightPortrait: NSLayoutConstraint!
-    private var _navigationBarPortraitConstraint: [NSLayoutConstraint] = []
     private var _navigationBarHeightLandscape: NSLayoutConstraint!
     private var _navigationBarHeightPortrait: NSLayoutConstraint!
     
@@ -39,7 +38,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 let leadingAnchor = navigationBar.leadingAnchor.constraint(equalTo: header.leadingAnchor)
                 let trailingAnchor = navigationBar.trailingAnchor.constraint(equalTo: header.trailingAnchor)
                 let bottomAnchor = navigationBar.bottomAnchor.constraint(equalTo: header.bottomAnchor)
-                _navigationBarPortraitConstraint = [leadingAnchor, trailingAnchor, bottomAnchor]
                 
                 _navigationBarHeightLandscape = NSLayoutConstraint(
                     item: headerView!,
@@ -59,7 +57,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     multiplier: 1,
                     constant: 88)
                 
-                NSLayoutConstraint.activate(_navigationBarPortraitConstraint)
+                NSLayoutConstraint.activate([leadingAnchor, trailingAnchor, bottomAnchor])
             }
         }
     }
@@ -291,33 +289,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    fileprivate func configureCloseButton() {
-
-        if let closeButton = closeButton {
-            closeButton.addTarget(self, action: #selector(closeInteractively), for: .touchUpInside)
-            closeButton.alpha = 0
-            self.view.addSubview(closeButton)
-        }
-    }
-
-    fileprivate func configureThumbnailsButton() {
-
-        if let thumbnailsButton = thumbnailsButton {
-            thumbnailsButton.addTarget(self, action: #selector(showThumbnails), for: .touchUpInside)
-            thumbnailsButton.alpha = 0
-            self.view.addSubview(thumbnailsButton)
-        }
-    }
-
-    fileprivate func configureDeleteButton() {
-
-        if let deleteButton = deleteButton {
-            deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
-            deleteButton.alpha = 0
-            self.view.addSubview(deleteButton)
-        }
-    }
-
     fileprivate func configureScrubber() {
 
         scrubber.alpha = 0
@@ -335,9 +306,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         configureHeaderView()
         configureFooterView()
-//        configureCloseButton()
-//        configureThumbnailsButton()
-//        configureDeleteButton()
         configureScrubber()
 
         self.view.clipsToBounds = false
@@ -396,12 +364,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
 
-//        layoutButton(closeButton, layout: closeLayout)
-//        layoutButton(thumbnailsButton, layout: thumbnailsLayout)
-//        layoutButton(deleteButton, layout: deleteLayout)
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
 
     private var defaultInsets: UIEdgeInsets {
@@ -411,31 +380,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             return UIEdgeInsets(top: statusBarHidden ? 0.0 : 20.0, left: 0.0, bottom: 0.0, right: 0.0)
         }
     }
-
-    fileprivate func layoutButton(_ button: UIButton?, layout: ButtonLayout) {
-
-        guard let button = button else { return }
-
-        switch layout {
-
-        case .pinRight(let marginTop, let marginRight):
-
-            button.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-            button.frame.origin.x = self.view.bounds.size.width - marginRight - button.bounds.size.width
-            button.frame.origin.y = defaultInsets.top + marginTop
-
-        case .pinLeft(let marginTop, let marginLeft):
-
-            button.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-            button.frame.origin.x = marginLeft
-            button.frame.origin.y = defaultInsets.top + marginTop
-        }
-    }
     
     override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
         layoutHeaderView()
+        layoutFooterView()
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     fileprivate func layoutHeaderView() {
@@ -461,67 +415,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 _navigationBarHeightPortrait
                 ])
         }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
-        
-
-//        header.translatesAutoresizingMaskIntoConstraints = false
-//
-//        if #available(iOS 11.0, *) {
-//            NSLayoutConstraint.activate([
-//                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//                header.topAnchor.constraint(equalTo: view.topAnchor),
-//                header.heightAnchor.constraint(equalToConstant: 88)
-//                ])
-//        }
-//        switch headerLayout {
-//
-//        case .center(let marginTop):
-//
-//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
-//            header.center = self.view.boundsCenter
-//            header.frame.origin.y = defaultInsets.top + marginTop
-//
-//        case .pinBoth(let marginTop, let marginLeft,let marginRight):
-//
-//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
-//            header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
-//            header.sizeToFit()
-//            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
-//
-//        case .pinLeft(let marginTop, let marginLeft):
-//
-//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-//            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
-//
-//        case .pinRight(let marginTop, let marginRight):
-//
-//            header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-//            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: defaultInsets.top + marginTop)
-//        }
     }
 
     fileprivate func layoutFooterView() {
 
         guard let footer = footerView else { return }
-//
-//        footer.translatesAutoresizingMaskIntoConstraints = false
-//
-//        if #available(iOS 11.0, *) {
-//            let guide = self.view.safeAreaLayoutGuide
-//            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
-//
-//            NSLayoutConstraint.activate([
-//                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-//                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
-//                ])
-//        }
-        
+
         let guide = self.view.safeAreaLayoutGuide
         
         if UIDevice.current.orientation.isLandscape {
@@ -544,36 +443,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 _toolBarHeightPortrait
                 ])
         }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
-        
-//        switch footerLayout {
-//
-//        case .center(let marginBottom):
-//
-//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
-//            footer.center = self.view.boundsCenter
-//            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom
-//
-//        case .pinBoth(let marginBottom, let marginLeft,let marginRight):
-//
-//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleWidth]
-//            footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
-//            footer.sizeToFit()
-//            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
-//
-//        case .pinLeft(let marginBottom, let marginLeft):
-//
-//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-//            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
-//
-//        case .pinRight(let marginBottom, let marginRight):
-//
-//            footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
-//            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
-//        }
     }
 
     fileprivate func layoutScrubber() {
@@ -619,29 +488,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    //ThumbnailsimageBlock
-    @objc fileprivate func showThumbnails() {
-
-        let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
-
-        if let closeButton = seeAllCloseButton {
-            thumbnailsController.closeButton = closeButton
-            thumbnailsController.closeLayout = seeAllCloseLayout
-        } else if let closeButton = closeButton {
-            let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
-            seeAllCloseButton.setImage(closeButton.image(for: UIControlState()), for: UIControlState())
-            seeAllCloseButton.setImage(closeButton.image(for: .highlighted), for: .highlighted)
-            thumbnailsController.closeButton = seeAllCloseButton
-            thumbnailsController.closeLayout = closeLayout
-        }
-
-        thumbnailsController.onItemSelected = { [weak self] index in
-
-            self?.page(toIndex: index)
-        }
-
-        present(thumbnailsController, animated: true, completion: nil)
-    }
 
     open func page(toIndex index: Int) {
 
