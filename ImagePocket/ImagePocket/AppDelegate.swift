@@ -20,6 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let theme = Settings.instance.theme
+        
+        UINavigationBar.appearance().backgroundColor = theme.barTintColor
+        UINavigationBar.appearance().barTintColor = theme.barTintColor
+        UINavigationBar.appearance().tintColor = theme.tintColor
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
+        
+        UIToolbar.appearance().barTintColor = theme.barTintColor
+        UIToolbar.appearance().tintColor = theme.tintColor
         
         MSAppCenter.start("62110a8e-aea6-4668-b1e8-a33459457b48", withServices:[MSAnalytics.self, MSCrashes.self])    
         return true

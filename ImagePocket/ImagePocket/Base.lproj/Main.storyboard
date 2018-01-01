@@ -144,7 +144,6 @@
                         <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <viewLayoutGuide key="safeArea" id="ajt-B9-PY7"/>
-                        <color key="barTintColor" red="0.18822944159999999" green="0.1882514656" blue="0.18007361890000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </toolbar>
                     <connections>
                         <segue destination="3Va-f4-vbE" kind="relationship" relationship="rootViewController" id="Kn2-qo-I5w"/>

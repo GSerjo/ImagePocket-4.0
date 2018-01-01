@@ -15,6 +15,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     private var _toolBarHeightPortrait: NSLayoutConstraint!
     private var _navigationBarHeightLandscape: NSLayoutConstraint!
     private var _navigationBarHeightPortrait: NSLayoutConstraint!
+    private let theme = Settings.instance.theme
     
     // UI
     fileprivate let overlayView = BlurView()
@@ -31,7 +32,18 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
                 navItem.rightBarButtonItem = doneItem
                 navigationBar.setItems([navItem], animated: false)
+                
                 header.addSubview(navigationBar)
+                
+                header.backgroundColor = theme.barTintColor
+                
+//                navigationBar.backgroundColor = theme.barTintColor
+//                navigationBar.barTintColor = theme.barTintColor
+//                navigationBar.tintColor = theme.tintColor
+                navigationBar.isTranslucent = false
+                
+//                navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
+                doneItem.tintColor = theme.tintColor
                 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 
@@ -262,6 +274,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @objc func didEndPlaying() {
         page(toIndex: currentIndex+1)
     }
+    
+    open override func prefersHomeIndicatorAutoHidden() -> Bool {
+        return true
+    }
 
 
     fileprivate func configureOverlayView() {
@@ -367,10 +383,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
-        
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
     }
 
     private var defaultInsets: UIEdgeInsets {

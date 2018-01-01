@@ -156,6 +156,7 @@ TagsProtocol {
     @IBAction func onShareClicked(_ sender: Any) {
         _sharedImageLoader.load(images: _selectedImages.values.map{$0.image}) { [unowned self] (loadedImages) in
             let controller = UIActivityViewController(activityItems: loadedImages, applicationActivities: nil)
+//            controller.view.backgroundColor = Settings.instance.theme.barTintColor
             controller.popoverPresentationController?.barButtonItem = (sender as! UIBarButtonItem)
             self.present(controller, animated: true, completion: {
                     self.unselectCells()
@@ -275,9 +276,9 @@ TagsProtocol {
             
             let theme = Settings.instance.theme
             
-            let blueSquare = UIView()
-            blueSquare.backgroundColor = UIColor.red
-            galleryViewController.headerView = blueSquare
+            let headerView = UIView()
+            headerView.backgroundColor = theme.barTintColor
+            galleryViewController.headerView = headerView
 
             
             let toolBar = UIToolbar()
@@ -409,14 +410,6 @@ TagsProtocol {
     }
     
     private func configureTheme() -> Void {
-        let theme = Settings.instance.theme
-        
-        navigationController?.navigationBar.barTintColor = theme.barTintColor
-        navigationController?.navigationBar.tintColor = theme.tintColor
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
-        
-        _btTrash.tintColor = theme.tintColor
-        _btShare.tintColor = theme.tintColor
     }
     
     private func reloadDataAsync() {
