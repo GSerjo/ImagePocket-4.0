@@ -11,35 +11,87 @@ import AVFoundation
 
 open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
-    private var _toolBarHeightLandscape: NSLayoutConstraint?
-    private var _toolBarHeightPortrait: NSLayoutConstraint?
+    private var _toolBarHeightLandscape: NSLayoutConstraint!
+    private var _toolBarHeightPortrait: NSLayoutConstraint!
+    private var _navigationBarPortraitConstraint: [NSLayoutConstraint] = []
+    private var _navigationBarHeightLandscape: NSLayoutConstraint!
+    private var _navigationBarHeightPortrait: NSLayoutConstraint!
     
     // UI
     fileprivate let overlayView = BlurView()
     /// A custom view on the top of the gallery with layout using default (or custom) pinning settings for header.
-    open var headerView: UIView?
+    open var headerView: UIView? {
+        didSet {
+            
+            if let header = headerView {
+                
+                header.translatesAutoresizingMaskIntoConstraints = false
+                
+                let navigationBar = UINavigationBar()
+                let navItem = UINavigationItem(title: "")
+                let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
+                navItem.rightBarButtonItem = doneItem
+                navigationBar.setItems([navItem], animated: false)
+                header.addSubview(navigationBar)
+                
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                
+                let leadingAnchor = navigationBar.leadingAnchor.constraint(equalTo: header.leadingAnchor)
+                let trailingAnchor = navigationBar.trailingAnchor.constraint(equalTo: header.trailingAnchor)
+                let bottomAnchor = navigationBar.bottomAnchor.constraint(equalTo: header.bottomAnchor)
+                _navigationBarPortraitConstraint = [leadingAnchor, trailingAnchor, bottomAnchor]
+                
+                _navigationBarHeightLandscape = NSLayoutConstraint(
+                    item: headerView!,
+                    attribute: .height,
+                    relatedBy: .equal,
+                    toItem: nil,
+                    attribute: .notAnAttribute,
+                    multiplier: 1,
+                    constant: 32)
+                
+                _navigationBarHeightPortrait = NSLayoutConstraint(
+                    item: headerView!,
+                    attribute: .height,
+                    relatedBy: .equal,
+                    toItem: nil,
+                    attribute: .notAnAttribute,
+                    multiplier: 1,
+                    constant: 88)
+                
+                NSLayoutConstraint.activate(_navigationBarPortraitConstraint)
+            }
+        }
+    }
+    
+    
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settings for footer.
     open var footerView: UIView? {
         didSet {
-            _toolBarHeightLandscape = NSLayoutConstraint(
-                item: footerView!,
-                attribute: .height,
-                relatedBy: .equal,
-                toItem: nil,
-                attribute: .notAnAttribute,
-                multiplier: 1,
-                constant: 32)
             
-            let heightPortrait: CGFloat = UIScreen.hasNotch ? 49 : 44
+            if let footer = footerView {
+                footer.translatesAutoresizingMaskIntoConstraints = false
             
-            _toolBarHeightPortrait = NSLayoutConstraint(
-                item: footerView!,
-                attribute: .height,
-                relatedBy: .equal,
-                toItem: nil,
-                attribute: .notAnAttribute,
-                multiplier: 1,
-                constant: heightPortrait)
+                _toolBarHeightLandscape = NSLayoutConstraint(
+                    item: footerView!,
+                    attribute: .height,
+                    relatedBy: .equal,
+                    toItem: nil,
+                    attribute: .notAnAttribute,
+                    multiplier: 1,
+                    constant: 32)
+                
+                let heightPortrait: CGFloat = UIScreen.hasNotch ? 49 : 44
+                
+                _toolBarHeightPortrait = NSLayoutConstraint(
+                    item: footerView!,
+                    attribute: .height,
+                    relatedBy: .equal,
+                    toItem: nil,
+                    attribute: .notAnAttribute,
+                    multiplier: 1,
+                    constant: heightPortrait)
+            }
         }
     }
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
@@ -226,16 +278,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureHeaderView() {
 
         if let header = headerView {
-            
-            let tagButton = UIButton(type: .system)
-            let xPostion:CGFloat = 50
-            let yPostion:CGFloat = 100
-            let buttonWidth:CGFloat = 150
-            let buttonHeight:CGFloat = 45
-            tagButton.frame = CGRect(x:xPostion, y:yPostion, width:buttonWidth, height:buttonHeight)
-            tagButton.setTitle("Tag", for: .normal)
-            
-            header.addSubview(tagButton)
             header.alpha = 0
             self.view.addSubview(header)
         }
@@ -393,54 +435,48 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        guard let footer = footerView else { return }
-        let guide = self.view.safeAreaLayoutGuide
+        layoutHeaderView()
+    }
+    
+    fileprivate func layoutHeaderView() {
 
+        guard let header = headerView else { return }
+       
         if UIDevice.current.orientation.isLandscape {
-            NSLayoutConstraint.deactivate([_toolBarHeightPortrait!])
+            NSLayoutConstraint.deactivate([_navigationBarHeightPortrait])
             
             NSLayoutConstraint.activate([
-                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                _toolBarHeightLandscape!
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                header.topAnchor.constraint(equalTo: view.topAnchor),
+                _navigationBarHeightLandscape
                 ])
         }
         else {
-            NSLayoutConstraint.deactivate([_toolBarHeightLandscape!])
-            
+            NSLayoutConstraint.deactivate([_navigationBarHeightLandscape])
             NSLayoutConstraint.activate([
-                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                _toolBarHeightPortrait!
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                header.topAnchor.constraint(equalTo: view.topAnchor),
+                _navigationBarHeightPortrait
                 ])
         }
         
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
         }
-    }
+        
 
-    fileprivate func layoutHeaderView() {
-
-        guard let header = headerView else { return }
-
-        header.translatesAutoresizingMaskIntoConstraints = false
-
-        if #available(iOS 11.0, *) {
-//            let guide = self.view.safeAreaLayoutGuide
-            
-            NSLayoutConstraint.activate([
-                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                header.topAnchor.constraint(equalTo: view.topAnchor),
-                header.heightAnchor.constraint(equalToConstant: 88)
-                ])
-//            header.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
-//            header.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-//            header.heightAnchor.constraint(equalToConstant: 88).isActive = true
-        }
+//        header.translatesAutoresizingMaskIntoConstraints = false
+//
+//        if #available(iOS 11.0, *) {
+//            NSLayoutConstraint.activate([
+//                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//                header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//                header.topAnchor.constraint(equalTo: view.topAnchor),
+//                header.heightAnchor.constraint(equalToConstant: 88)
+//                ])
+//        }
 //        switch headerLayout {
 //
 //        case .center(let marginTop):
@@ -471,19 +507,46 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func layoutFooterView() {
 
         guard let footer = footerView else { return }
-
-        footer.translatesAutoresizingMaskIntoConstraints = false
-
-        if #available(iOS 11.0, *) {           
-            let guide = self.view.safeAreaLayoutGuide
-            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
+//
+//        footer.translatesAutoresizingMaskIntoConstraints = false
+//
+//        if #available(iOS 11.0, *) {
+//            let guide = self.view.safeAreaLayoutGuide
+//            let heightAnchor: CGFloat = UIScreen.hasNotch ? 49 : 44
+//
+//            NSLayoutConstraint.activate([
+//                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+//                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
+//                ])
+//        }
+        
+        let guide = self.view.safeAreaLayoutGuide
+        
+        if UIDevice.current.orientation.isLandscape {
+            NSLayoutConstraint.deactivate([_toolBarHeightPortrait])
             
             NSLayoutConstraint.activate([
                 footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                footer.heightAnchor.constraint(equalToConstant: heightAnchor)
+                _toolBarHeightLandscape
                 ])
+        }
+        else {
+            NSLayoutConstraint.deactivate([_toolBarHeightLandscape])
+            
+            NSLayoutConstraint.activate([
+                footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footer.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                _toolBarHeightPortrait
+                ])
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
         }
         
 //        switch footerLayout {
