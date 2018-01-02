@@ -68,6 +68,7 @@ final class Settings {
         let barTintColor = #colorLiteral(red: 0.1633343031, green: 0.1029568759, blue: 0.1803530857, alpha: 1)
         let tintColor = #colorLiteral(red: 0.5671468377, green: 0.6942085624, blue: 0.8048953414, alpha: 1)
         let titleTextColor = #colorLiteral(red: 0.9998915792, green: 1, blue: 0.9998809695, alpha: 1)
+        let newTagTextColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
     }
 }
 

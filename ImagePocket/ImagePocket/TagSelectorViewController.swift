@@ -65,6 +65,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
         configureTheme()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -79,6 +81,8 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
         tokenView.dataSource = self
         tokenView.delegate = self
         tokenView.reloadData()
+        tokenView.layer.cornerRadius = 10
+        tokenView.textView.becomeFirstResponder()
     }
     
     private func configureTheme() -> Void {
@@ -246,7 +250,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tokenViewDidEndEditing(_ tokenView: NWSTokenView) -> Void {
-        print(tokenView.textView.text)
+//        print(tokenView.textView.text)
     }
     
     func tokenView(_ tokenView: NWSTokenView, didChangeText text: String) -> Void {
@@ -261,7 +265,7 @@ class TagSelectorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tokenView(_ tokenView: NWSTokenView, didEnterText text: String) -> Void {
-        print(text)
+//        print(text)
     }
     
     func tokenView(_ tokenView: NWSTokenView, contentSizeChanged size: CGSize)  -> Void {
@@ -347,9 +351,12 @@ final class NWSTokenViewCell: UITableViewCell {
     func updateAttributedText(_ tag: TagItem) -> Void {
         tagItem = tag
         
-        let attributes = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18.0)]
-        let prettyString = NSMutableAttributedString(string: "Add new tag \(tag.name)")
-        prettyString.setAttributes(attributes, range: NSRange(location: 12, length: tag.name.count))
+        let newTagText = "Add new tag: "
+        let newTagTextRange = NSRange(location: 0, length: newTagText.count)
+        let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16)]
+        let prettyString = NSMutableAttributedString(string: newTagText + tag.name)
+        prettyString.setAttributes(attributes, range: newTagTextRange)
+        prettyString.addAttribute(NSAttributedStringKey.foregroundColor, value: Settings.instance.theme.newTagTextColor, range: newTagTextRange)
         
         _tagName.attributedText = prettyString
     }
