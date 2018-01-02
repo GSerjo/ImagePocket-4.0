@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol GalleryItemsDelegate: class {
-
+protocol GalleryItemsDelegate: class {
     func removeGalleryItem(at index: Int, onRemoved: @escaping () -> Void)
+    func provideImageEntity(at index: Int) -> ImageEntity
 }

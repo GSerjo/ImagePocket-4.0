@@ -156,7 +156,7 @@
         <!--Tag Selector View Controller-->
         <scene sceneID="15B-05-BM2">
             <objects>
-                <viewController id="bMF-y3-Lfn" customClass="TagSelectorViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TagSelectorViewController" id="bMF-y3-Lfn" customClass="TagSelectorViewController" customModule="ImagePocket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HgP-81-ZZ3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

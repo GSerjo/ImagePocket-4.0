@@ -15,7 +15,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     private var _toolBarHeightPortrait: NSLayoutConstraint!
     private var _navigationBarHeightLandscape: NSLayoutConstraint!
     private var _navigationBarHeightPortrait: NSLayoutConstraint!
-    private let theme = Settings.instance.theme
+    private let _theme = Settings.instance.theme
     
     // UI
     fileprivate let overlayView = BlurView()
@@ -29,21 +29,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 
                 let navigationBar = UINavigationBar()
                 let navItem = UINavigationItem(title: "")
-                let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: nil, action: nil)
+                let doneItem = UIBarButtonItem(title: "Tag", style: .plain, target: self, action: #selector(onTagClicked))
                 navItem.rightBarButtonItem = doneItem
                 navigationBar.setItems([navItem], animated: false)
                 
                 header.addSubview(navigationBar)
                 
-                header.backgroundColor = theme.barTintColor
-                
-//                navigationBar.backgroundColor = theme.barTintColor
-//                navigationBar.barTintColor = theme.barTintColor
-//                navigationBar.tintColor = theme.tintColor
+                header.backgroundColor = _theme.barTintColor
                 navigationBar.isTranslucent = false
-                
-//                navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : theme.titleTextColor]
-                doneItem.tintColor = theme.tintColor
                 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 
@@ -156,7 +149,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
+    init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
         
         self.currentIndex = startIndex
@@ -273,6 +266,18 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     @objc func didEndPlaying() {
         page(toIndex: currentIndex+1)
+    }
+    
+    @objc func onTagClicked() -> Void {
+        if let delegate = itemsDelegate {
+            let entity = delegate.provideImageEntity(at: currentIndex)
+            let mainStoryboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let controller = mainStoryboard.instantiateViewController(withIdentifier: "TagSelectorViewController") as! TagSelectorViewController
+            controller.setup(entities: [entity], notifiableOnCloseProtocol: nil)
+            
+            let navigationController = UINavigationController(rootViewController: controller)
+            self.present(navigationController, animated: true)
+        }
     }
     
     open override func prefersHomeIndicatorAutoHidden() -> Bool {

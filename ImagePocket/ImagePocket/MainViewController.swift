@@ -125,7 +125,7 @@ TagsProtocol {
     }
     
     @IBAction func onTagClicked(_ sender: Any) {
-        performSegue(withIdentifier: SegueSelector.showTagSelector, sender: nil)
+        performSegue(withIdentifier: SegueSelector.showTagSelector, sender: _selectedImages.values.map{$0.image})
     }
     
     @IBAction func onTrashClicked(_ sender: Any) {
@@ -168,7 +168,8 @@ TagsProtocol {
         if segue.identifier == SegueSelector.showTagSelector {
             let navigation = segue.destination as! UINavigationController
             let controller = navigation.viewControllers[0] as! TagSelectorViewController
-            controller.setup(entities: _selectedImages.values.map{$0.image}, notifiableOnCloseProtocol: self)
+            let entities = sender as! [ImageEntity]
+            controller.setup(entities: entities, notifiableOnCloseProtocol: self)
         }
         else if segue.identifier == SegueSelector.showTags {
             let navigation = segue.destination as! UINavigationController
@@ -547,6 +548,10 @@ TagsProtocol {
                 onComplete(image)
             }
         }
+    }
+    
+    func provideImageEntity(at index: Int) -> ImageEntity {
+        return _filteredImages[index]
     }
     
     func removeGalleryItem(at index: Int, onRemoved: @escaping () -> Void) {
