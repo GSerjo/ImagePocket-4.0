@@ -139,7 +139,18 @@ TagsProtocol {
         }) { (completed, _) in
             if completed {
                 self._imageCache.remove(localIdentifiers: localIdentifiers)
-                indexes.forEach{self._filteredImages.remove(at: $0)}
+                
+                let set = Set(indexes)
+                var result = [ImageEntity]()
+                
+                var i = 0
+                for item in self._filteredImages {
+                    if set.contains(i) == false {
+                        result.append(item)
+                    }
+                    i += 1
+                }
+                self._filteredImages = result
                 DispatchQueue.main.sync {
                     self.setReadMode()
                     self.reloadData()

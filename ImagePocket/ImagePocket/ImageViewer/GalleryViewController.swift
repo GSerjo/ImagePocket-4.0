@@ -28,7 +28,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 header.translatesAutoresizingMaskIntoConstraints = false
                 
                 let navigationBar = UINavigationBar()
-                let navItem = UINavigationItem(title: "")
+                let navItem = UINavigationItem(title: "Image Pocket")
                 let doneItem = UIBarButtonItem(title: "Tag", style: .plain, target: self, action: #selector(onTagClicked))
                 navItem.rightBarButtonItem = doneItem
                 navigationBar.setItems([navItem], animated: false)
@@ -53,6 +53,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     multiplier: 1,
                     constant: 32)
                 
+                let heightPortrait: CGFloat = UIScreen.hasNotch ? 88 : 64
                 _navigationBarHeightPortrait = NSLayoutConstraint(
                     item: headerView!,
                     attribute: .height,
@@ -60,7 +61,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     toItem: nil,
                     attribute: .notAnAttribute,
                     multiplier: 1,
-                    constant: 88)
+                    constant: heightPortrait)
                 
                 NSLayoutConstraint.activate([leadingAnchor, trailingAnchor, bottomAnchor])
             }
